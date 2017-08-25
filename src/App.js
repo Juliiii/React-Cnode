@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import styles from './App.css';
-
+import logo from './icons/logo.svg';
+import './App.css';
+import { Button, Icon } from 'antd-mobile';
 class App extends Component {
   render() {
-    console.log(styles);
     return (
-      <div className={styles.App}>
+      <div className='App'>
         <div className='App'>
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+          <Icon type={require('./icons/logo.svg')} size="la"/>
+          <h2 style={{
+            fontSize: '17px'
+          }}>Welcome to React</h2>
         </div>
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
+        <Button>Start</Button>
       </div>
     );
   }
