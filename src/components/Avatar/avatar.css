@@ -1,0 +1,22 @@
+.img {
+  border-radius: 50%;
+  border: 1px solid rgb(221, 221, 221);
+}
+
+.md {
+  width: 140px;
+  height: 140px;
+  composes: img;
+}
+
+.sm {
+  width: 100px;
+  height: 100px;
+  composes: img;
+}
+
+.la {
+  width: 200px;
+  height: 200px;
+  composes: img;
+}
