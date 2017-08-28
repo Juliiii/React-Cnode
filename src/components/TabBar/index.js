@@ -5,7 +5,7 @@ import { colors } from '../../constants';
 import { browserHistory } from 'react-router';
 
 class MyTabBar extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       selectedTab: 'home',
@@ -14,7 +14,7 @@ class MyTabBar extends React.Component {
   }
 
 
-  render() {
+  render () {
     return (
       <TabBar
         unselectedTintColor="#949494"
@@ -67,6 +67,6 @@ class MyTabBar extends React.Component {
       </TabBar>
     );
   }
-}
+};
 
 export default MyTabBar;

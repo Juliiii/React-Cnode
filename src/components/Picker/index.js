@@ -9,7 +9,7 @@ export const TabPicker = (props) => {
     {label: '测试', value: 'dev'}
   ];
 
-  return(
+  return (
     <div>
       <List>
         <Picker
@@ -24,7 +24,7 @@ export const TabPicker = (props) => {
         </Picker>
       </List>
     </div>
-  )
-}
+  );
+};
 
 export default TabPicker;

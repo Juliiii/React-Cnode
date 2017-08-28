@@ -2,8 +2,8 @@ import React from 'react';
 import Avatar from '../Avatar';
 import { Card, Flex } from 'antd-mobile';
 import { colors } from '.././../constants';  
-export const Component = (props) => {
-  return(
+const BusinessCard = (props) => {
+  return (
     <Card style={{
       padding: '0.3rem'
     }}>
@@ -18,12 +18,12 @@ export const Component = (props) => {
       <span style={styles}>C龄: 1个月</span>
     </Flex>
     </Card>
-  )
+  );
 }
 
 const styles = {
   margin: '0.2rem 0',
   color: colors.blue
-}
+};
 
-export default Component
+export default BusinessCard;

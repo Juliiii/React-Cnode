@@ -2,7 +2,7 @@ import React from 'react'
 import { InputItem, Button, Flex, Card, Icon } from 'antd-mobile';
 import { browserHistory  } from 'react-router';
 export const Login = (props) => {
-  return(
+  return (
     <Card direction="column" style={{height: '100%', width: '100%'}}>
       <Flex direction="column" style={{padding: '0.5rem 0'}}>
         <span>登录</span>

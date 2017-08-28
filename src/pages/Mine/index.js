@@ -2,7 +2,7 @@ import React from 'react'
 import BusinessCard from '../../components/BusinessCard';
 import { List, Icon, Badge } from 'antd-mobile';
 export const Component = (props) => {
-  return(
+  return (
     <div>
       <BusinessCard />
       <List style={{marginTop: '1rem'}}>
