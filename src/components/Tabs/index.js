@@ -14,7 +14,7 @@ const tabs = {
 export const MyTabs = (props) => {
   return(
     <Tabs 
-      defaultActiveKey="1"
+      defaultActiveKey="0"
       swipeable={false}
     >
       {

@@ -2,6 +2,7 @@ import React from 'react'
 
 import { TabBar, Icon } from 'antd-mobile';
 import { colors } from '../../constants';
+import { browserHistory } from 'react-router';
 
 class MyTabBar extends React.Component {
   constructor(props) {
@@ -31,8 +32,8 @@ class MyTabBar extends React.Component {
             this.setState({
               selectedTab: 'home',
             });
+            browserHistory.push('/');
           }}
-          data-seed="logId1"
         >
         </TabBar.Item>
         <TabBar.Item
@@ -45,6 +46,7 @@ class MyTabBar extends React.Component {
             this.setState({
               selectedTab: 'publish'
             });
+            browserHistory.push('/publish');
           }}
         >
         </TabBar.Item>
@@ -58,6 +60,7 @@ class MyTabBar extends React.Component {
             this.setState({
               selectedTab: 'mine',
             });
+            browserHistory.push('/mine');
           }}
         >
         </TabBar.Item>

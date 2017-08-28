@@ -13,7 +13,7 @@ class List extends React.Component {
       rowHasChanged: (r1, r2) => r1 !== r2
     });
     this.state = {
-      dataSource: dataSource.cloneWithRows([2,3])
+      dataSource: dataSource.cloneWithRows([2,3,4, 5, 6, 7, 9, 10])
     }
   }
 
