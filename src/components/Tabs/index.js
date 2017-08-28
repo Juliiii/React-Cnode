@@ -1,6 +1,6 @@
 import React from 'react'
+import List from '../List';
 import { Tabs } from 'antd-mobile';
-import { colors } from '../../constants';
 const TabPane = Tabs.TabPane;
 const tabs = {
   '全部': 'all',
@@ -11,34 +11,17 @@ const tabs = {
   '测试': 'dev'
 };
 
-class Test extends React.Component {
-
-  constructor (props) {
-    super(props);
-  }
-
-  componentDidMount () {
-    console.log('created');
-  }
-
-  render () {
-    return (
-      <div>12323232</div>
-    );
-  }
-};
-
-
 export const MyTabs = (props) => {
   return(
     <Tabs 
       defaultActiveKey="1"
+      swipeable={false}
     >
       {
         Object.keys(tabs).map(
           (item, index) => <TabPane tab={item} key={index}>
-                             <Test />
-                            </TabPane>
+                             <List />
+                           </TabPane>
                             )
       }
     </Tabs>

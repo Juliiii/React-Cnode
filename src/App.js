@@ -16,6 +16,10 @@ class App extends Component {
   }
 }
 
+const test = () => (
+  <div>12332</div>
+);
+
 
 const router = () => {
   return (
@@ -23,6 +27,7 @@ const router = () => {
       <Route component={App} path="/">
         <Route component={ListItem} path="list" />
       </Route>
+      <Route component={test} path="/test" />
     </Router>
   );
 }

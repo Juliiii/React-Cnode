@@ -24,8 +24,8 @@ class MyTabBar extends React.Component {
         <TabBar.Item
           icon={<Icon type={require('../../icons/homepage.svg')} size="md" />}
           selectedIcon={<Icon type={require('../../icons/homepage_fill.svg')} size="md" />}
-          title="我"
-          key="我"
+          title="主页"
+          key="主页"
           selected={this.state.selectedTab === 'home'}
           onPress={() => {
             this.setState({
