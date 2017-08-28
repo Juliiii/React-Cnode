@@ -1,3 +1,4 @@
 export default {
-  blue: '#5f8fe1'
+  blue: '#5f8fe1',
+  unSelectedText: '#949494'
 };

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ListItem from './components/ListItem';
 import TabBar from './components/TabBar';
+import Tabs from './components/Tabs';
 import { Router, Route, browserHistory } from 'react-router';
 
 class App extends Component {
@@ -8,6 +9,7 @@ class App extends Component {
     return (
       <div className='App'>
         <TabBar />
+        <Tabs />
         {this.props.children}
       </div>
     );
