@@ -3,6 +3,7 @@ body {
   padding: 0;
   font-family: sans-serif;
   font-size: 24px;
+  overflow-x: hidden;
 }
 
 html, body {

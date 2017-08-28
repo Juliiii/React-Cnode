@@ -1,5 +1,4 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
 import { Card, WhiteSpace, Flex, Icon } from 'antd-mobile';
 import Badge from '../Badge';
 import { colors } from '../../constants';
@@ -35,7 +34,7 @@ const footer = () => (
 
 const ListItem = () => {
   return (
-    <div onClick={() => browserHistory.push('/test')}>
+    <div>
       <Card
          style={{
            minHeight: '150px'

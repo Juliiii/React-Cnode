@@ -18,7 +18,7 @@ class List extends React.Component {
   }
 
   loadMore = () => {
-
+    console.log('trigger');
   }
 
   render () {

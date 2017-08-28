@@ -4,6 +4,7 @@ import Publish from '../pages/Publish';
 import Main from '../pages/Main';
 import Default from '../pages/Main/Default';
 import Mine from '../pages/Mine';
+import Login from '../pages/Login';
 
 const Layout = () => {
   return (
@@ -13,6 +14,7 @@ const Layout = () => {
         <Route component={Publish} path="publish" />
         <Route component={Mine} path="mine" />
       </Route>
+      <Route component={Login} path="/login" />
     </Router>
   );
 }
