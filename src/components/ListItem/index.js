@@ -35,9 +35,13 @@ const footer = ({reply_count, visit_count}) => (
   </Flex>
 );
 
+const footerExtra = ({last_reply_at}) => (
+  <Flex align="center" justify="end" style={{height: '100%'}}>最新动态: {formatime(last_reply_at)}</Flex>
+);
+
+
 
 const ListItem = ({item}) => {
-  console.log(item);
   return (
     <div>
       <Card
@@ -64,7 +68,7 @@ const ListItem = ({item}) => {
         >
           <h4>{item.title}</h4>
         </Card.Body>
-        <Card.Footer content={footer(item)} extra={<div>{formatime(item.last_reply_at)}</div>} />
+        <Card.Footer content={footer(item)} extra={footerExtra(item)} />
       </Card>
       <WhiteSpace size="xs" />
     </div>

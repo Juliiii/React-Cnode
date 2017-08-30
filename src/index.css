@@ -9,3 +9,8 @@ body {
 html, body {
   height: 100%;
 }
+
+
+.am-list-view-scrollview-content am-list {
+  padding-bottom: 99px !important;
+}

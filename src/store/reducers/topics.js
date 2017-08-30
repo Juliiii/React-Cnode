@@ -68,7 +68,7 @@ const topics = (state = topicsInitialState, action) => {
       return {
         ...state,
         loading: false,
-        reachEnd: !!action.data.length,        
+        reachEnd: action.data.length === 0,        
         data: [...state.data , ...action.data],
         page: state[state.tab].page + 1,
         [state.tab]: { page: state[state.tab].page + 1, data: [...state[state.tab].data, ...action.data] }       

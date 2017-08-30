@@ -1,15 +1,26 @@
 import React from 'react'
-import { ListView } from 'antd-mobile';
+import { ListView, ActivityIndicator, Flex } from 'antd-mobile';
 import ListItem from '../ListItem';
 import { connect } from 'react-redux';
 import { topics } from '../../store/actions';
 
 
 const MyBody = (props) => (
-  <div style={{
-    paddingBottom: '99px'
-  }}>{props.children}</div>
+  <div>{props.children}</div>
 );
+
+const Footer = ({loading}) => {
+  if (loading) {
+    return (
+      <Flex justify="center">
+        <ActivityIndicator text="Loading..." /> 
+      </Flex>
+    );
+  } else {
+    return null;
+  }
+};
+
 
 class List extends React.Component {
   constructor (props) {
@@ -48,7 +59,10 @@ class List extends React.Component {
 
 
   loadMore = () => {
+    const { loading, reachEnd } = this.props;
+    if (loading || reachEnd) return;
     console.log('trigger');
+    this.props.getData();
   }
 
   render () {
@@ -63,6 +77,7 @@ class List extends React.Component {
         renderBodyComponent={() => <MyBody />}
         onEndReached={this.loadMore}
         renderRow={(data) => <ListItem item={data} />}
+        renderFooter={() => <Footer loading={this.props.loading} />}
         style={{
           height: `${(document.body.clientHeight || document.documentElement.clientHeight) - 87}px`
         }}
@@ -84,7 +99,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const mapStateToProps = (state, ownProps) => {
   return {
     page: state.topics.page,
-    data: state.topics.data
+    data: state.topics.data,
+    loading: state.topics.loading,
+    reachEnd: state.topics.reachEnd
   };
 }
 

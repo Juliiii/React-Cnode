@@ -23,7 +23,6 @@ function* watchGetData () {
     }
 }
 
-
 export default function* root () {
   yield fork(watchGetData);
 }
