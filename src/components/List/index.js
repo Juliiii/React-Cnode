@@ -4,6 +4,7 @@ import ListItem from '../ListItem';
 import { connect } from 'react-redux';
 import { topics } from '../../store/actions';
 
+
 const MyBody = (props) => (
   <div style={{
     paddingBottom: '99px'
@@ -17,14 +18,14 @@ class List extends React.Component {
       rowHasChanged: (r1, r2) => r1 !== r2
     });
     this.state = {
-      dataSource: dataSource.cloneWithRows([2,3,4, 5, 6, 7, 9, 10])
+      dataSource: dataSource.cloneWithRows(this.props.data)
     }
-
   }
   componentWillMount () {
-    console.log(this.props.topics);
+    if (this.props.data.length === 0) {
+      this.props.getData();
+    }
   }
-
 
   componentDidMount () {
     let scrollTop = localStorage.getItem('scrollTop');
@@ -36,6 +37,14 @@ class List extends React.Component {
     localStorage.setItem('scrollTop', this.ref.refs.listview.scrollProperties.offset);
   }
 
+  componentWillReceiveProps (newProps) {
+    let dataSource = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
+    });
+    this.setState({
+      dataSource: dataSource.cloneWithRows(newProps.data)
+    });
+  }
 
 
   loadMore = () => {
@@ -53,7 +62,7 @@ class List extends React.Component {
         scrollEventThrottle={200}
         renderBodyComponent={() => <MyBody />}
         onEndReached={this.loadMore}
-        renderRow={() => <ListItem />}
+        renderRow={(data) => <ListItem item={data} />}
         style={{
           height: `${(document.body.clientHeight || document.documentElement.clientHeight) - 87}px`
         }}
@@ -64,6 +73,10 @@ class List extends React.Component {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
+    getData: () => {
+      dispatch(topics.setLoading());
+      dispatch(topics.getTopics());
+    }
   };
 }
 

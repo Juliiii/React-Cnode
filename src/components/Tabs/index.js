@@ -13,27 +13,40 @@ const tabs = {
   '测试': 'dev'
 };
 
-export const MyTabs = ({tab, changeTab}) => {
-  return(
-    <Tabs 
-      defaultActiveKey={tab}
-      swipeable={false}
-      onChange={changeTab}
-    >
-      {
-        Object.entries(tabs).map(
-          (item, index) => <TabPane tab={item[0]} key={item[1]}>
-                             <List tab={tab} />
-                           </TabPane>
-                            )
-      }
-    </Tabs>
-  );
+class MyTabs extends React.Component {
+
+  changeTab = (value) => {
+    const { loading, refresh, changeTab } = this.props;
+    if (loading || refresh) return;
+    changeTab(value);
+  }
+
+
+  render () {
+    const { tab } = this.props;
+    return (
+      <Tabs 
+        defaultActiveKey={tab}
+        swipeable={false}
+        onChange={this.changeTab}
+      >
+        {
+          Object.entries(tabs).map(
+            (item, index) => <TabPane tab={item[0]} key={item[1]}>
+                              <List tab={tab} />
+                            </TabPane>
+                              )
+        }
+      </Tabs>
+    );
+  }
 };
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    tab: state.topics.tab
+    tab: state.topics.tab,
+    loading: state.topics.loading,
+    refresh: state.topics.refresh
   };
 }
 
