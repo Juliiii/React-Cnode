@@ -10,29 +10,36 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 
+export const LOGOUT = 'LOGOUT';
 
 export const getuserInfo = () => ({
-  type: 'GETUSERINFO'
+  type: GETUSERINFO
 });
 
 export const getuserInfoSuccess = (info) => ({
-  type: 'GETUSERINFO_SUCCESS',
+  type: GETUSERINFO_SUCCESS,
   info
 });
 
 export const getUserInfoFail = () => ({
-  type: 'GETUSERINFO_FAIL'
+  type: GETUSERINFO_FAIL
 });
 
 export const login = () => ({
-  type: 'LOGIN'
+  type: LOGIN
 });
 
-export const loginSuccess = (data) => ({
-  type: 'LOGIN_SUCCESS',
-  data
+export const loginSuccess = (accesstoken, loginname) => ({
+  type: LOGIN_SUCCESS,
+  loginname,
+  accesstoken
 });
 
 export const loginFail  = () => ({
-  type: 'LOGIN_FAIL'
+  type: LOGIN_FAIL
+});
+
+
+export const logout = () => ({
+  type: LOGOUT
 });
