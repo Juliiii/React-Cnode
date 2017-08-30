@@ -12,6 +12,8 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 
 export const LOGOUT = 'LOGOUT';
 
+export const TOGGLESUBMITTING = 'TOGGLESUBMITTING';
+
 export const getuserInfo = () => ({
   type: GETUSERINFO
 });
@@ -25,8 +27,9 @@ export const getUserInfoFail = () => ({
   type: GETUSERINFO_FAIL
 });
 
-export const login = () => ({
-  type: LOGIN
+export const login = (accesstoken) => ({
+  type: LOGIN,
+  accesstoken
 });
 
 export const loginSuccess = (accesstoken, loginname) => ({
@@ -42,4 +45,8 @@ export const loginFail  = () => ({
 
 export const logout = () => ({
   type: LOGOUT
+});
+
+export const toggle = () => ({
+  type: TOGGLESUBMITTING
 });

@@ -1,28 +1,43 @@
-import { call, put, takeEvery, fork } from 'redux-saga/effects';
-import axios from 'axios';
+import { call, put, takeLatest, fork, select } from 'redux-saga/effects';
+import axios from '../../apis';
 import { user } from '../actions'; 
+import { browserHistory } from 'react-router';
 
-function* test (a) {
-  console.log(a);
+function* login ({accesstoken}) {
   try {
-    const data = yield call(axios.get, 'https://cnodejs.org/api/v1/user/alsotang');
-    console.log(data);
-    yield put(user.loginSuccess(data));
+    yield put(user.toggle());
+    const data = (yield call(axios.post, '/accesstoken', {accesstoken})).data;
+    yield put(user.loginSuccess(accesstoken, data.loginname));
+    window.localStorage.setItem('accesstoken', accesstoken);
+    window.localStorage.setItem('loginname', data.loginname);
+    browserHistory.push('/');
   } catch (err) {
-    yield put(user.loginFail);
+    yield put(user.loginFail());
   }
 }
 
+function* watchLogin () {
+  yield takeLatest(user.LOGIN, login);
+}
 
-function* watchTest () {
-  yield takeEvery(user.LOGIN, test);
+function* getInfo ({loginname}) {
+  if (!loginname) loginname = yield select(state => state.user.loginname);
+  try {
+    const data = (yield call(axios.get, `/user/${loginname}`)).data;
+    console.log(data);
+    yield put(user.getuserInfoSuccess(data.data));
+  } catch (err) {
+    yield put(user.getUserInfoFail());
+  }
+}
+
+function* watchGetInfo () {
+  yield takeLatest(user.GETUSERINFO, getInfo);
 }
 
 
 
-
-
-export default function* main () {
-  yield fork(watchTest);
+export default function* root () {
+  yield fork(watchLogin);
+  yield fork(watchGetInfo);
 }
-

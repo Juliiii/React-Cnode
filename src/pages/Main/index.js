@@ -1,8 +1,9 @@
 import React from 'react';
 import TabBar from '../../components/TabBar';
+import { connect } from 'react-redux';
 
 class Main extends React.Component {
-  render() {
+  render () {
     return (
       <div>
         <TabBar />
@@ -13,4 +14,10 @@ class Main extends React.Component {
 };
 
 
-export default Main;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    user: state.user
+  }
+};
+
+export default connect(mapStateToProps)(Main);
