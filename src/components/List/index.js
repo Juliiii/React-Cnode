@@ -1,6 +1,8 @@
 import React from 'react'
 import { ListView } from 'antd-mobile';
 import ListItem from '../ListItem';
+import { connect } from 'react-redux';
+import { topics } from '../../store/actions';
 
 const MyBody = (props) => (
   <div style={{
@@ -19,6 +21,10 @@ class List extends React.Component {
     }
 
   }
+  componentWillMount () {
+    console.log(this.props.topics);
+  }
+
 
   componentDidMount () {
     let scrollTop = localStorage.getItem('scrollTop');
@@ -56,4 +62,17 @@ class List extends React.Component {
   };
 }
 
-export default List;
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+  };
+}
+
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    page: state.topics.page,
+    data: state.topics.data
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(List);

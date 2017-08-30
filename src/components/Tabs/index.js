@@ -1,6 +1,8 @@
 import React from 'react'
 import List from '../List';
 import { Tabs } from 'antd-mobile';
+import { connect } from 'react-redux';
+import { topics } from '../../store/actions';
 const TabPane = Tabs.TabPane;
 const tabs = {
   '全部': 'all',
@@ -11,16 +13,17 @@ const tabs = {
   '测试': 'dev'
 };
 
-export const MyTabs = (props) => {
+export const MyTabs = ({tab, changeTab}) => {
   return(
     <Tabs 
-      defaultActiveKey="all"
+      defaultActiveKey={tab}
       swipeable={false}
+      onChange={changeTab}
     >
       {
         Object.entries(tabs).map(
           (item, index) => <TabPane tab={item[0]} key={item[1]}>
-                             <List />
+                             <List tab={tab} />
                            </TabPane>
                             )
       }
@@ -28,4 +31,18 @@ export const MyTabs = (props) => {
   );
 };
 
-export default MyTabs;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    tab: state.topics.tab
+  };
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    changeTab: (tab) => {
+      dispatch(topics.changeTab(tab));
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyTabs);
