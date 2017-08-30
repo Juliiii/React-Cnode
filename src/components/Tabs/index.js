@@ -14,12 +14,12 @@ const tabs = {
 export const MyTabs = (props) => {
   return(
     <Tabs 
-      defaultActiveKey="0"
+      defaultActiveKey="all"
       swipeable={false}
     >
       {
-        Object.keys(tabs).map(
-          (item, index) => <TabPane tab={item} key={index}>
+        Object.entries(tabs).map(
+          (item, index) => <TabPane tab={item[0]} key={item[1]}>
                              <List />
                            </TabPane>
                             )

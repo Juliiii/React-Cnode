@@ -8,6 +8,8 @@ export const GETTOPICS_FAIL = 'GETTOPICS_FAIL';
 
 export const CHANGETAB = 'CHANGETAB';
 
+export const SETLOADING = 'SETLOADING';
+export const SETREFRESH = 'SETREFRESH';
 
 
 export const refresh = () => ({
@@ -42,3 +44,11 @@ export const changeTab = (tab) => ({
   tab
 });
 
+export const setLoading = () => ({
+  type: SETLOADING
+});
+
+
+export const setRefresh = () => ({
+  type: SETREFRESH
+});

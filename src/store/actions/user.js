@@ -14,6 +14,9 @@ export const LOGOUT = 'LOGOUT';
 
 export const TOGGLESUBMITTING = 'TOGGLESUBMITTING';
 
+export const SETLOADING = 'SETLOADING';
+
+
 export const getuserInfo = () => ({
   type: GETUSERINFO
 });
@@ -49,4 +52,8 @@ export const logout = () => ({
 
 export const toggle = () => ({
   type: TOGGLESUBMITTING
+});
+
+export const setLoading = () => ({
+  type: SETLOADING
 });

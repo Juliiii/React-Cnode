@@ -3,7 +3,9 @@ import { ListView } from 'antd-mobile';
 import ListItem from '../ListItem';
 
 const MyBody = (props) => (
-  <div>{props.children}</div>
+  <div style={{
+    paddingBottom: '99px'
+  }}>{props.children}</div>
 );
 
 class List extends React.Component {
@@ -15,7 +17,20 @@ class List extends React.Component {
     this.state = {
       dataSource: dataSource.cloneWithRows([2,3,4, 5, 6, 7, 9, 10])
     }
+
   }
+
+  componentDidMount () {
+    let scrollTop = localStorage.getItem('scrollTop');
+    this.ref.scrollTo(0, scrollTop ? Number(scrollTop) : 0);
+    localStorage.removeItem('scrollTop');
+  }
+
+  componentWillUnmount () {
+    localStorage.setItem('scrollTop', this.ref.refs.listview.scrollProperties.offset);
+  }
+
+
 
   loadMore = () => {
     console.log('trigger');
@@ -24,10 +39,11 @@ class List extends React.Component {
   render () {
     return (
       <ListView
+        ref={lv => this.ref = lv}
         dataSource={this.state.dataSource}
         initialListSize={10}
         pageSize={10}
-        onEndReachedThreshold={10}
+        onEndReachedThreshold={20}
         scrollEventThrottle={200}
         renderBodyComponent={() => <MyBody />}
         onEndReached={this.loadMore}

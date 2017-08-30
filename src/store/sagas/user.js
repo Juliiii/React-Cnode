@@ -22,9 +22,9 @@ function* watchLogin () {
 
 function* getInfo ({loginname}) {
   if (!loginname) loginname = yield select(state => state.user.loginname);
+  yield put(user.setLoading());
   try {
     const data = (yield call(axios.get, `/user/${loginname}`)).data;
-    console.log(data);
     yield put(user.getuserInfoSuccess(data.data));
   } catch (err) {
     yield put(user.getUserInfoFail());

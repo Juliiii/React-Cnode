@@ -1,6 +1,6 @@
 import React from 'react'
 import BusinessCard from '../../components/BusinessCard';
-import { List, Icon, Badge } from 'antd-mobile';
+import { List, Icon, Badge, ActivityIndicator, Flex } from 'antd-mobile';
 import { connect } from 'react-redux';
 import { user } from '../../store/actions';
 import { browserHistory } from 'react-router';
@@ -19,7 +19,8 @@ class Mine extends React.Component {
   }
 
   render () {
-    const { info, logout } = this.props;
+    const { info, logout, loading } = this.props;
+    if (loading) return ( <Flex justify="center"><ActivityIndicator /></Flex> );
     return (
       <div>
         <BusinessCard info={info} />
@@ -51,7 +52,8 @@ class Mine extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     info: state.user.info,
-    accesstoken: state.user.accesstoken
+    accesstoken: state.user.accesstoken,
+    loading: state.user.loading
   };
 }
 

@@ -5,6 +5,7 @@ let initState = {
   accesstoken,
   loginname,
   submitting: false,
+  loading: false,
   info: {},
 }
 const user = (state = initState, action) => {
@@ -13,6 +14,11 @@ const user = (state = initState, action) => {
       return {
         ...state,
         submitting: true
+      };
+    case actionTypes.SETLOADING:
+      return {
+        ...state,
+        loading: true
       };
     case actionTypes.LOGIN_SUCCESS:
       return {
@@ -33,16 +39,20 @@ const user = (state = initState, action) => {
       return {
         ...state,
         info: {...action.info},
-        submitting: false
+        loading: false
       };
-    case actionTypes.GETUSERINFO:
-    case actionTypes.LOGIN: return state;
     case actionTypes.GETUSERINFO_FAIL:
+      return {
+        ...state,
+        loading: false
+      };
     case actionTypes.LOGIN_FAIL:
       return {
         ...state,
         submitting: false
       };
+    case actionTypes.GETUSERINFO:
+    case actionTypes.LOGIN: return state;
     default: return state;
   }
 };
