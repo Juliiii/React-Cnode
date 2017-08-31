@@ -54,10 +54,10 @@ class Detail extends React.Component {
           thumbStyle={{height: '.6rem', width: '.6rem'}}
           />
         </Card>
-        <Card style={{padding: '0 0.4rem', marginTop: '.1rem'}}>
+        <Card style={{padding: '0 0.4rem .2rem', marginTop: '.1rem'}}>
           <Card.Header 
             title={title(detail)}
-            style={{borderBottom: '1px solid #888'}} 
+            style={{borderBottom: '1px solid #888', marginBottom: '.2rem'}} 
           />
           <div dangerouslySetInnerHTML={{
             __html: detail.content

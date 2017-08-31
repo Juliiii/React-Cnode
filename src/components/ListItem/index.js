@@ -6,14 +6,14 @@ import { formatime } from '../../utils';
 import { Link } from 'react-router';
 
 const title = ({author: {loginname}, create_at}) => (
-  <Flex direction="column" align="start">
+  <Flex direction="column" align="start" style={{padding: '0 .1rem'}}>
     <Flex.Item style={{
-      marginLeft: '16px',
       color: colors.blue
     }}>{loginname}</Flex.Item>
     <Flex.Item style={{
       color: '#888',
       marginTop: '0.1rem',
+      marginLeft: '0',
       fontSize: '0.25rem'
     }}>{formatime(create_at)}</Flex.Item>
   </Flex>
