@@ -10,7 +10,6 @@ const tabs = {
   '分享': 'share',
   '问答': 'ask',
   '招聘': 'job',
-  '测试': 'dev'
 };
 
 class MyTabs extends React.Component {
@@ -18,7 +17,6 @@ class MyTabs extends React.Component {
   changeTab = (value) => {
     const { loading, refresh, changeTab } = this.props;
     if (loading || refresh) return;
-    console.log(1);
     changeTab(value);
   }
 
@@ -29,8 +27,8 @@ class MyTabs extends React.Component {
       <Tabs 
         defaultActiveKey={tab}
         swipeable={false}
-        animated={false}
-        onChange={this.changeTab}
+        animated={true}
+        onTabClick={this.changeTab}
       >
         {
           Object.entries(tabs).map(
