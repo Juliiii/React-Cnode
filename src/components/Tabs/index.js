@@ -17,6 +17,7 @@ class MyTabs extends React.Component {
   changeTab = (value) => {
     const { loading, refresh, changeTab } = this.props;
     if (loading || refresh) return;
+
     changeTab(value);
   }
 
@@ -25,6 +26,7 @@ class MyTabs extends React.Component {
     const { tab } = this.props;
     return (
       <Tabs 
+        activeKey={tab}
         defaultActiveKey={tab}
         swipeable={false}
         animated={true}

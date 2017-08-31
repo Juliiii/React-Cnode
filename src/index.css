@@ -8,9 +8,11 @@ body {
 
 html, body {
   height: 100%;
+  transform: translate3d();
 }
 
 
-.am-list-view-scrollview-content am-list {
-  padding-bottom: 99px !important;
-}
+
+	.ql-toolbar:after {
+		clear: none !important;
+	}

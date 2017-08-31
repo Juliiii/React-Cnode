@@ -8,14 +8,12 @@ import { browserHistory } from 'react-router';
 
 class Mine extends React.Component {
 
-  componentWillMount () {
+  componentDidMount () {
     if (!this.props.accesstoken) {
       browserHistory.push('/login');
+    } else {
+      this.props.getInfo();
     }
-  }
-
-  componentDidMount () {
-    this.props.getInfo();
   }
 
   render () {
