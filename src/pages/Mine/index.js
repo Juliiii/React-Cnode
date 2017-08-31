@@ -2,7 +2,7 @@ import React from 'react'
 import BusinessCard from '../../components/BusinessCard';
 import { List, Icon, Badge, ActivityIndicator, Flex } from 'antd-mobile';
 import { connect } from 'react-redux';
-import { user } from '../../store/actions';
+import { user, global } from '../../store/actions';
 import { browserHistory } from 'react-router';
 
 
@@ -61,6 +61,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(user.getuserInfo());
     },
     logout: () => {
+      dispatch(global.setTab('home'));
       dispatch(user.logout());
       browserHistory.push('/');
     }

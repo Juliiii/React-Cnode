@@ -135,7 +135,7 @@ class Publish extends React.Component {
               dangerouslySetInnerHTML={{__html: content}} />
           </TabPane>
         </Tabs>
-        <Button type="primary" disabled={error.content || error.title || error.tab || submitting} onClick={this.publish}>{ submitting ? '发布中' : '发帖'}</Button>
+        <Button type="primary" disabled={error.content || error.title || error.tab || submitting} onClick={this.publish}>{ submitting ? '发布中...' : '发帖'}</Button>
       </div>
     );
   }

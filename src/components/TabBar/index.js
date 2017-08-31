@@ -3,23 +3,32 @@ import React from 'react'
 import { TabBar, Icon } from 'antd-mobile';
 import { colors } from '../../constants';
 import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
+import { global } from '../../store/actions';
+
 
 class MyTabBar extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
       selectedTab: 'home',
-      hidden: false,
     };
   }
 
+  componentWillReceiveProps (newProps) {
+    this.setState({
+      selectedTab: newProps.tab
+    });
+  }
+
   render () {
+    const { setTab } = this.props;
     return (
       <TabBar
         unselectedTintColor="#949494"
         tintColor={colors.blue}
         barTintColor="white"
-        hidden={this.state.hidden}
+        hidden={false}
       >
         <TabBar.Item
           icon={<Icon type={require('../../icons/homepage.svg')} size="md" />}
@@ -28,9 +37,7 @@ class MyTabBar extends React.Component {
           key="主页"
           selected={this.state.selectedTab === 'home'}
           onPress={() => {
-            this.setState({
-              selectedTab: 'home',
-            });
+            setTab('home');
             browserHistory.push('/');
           }}
         >
@@ -42,9 +49,7 @@ class MyTabBar extends React.Component {
           key="发帖"
           selected={this.state.selectedTab === 'publish'}
           onPress={() => {
-            this.setState({
-              selectedTab: 'publish'
-            });
+            setTab('publish');
             browserHistory.push('/publish');
           }}
         >
@@ -56,9 +61,7 @@ class MyTabBar extends React.Component {
           key="我的"
           selected={this.state.selectedTab === 'mine'}
           onPress={() => {
-            this.setState({
-              selectedTab: 'mine',
-            });
+            setTab('mine');
             browserHistory.push('/mine');
           }}
         >
@@ -68,4 +71,19 @@ class MyTabBar extends React.Component {
   }
 };
 
-export default MyTabBar;
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    setTab: (value) => {
+      dispatch(global.setTab(value))
+    }
+  };
+}
+
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    tab: state.global.tab
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyTabBar);
