@@ -1,6 +1,8 @@
 import React from 'react';
-import TabPicker from '../../components/Picker';
-import { InputItem, TextareaItem, Tabs, Button } from 'antd-mobile';
+import { InputItem, TextareaItem, Tabs, Button, Picker, List } from 'antd-mobile';
+import { topics } from '../../store/actions';
+import { connect } from 'react-redux';
+
 import marked from 'marked';
 
 const TabPane = Tabs.TabPane;
@@ -16,35 +18,100 @@ marked.setOptions({
   smartypants: false
 });
 
+const data = [
+  {label: '问答', value: 'ask'},
+  {label: '分享', value: 'share'},
+  {label: '工作', value: 'job'},
+  {label: '测试', value: 'dev'}
+];
+
 class Publish extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      value: '',
-      content: ''
+      title: '',
+      content: '',
+      tab: [],
+      error: {
+        title: false,
+        tab: true,
+        content: false
+      }
     };
   }
-  handleChange = (value) => {
-    this.setState({ content: marked(value) })
-    console.log(this.state.content);
+  handleContentChange = (value) => {
+    this.setState({ 
+      content: marked(value),
+      error: {
+        ...this.state.error,
+        content: !value
+      } 
+    });
   }
+
+  handleTitleChange = (title) => {
+    this.setState({
+      title,
+      error: {
+        ...this.state.error,
+        title: !title || title.length < 10
+      }
+    });
+  }
+
+  handleTabChange = (tab) => {
+    this.setState({
+      tab,
+      error: {
+        ...this.state.error,
+        tab: false
+      }
+    });
+  }
+
+
+  publish = () => {
+    const { title, content, tab } = this.state;
+    const payload = {
+      title,
+      content,
+      tab: tab[0]
+    };
+    this.props.publish(payload);
+  }
+
+
   render () {
+    const { title, content, tab, error } = this.state;
+    const { submitting } = this.props;
+
     return (
       <div>
         <InputItem
           placeholder="最少10个字"
           clear={true}
-          value={this.state.value}
-          onChange={e => {
-            this.setState({
-              value: e
-            });
-            }}
+          error={error.title}
+          value={title}
+          onChange={this.handleTitleChange}
         >标题</InputItem>
-        <TabPicker />
+        <List>
+          <Picker
+            title="选择主题"
+            data={data}
+            value={tab}
+            cols={1}
+            onOk={this.handleTabChange}
+          >
+            <List.Item>选择主题</List.Item>
+          </Picker>
+        </List>
         <Tabs defaultActiveKey="1" style={{margin: '.5rem 0'}}>
           <TabPane tab="正文" key="1">
-            <TextareaItem placeholder="支持markdown" autoHeight={true} onChange={this.handleChange} />
+            <TextareaItem 
+              placeholder="支持markdown" 
+              autoHeight={true}
+              error={error.content} 
+              onChange={this.handleContentChange} />
           </TabPane>
           <TabPane tab="预览" key="2">
             <div
@@ -54,13 +121,28 @@ class Publish extends React.Component {
                 minHeight: '0.88rem',
                 boxSizing: 'border-box'
               }}
-              dangerouslySetInnerHTML={{__html: this.state.content}} />
+              dangerouslySetInnerHTML={{__html: content}} />
           </TabPane>
         </Tabs>
-        <Button type="primary">发帖</Button>
+        <Button type="primary" disabled={error.content || error.title || error.tab || submitting} onClick={this.publish}>{ submitting ? '发布中' : '发帖'}</Button>
       </div>
     );
   }
 };
 
-export default Publish;
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    publish: (payload) => {
+      dispatch(topics.setSubmitting());
+      dispatch(topics.publish(payload));
+    }
+  };
+}
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    submitting: state.topics.submitting
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Publish);

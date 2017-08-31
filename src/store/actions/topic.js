@@ -10,7 +10,11 @@ export const CHANGETAB = 'CHANGETAB';
 
 export const SETLOADING = 'SETLOADING';
 export const SETREFRESH = 'SETREFRESH';
+export const SETSUBMITTING = 'SETSUBMITTING';
 
+export const PUBLISH = 'PUBLISH';
+export const PUBLISH_SUCCESS = 'PUBLISH_SUCCESS';
+export const PUBLISH_FAIL = 'PUBLISH_FAIL';
 
 export const refresh = () => ({
   type: REFRESH
@@ -52,3 +56,22 @@ export const setLoading = () => ({
 export const setRefresh = () => ({
   type: SETREFRESH
 });
+
+export const setSubmitting = () => ({
+  type: SETSUBMITTING
+});
+
+export const publish = (payload) => ({
+  type: PUBLISH,
+  payload
+});
+
+export const publisuSuccess = () => ({
+  type: PUBLISH_SUCCESS
+});
+
+export const publishFail = () => ({
+  type: PUBLISH_FAIL
+});
+
+

@@ -10,6 +10,7 @@ const tabs = {
   '分享': 'share',
   '问答': 'ask',
   '招聘': 'job',
+  // '测试': 'dev'
 };
 
 class MyTabs extends React.Component {

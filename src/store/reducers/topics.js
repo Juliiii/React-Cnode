@@ -4,6 +4,7 @@ const topicsInitialState = {
   loading: false,
   reachEnd: false,
   refresh: false,
+  submitting: false,
   tab: 'all',
   page: -1,
   data: [],
@@ -54,6 +55,16 @@ const topics = (state = topicsInitialState, action) => {
         ...state,
         refresh: false
       };
+    case actionTypes.PUBLISH_FAIL:
+      return {
+        ...state,
+        submitting: false
+      };
+    case actionTypes.PUBLISH_SUCCESS:
+      return {
+        ...state,
+        submitting: true
+      }
     case actionTypes.REFRESH_SUCCESS:
       return {
         ...state,
@@ -72,6 +83,11 @@ const topics = (state = topicsInitialState, action) => {
         data: [...state.data , ...action.data],
         page: state[state.tab].page + 1,
         [state.tab]: { page: state[state.tab].page + 1, data: [...state[state.tab].data, ...action.data] }       
+      };
+    case actionTypes.SETSUBMITTING:
+      return {
+        ...state,
+        submitting: true
       };
     case actionTypes.SETLOADING: 
       return {

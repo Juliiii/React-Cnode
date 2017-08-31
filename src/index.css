@@ -11,8 +11,6 @@ html, body {
   transform: translate3d();
 }
 
-
-
-	.ql-toolbar:after {
-		clear: none !important;
-	}
+p {
+  margin: 0;
+}

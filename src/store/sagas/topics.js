@@ -1,12 +1,11 @@
 import axios from '../../apis';
-import { call, put, select, fork, take } from 'redux-saga/effects';
+import { call, put, select, fork, take, takeLatest } from 'redux-saga/effects';
 import { topics } from '../actions';
 
 function* getData () {
   try {
     const tab = yield select(state => state.topics.tab);
     const page = yield select(state => state.topics.page);
-    // yield put(topics.setLoading());
     const { data } = yield call(axios.get, `/topics?tab=${tab}&page=${page+1}`);
     yield put(topics.getTopicsSuccess(data.data));
   } catch (err) {
@@ -44,7 +43,25 @@ function* watchRefresh () {
   }
 }
 
+function* publish ({payload}) {
+  try {
+    const accesstoken = yield select(state => state.user.accesstoken);
+    Object.assign(payload, { accesstoken });
+    yield call(axios.post, '/topics', payload);
+    yield put(topics.publisuSuccess());
+  } catch (err) {
+    yield put(topics.publishFail());
+  }
+}
+
+function* watchPublish () {
+  yield takeLatest(topics.PUBLISH, publish);
+}
+
+
+
 export default function* root () {
   yield fork(watchGetData);
   yield fork(watchRefresh);
+  yield fork(watchPublish);
 }
