@@ -63,8 +63,8 @@ const topics = (state = topicsInitialState, action) => {
     case actionTypes.PUBLISH_SUCCESS:
       return {
         ...state,
-        submitting: true
-      }
+        submitting: false
+      };
     case actionTypes.REFRESH_SUCCESS:
       return {
         ...state,

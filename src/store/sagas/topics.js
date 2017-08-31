@@ -48,7 +48,7 @@ function* publish ({payload}) {
     const accesstoken = yield select(state => state.user.accesstoken);
     Object.assign(payload, { accesstoken });
     yield call(axios.post, '/topics', payload);
-    yield put(topics.publisuSuccess());
+    yield put(topics.publishSuccess());
   } catch (err) {
     yield put(topics.publishFail());
   }

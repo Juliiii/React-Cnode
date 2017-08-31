@@ -2,6 +2,8 @@ import React from 'react';
 import { InputItem, TextareaItem, Tabs, Button, Picker, List } from 'antd-mobile';
 import { topics } from '../../store/actions';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
+
 
 import marked from 'marked';
 
@@ -39,6 +41,15 @@ class Publish extends React.Component {
       }
     };
   }
+
+  componentWillMount() {
+    if (!this.props.accesstoken) {
+      browserHistory.replace('/login');
+    }
+  }
+
+
+
   handleContentChange = (value) => {
     this.setState({ 
       content: marked(value),
@@ -141,7 +152,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    submitting: state.topics.submitting
+    submitting: state.topics.submitting,
+    accesstoken: state.user.accesstoken
   }
 }
 

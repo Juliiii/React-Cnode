@@ -66,7 +66,7 @@ export const publish = (payload) => ({
   payload
 });
 
-export const publisuSuccess = () => ({
+export const publishSuccess = () => ({
   type: PUBLISH_SUCCESS
 });
 
