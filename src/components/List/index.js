@@ -1,5 +1,5 @@
 import React from 'react'
-import { ListView, ActivityIndicator, Flex } from 'antd-mobile';
+import { ListView, ActivityIndicator, Flex, RefreshControl } from 'antd-mobile';
 import ListItem from '../ListItem';
 import { connect } from 'react-redux';
 import { topics } from '../../store/actions';
@@ -12,7 +12,7 @@ const MyBody = (props) => (
 const Footer = ({loading}) => {
   if (loading) {
     return (
-      <Flex justify="center">
+      <Flex justify="center" style={{paddingBottom: '99px'}}>
         <ActivityIndicator text="Loading..." /> 
       </Flex>
     );
@@ -65,6 +65,12 @@ class List extends React.Component {
     this.props.getData();
   }
 
+  refresh = () => {
+    const { loading, refreshing } = this.props;
+    if (loading || refreshing) return;
+    this.props.refresh();
+  }
+
   render () {
     return (
       <ListView
@@ -78,6 +84,10 @@ class List extends React.Component {
         onEndReached={this.loadMore}
         renderRow={(data) => <ListItem item={data} />}
         renderFooter={() => <Footer loading={this.props.loading} />}
+        scrollerOptions={{ scrollbars: false }}
+        refreshControl={
+          <RefreshControl refreshing={this.props.refreshing} onRefresh={this.refresh} />
+        }
         style={{
           height: `${(document.body.clientHeight || document.documentElement.clientHeight) - 87}px`
         }}
@@ -91,6 +101,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     getData: () => {
       dispatch(topics.setLoading());
       dispatch(topics.getTopics());
+    },
+    refresh: () => {
+      dispatch(topics.setRefresh());
+      dispatch(topics.refresh());
     }
   };
 }
@@ -101,7 +115,8 @@ const mapStateToProps = (state, ownProps) => {
     page: state.topics.page,
     data: state.topics.data,
     loading: state.topics.loading,
-    reachEnd: state.topics.reachEnd
+    reachEnd: state.topics.reachEnd,
+    refreshing: state.topics.refresh
   };
 }
 

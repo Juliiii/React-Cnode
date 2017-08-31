@@ -23,6 +23,28 @@ function* watchGetData () {
     }
 }
 
+
+function* refresh () {
+  try {
+    const tab = yield select(state => state.topics.tab);
+    const { data } = yield call(axios.get, `/topics?tab=${tab}&page=0`);
+
+    yield put(topics.refreshSuccess(data.data));
+  } catch (err) {
+    yield put(topics.refreshFail());
+  }
+}
+
+
+function* watchRefresh () {
+  while (true) {
+    yield take(topics.SETREFRESH);
+    yield take(topics.REFRESH);
+    yield call(refresh);
+  }
+}
+
 export default function* root () {
   yield fork(watchGetData);
+  yield fork(watchRefresh);
 }
