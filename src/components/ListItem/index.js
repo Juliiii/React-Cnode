@@ -3,6 +3,7 @@ import { Card, WhiteSpace, Flex, Icon } from 'antd-mobile';
 import Badge from '../Badge';
 import { colors } from '../../constants';
 import { formatime } from '../../utils';
+import { Link } from 'react-router';
 
 const title = ({author: {loginname}, create_at}) => (
   <Flex direction="column" align="start">
@@ -44,32 +45,35 @@ const footerExtra = ({last_reply_at}) => (
 const ListItem = ({item}) => {
   return (
     <div>
-      <Card
-         style={{
-           minHeight: '150px'
-         }}
-         full
-      >
-        <Card.Header
-          title={title(item)}
-          thumb={item.author.avatar_url}
-          extra={extra(item)}
-          thumbStyle={{
-            height: '60px'
-          }}
-        />
-        <Card.Body 
+      <Link to={`/detail/${item.id}`}>
+        <Card
           style={{
-            padding: '0 0.3rem',
-            height: '1rem',
-            display: 'flex',
-            alignItems: 'center'
+            minHeight: '150px'
           }}
+          full
         >
-          <h4>{item.title}</h4>
-        </Card.Body>
-        <Card.Footer content={footer(item)} extra={footerExtra(item)} />
-      </Card>
+          <Card.Header
+            title={title(item)}
+            thumb={item.author.avatar_url}
+            extra={extra(item)}
+            thumbStyle={{
+              height: '.6rem',
+              width: '.6rem'
+            }}
+          />
+          <Card.Body 
+            style={{
+              padding: '0 0.3rem',
+              height: '1rem',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            <h4>{item.title}</h4>
+          </Card.Body>
+          <Card.Footer content={footer(item)} extra={footerExtra(item)} />
+        </Card>
+      </Link>
       <WhiteSpace size="xs" />
     </div>
   );

@@ -8,6 +8,7 @@ const topicsInitialState = {
   tab: 'all',
   page: -1,
   data: [],
+  detail: {},
   all: {
     page: -1,
     data: []
@@ -44,6 +45,17 @@ const topics = (state = topicsInitialState, action) => {
         refresh: false,
         data: [...state[action.tab].data],
         page: state[action.tab].page
+      };
+    case actionTypes.GETDETAIL_FAIL:
+      return {
+        ...state,
+        loading: false
+      };
+    case actionTypes.GETDETAIL_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        detail: action.detail
       };
     case actionTypes.GETTOPICS_FAIL:
       return {

@@ -16,6 +16,10 @@ export const PUBLISH = 'PUBLISH';
 export const PUBLISH_SUCCESS = 'PUBLISH_SUCCESS';
 export const PUBLISH_FAIL = 'PUBLISH_FAIL';
 
+export const GETDETAIL = 'GETDETAIL';
+export const GETDETAIL_SUCCESS = 'GETDETAIL_SUCCESS';
+export const GETDETAIL_FAIL = 'GETDETAIL_FAIL';
+
 export const refresh = () => ({
   type: REFRESH
 });
@@ -72,6 +76,20 @@ export const publishSuccess = () => ({
 
 export const publishFail = () => ({
   type: PUBLISH_FAIL
+});
+
+export const getDetail = (id) => ({
+  type: GETDETAIL,
+  id
+});
+
+export const getDetailSuccess = (detail) => ({
+  type: GETDETAIL_SUCCESS,
+  detail
+});
+
+export const getDetailFail = () => ({
+  type: GETDETAIL_FAIL
 });
 
 

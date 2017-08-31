@@ -58,10 +58,24 @@ function* watchPublish () {
   yield takeLatest(topics.PUBLISH, publish);
 }
 
+function* getDetail ({id}) {
+  try {
+    const {data} = yield call(axios.get, `/topic/${id}`);
+    yield put(topics.getDetailSuccess(data.data));
+  } catch (err) {
+    yield put(topics.getDetailFail());
+  }
+}
+
+function* watchGetDetail () {
+  yield takeLatest(topics.GETDETAIL, getDetail);
+}
+
 
 
 export default function* root () {
   yield fork(watchGetData);
   yield fork(watchRefresh);
   yield fork(watchPublish);
+  yield fork(watchGetDetail);
 }
