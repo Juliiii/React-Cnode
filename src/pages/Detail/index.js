@@ -7,18 +7,26 @@ import Loading from '../../components/Loading';
 import { formatime } from '../../utils';
 
 const title = (props) => (
-  <Flex direction="column" align="start">
+  <Flex direction="column" align="start" style={{width: '100%'}}>
     <span>{props.title}</span>
-    <Flex style={{ fontSize: '0.28rem', color: '#888', marginTop: '.2rem' }}>
-      <span>发布于{formatime(props.create_at)}</span>
-      <Flex align="center" style={{marginLeft: '.1rem'}}>
-        <Icon type={require('../../icons/browse.svg')} />
-        {props.visit_count}
+    <Flex justify="between" style={{width: '100%', paddingTop: '0.2rem'}}>
+      <Flex style={{ fontSize: '0.28rem', color: '#888'}}>
+        <span>发布于{formatime(props.create_at)}</span>
+        <Flex align="center" style={{marginLeft: '.1rem'}}>
+          <Icon type={require('../../icons/browse.svg')} />
+          {props.visit_count}
+        </Flex>
+        <Flex align="center" style={{marginLeft: '.1rem'}}>
+          <Icon type={require('../../icons/message.svg')} />
+          {props.reply_count}
+        </Flex>
       </Flex>
-      <Flex align="center" style={{marginLeft: '.1rem'}}>
-        <Icon type={require('../../icons/message.svg')} />
-        {props.reply_count}
-      </Flex>
+      { !props.accesstoken ? null :
+        <div>
+          {!props.is_collect && <Icon type={require('../../icons/collection.svg')} />}
+          {props.is_collect && <Icon type={require('../../icons/collection_fill.svg')} />}
+        </div>
+      }
     </Flex>
   </Flex>
 );
@@ -29,7 +37,7 @@ class Detail extends React.Component {
   }
 
   render () {
-    const { loading, detail } = this.props;
+    const { loading, detail, accesstoken } = this.props;
     if (loading) {
       return ( <Loading /> );
     }
@@ -56,7 +64,7 @@ class Detail extends React.Component {
         </Card>
         <Card style={{padding: '0 0.4rem .2rem', marginTop: '.1rem'}}>
           <Card.Header 
-            title={title(detail)}
+            title={title({...detail, accesstoken})}
             style={{borderBottom: '1px solid #888', marginBottom: '.2rem'}} 
           />
           <div dangerouslySetInnerHTML={{
@@ -71,16 +79,22 @@ class Detail extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getDetail: (id) => {
-      dispatch(topics.setLoading())
+      dispatch(topics.setLoading());
       dispatch(topics.getDetail(id));
-    }
+    },
+    collect: (topic_id) => {
+      dispatch(topics.setLoading());
+      dispatch(topics.setUps());
+    },
+
   };
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
     loading: state.topics.loading,
-    detail: state.topics.detail
+    detail: state.topics.detail,
+    accesstoken: state.user.accesstoken
   };
 }
 
