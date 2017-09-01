@@ -23,8 +23,8 @@ const title = (props) => (
       </Flex>
       { !props.accesstoken ? null :
         <div>
-          {!props.is_collect && <Icon type={require('../../icons/collection.svg')} />}
-          {props.is_collect && <Icon type={require('../../icons/collection_fill.svg')} />}
+          {!props.is_collect && <Icon type={require('../../icons/collection.svg')} onClick={() => props.collect(props.id)} />}
+          {props.is_collect && <Icon type={require('../../icons/collection_fill.svg')} onClick={() => props.decollect(props.id)} />}
         </div>
       }
     </Flex>
@@ -37,7 +37,7 @@ class Detail extends React.Component {
   }
 
   render () {
-    const { loading, detail, accesstoken } = this.props;
+    const { loading, detail, accesstoken, collect, decollect } = this.props;
     if (loading) {
       return ( <Loading /> );
     }
@@ -64,7 +64,7 @@ class Detail extends React.Component {
         </Card>
         <Card style={{padding: '0 0.4rem .2rem', marginTop: '.1rem'}}>
           <Card.Header 
-            title={title({...detail, accesstoken})}
+            title={title({...detail, accesstoken, collect, decollect})}
             style={{borderBottom: '1px solid #888', marginBottom: '.2rem'}} 
           />
           <div dangerouslySetInnerHTML={{
@@ -83,10 +83,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(topics.getDetail(id));
     },
     collect: (topic_id) => {
-      dispatch(topics.setLoading());
-      dispatch(topics.setUps());
+      dispatch(topics.collect(topic_id));
     },
-
+    decollect: (topic_id) => {
+      dispatch(topics.decollect(topic_id));
+    }
   };
 }
 

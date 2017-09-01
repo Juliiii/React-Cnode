@@ -7,6 +7,7 @@ const topicsInitialState = {
   submitting: false,
   tab: 'all',
   page: -1,
+  limit: 10,
   data: [],
   detail: {},
   all: {
@@ -96,6 +97,24 @@ const topics = (state = topicsInitialState, action) => {
         page: state[state.tab].page + 1,
         [state.tab]: { page: state[state.tab].page + 1, data: [...state[state.tab].data, ...action.data] }       
       };
+    case actionTypes.COLLECT_SUCCESS:
+      return {
+        ...state,
+        detail: {
+          ...state.detail,
+          is_collect: true
+        }
+      };
+    case actionTypes.COLLECT_FAIL: return state;
+    case actionTypes.DECOLLECT_SUCCESS:
+      return {
+        ...state,
+        detail: {
+          ...state.detail,
+          is_collect: false
+        }
+      };
+    case actionTypes.DECOLLECT_FAIL: return state;
     case actionTypes.SETSUBMITTING:
       return {
         ...state,

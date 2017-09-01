@@ -20,6 +20,15 @@ export const GETDETAIL = 'GETDETAIL';
 export const GETDETAIL_SUCCESS = 'GETDETAIL_SUCCESS';
 export const GETDETAIL_FAIL = 'GETDETAIL_FAIL';
 
+export const COLLECT = 'COLLECT';
+export const COLLECT_SUCCESS = 'COLLECT_SUCCESS';
+export const COLLECT_FAIL = 'COLLECT_FAIL';
+
+export const DECOLLECT = 'DECOLLECT';
+export const DECOLLECT_SUCCESS = 'DECOLLECT_SUCCESS';
+export const DECOLLECT_FAIL = 'DECOLLECT_FAIL';
+
+
 export const refresh = () => ({
   type: REFRESH
 });
@@ -92,4 +101,28 @@ export const getDetailFail = () => ({
   type: GETDETAIL_FAIL
 });
 
+export const collect = (id) => ({
+  type: COLLECT,
+  id
+});
 
+export const collectSuccess = () => ({
+  type: COLLECT_SUCCESS
+});
+
+export const collectFail = () => ({
+  type: COLLECT_FAIL
+});
+
+export const decollect = (id) => ({
+  type: DECOLLECT,
+  id
+});
+
+export const decollectSuccess = () => ({
+  type: DECOLLECT_SUCCESS
+});
+
+export const decollectFail = () => ({
+  type: DECOLLECT_FAIL
+}); 
