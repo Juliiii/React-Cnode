@@ -59,9 +59,8 @@ class List extends React.Component {
 
 
   loadMore = () => {
-    const { loading, reachEnd } = this.props;
-    if (loading || reachEnd) return;
-    console.log('trigger');
+    const { loading, reachEnd, refreshing } = this.props;
+    if (loading || reachEnd || refreshing) return;
     this.props.getData();
   }
 

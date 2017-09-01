@@ -4,7 +4,6 @@ import { TabBar, Icon } from 'antd-mobile';
 import { colors } from '../../constants';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { global } from '../../store/actions';
 
 
 class MyTabBar extends React.Component {
@@ -22,7 +21,6 @@ class MyTabBar extends React.Component {
   }
 
   render () {
-    const { setTab } = this.props;
     return (
       <TabBar
         unselectedTintColor="#949494"
@@ -37,7 +35,6 @@ class MyTabBar extends React.Component {
           key="主页"
           selected={this.state.selectedTab === 'home'}
           onPress={() => {
-            setTab('home');
             browserHistory.push('/');
           }}
         >
@@ -49,7 +46,6 @@ class MyTabBar extends React.Component {
           key="发帖"
           selected={this.state.selectedTab === 'publish'}
           onPress={() => {
-            setTab('publish');
             browserHistory.push('/publish');
           }}
         >
@@ -61,7 +57,6 @@ class MyTabBar extends React.Component {
           key="我的"
           selected={this.state.selectedTab === 'mine'}
           onPress={() => {
-            setTab('mine');
             browserHistory.push('/mine');
           }}
         >
@@ -71,13 +66,6 @@ class MyTabBar extends React.Component {
   }
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    setTab: (value) => {
-      dispatch(global.setTab(value))
-    }
-  };
-}
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -86,4 +74,4 @@ const mapStateToProps = (state, ownProps) => {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyTabBar);
+export default connect(mapStateToProps)(MyTabBar);

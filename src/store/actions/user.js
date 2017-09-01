@@ -14,7 +14,7 @@ export const LOGOUT = 'LOGOUT';
 
 export const TOGGLESUBMITTING = 'TOGGLESUBMITTING';
 
-export const SETLOADING = 'SETLOADING';
+export const SETLOADING = 'SETUSERLOADING';
 
 
 export const getuserInfo = () => ({

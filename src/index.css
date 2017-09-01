@@ -19,3 +19,8 @@ img {
   width: 95%;
   margin: 0 2.5%;
 }
+
+pre {
+  line-height: 1.25;
+  overflow-x: scroll;
+}

@@ -17,6 +17,7 @@ class MyTabs extends React.Component {
 
   changeTab = (value) => {
     const { loading, refresh, changeTab } = this.props;
+    console.log(this.props.loading);
     if (loading || refresh) return;
 
     changeTab(value);

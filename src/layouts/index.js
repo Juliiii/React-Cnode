@@ -7,11 +7,22 @@ import Mine from '../pages/Mine';
 import Login from '../pages/Login';
 import Success from '../pages/Publish/Success';
 import Detail from '../pages/Detail';
+import { connect } from 'react-redux';
+import { global } from '../store/actions';
 
+const onUpdate = ({changeTab}) => {
+  const {pathname} = window.location;
+  switch (pathname) {
+    case '/': changeTab('home'); break;
+    case '/mine': changeTab('mine'); break;
+    case '/publish': changeTab('publish'); break;
+    default: break;
+  }
+}
 
-const Layout = () => {
+const Layout = (props) => {
   return (
-    <Router history={browserHistory}>
+    <Router history={browserHistory} onUpdate={() => onUpdate(props)}>
       <Route component={Main} path="/">
         <IndexRoute component={Default} />
         <Route component={Publish} path="publish" />
@@ -24,4 +35,12 @@ const Layout = () => {
   );
 }
 
-export default Layout;
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    changeTab: (value) => {
+      dispatch(global.setTab(value));
+    }
+  };
+}
+
+export default connect(null, mapDispatchToProps)(Layout);
