@@ -32,6 +32,7 @@ class MyTabs extends React.Component {
         defaultActiveKey={tab}
         swipeable={true}
         animated={true}
+        destroyInactiveTabPane={true}
         onChange={this.changeTab}
       >
         {

@@ -40,8 +40,8 @@ class List extends React.Component {
 
   componentDidMount () {
     let scrollTop = localStorage.getItem('scrollTop');
-    this.ref.scrollTo(0, scrollTop ? Number(scrollTop) : 0);
-    localStorage.removeItem('scrollTop');
+    this.ref.refs.listview.scrollTo(0, scrollTop ? Number(scrollTop) : 0);
+    this.ref.refs.listview.scrollProperties.offset = Number(scrollTop);
   }
 
   componentWillUnmount () {
