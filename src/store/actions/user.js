@@ -41,7 +41,7 @@ export const loginSuccess = (accesstoken, loginname) => ({
   accesstoken
 });
 
-export const loginFail  = () => ({
+export const loginFail = () => ({
   type: LOGIN_FAIL
 });
 

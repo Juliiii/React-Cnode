@@ -38,9 +38,9 @@
     "react-dev-utils": "^3.1.0",
     "react-dom": "^15.6.1",
     "react-error-overlay": "^1.0.10",
-    "react-quill": "^1.0.0",
     "react-redux": "^5.0.6",
     "react-router": "^3.0.5",
+    "react-router-redux": "^4.0.8",
     "react-router-scroll": "^0.4.2",
     "redux": "^3.7.2",
     "redux-saga": "^0.15.6",
@@ -95,7 +95,21 @@
     ]
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "react/jsx-pascal-case": 2,
+      "react/jsx-closing-bracket-location": 2,
+      "react/jsx-closing-tag-location": 2,
+      "jsx-quotes": 2,
+      "react/jsx-tag-spacing": 2,
+      "no-multi-spaces": 2,
+      "react/jsx-curly-spacing": 2,
+      "react/jsx-boolean-value": 2,
+      "react/no-string-refs": 2,
+      "react/jsx-wrap-multilines": 2,
+      "react/self-closing-comp": 2,
+      "react/require-render-return": 2
+    }
   },
   "devDependencies": {
     "css-loader": "^0.28.4",

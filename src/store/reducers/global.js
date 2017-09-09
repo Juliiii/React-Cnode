@@ -1,5 +1,5 @@
 import { global as actionTypes } from '../actions';
-
+import { LOCATION_CHANGE } from 'react-router-redux';
 const globalInitialState = {
   tab: 'home',
   error: false
@@ -11,8 +11,11 @@ const global = (state = globalInitialState, action) => {
         ...state,
         tab: action.tab
       };
+    case LOCATION_CHANGE:
+      console.log(action);
+      return state;
     default:
-      return state
+      return state;
   }
 }
 export default global;

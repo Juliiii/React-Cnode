@@ -33,6 +33,7 @@ class Publish extends React.Component {
     this.state = {
       title: '',
       content: '',
+      markdown: '',
       tab: [],
       error: {
         title: false,
@@ -51,8 +52,10 @@ class Publish extends React.Component {
 
 
   handleContentChange = (value) => {
+    console.log(marked(value));
     this.setState({ 
-      content: marked(value),
+      content: value,
+      markdown: marked(value),
       error: {
         ...this.state.error,
         content: !value
@@ -93,18 +96,19 @@ class Publish extends React.Component {
 
 
   render () {
-    const { title, content, tab, error } = this.state;
+    const { title, content, tab, error, markdown } = this.state;
     const { submitting } = this.props;
 
     return (
       <div>
         <InputItem
           placeholder="最少10个字"
-          clear={true}
+          clear
           error={error.title}
           value={title}
           onChange={this.handleTitleChange}
-        >标题</InputItem>
+        >标题
+        </InputItem>
         <List>
           <Picker
             title="选择主题"
@@ -120,9 +124,10 @@ class Publish extends React.Component {
           <TabPane tab="正文" key="1">
             <TextareaItem 
               placeholder="支持markdown" 
-              autoHeight={true}
+              autoHeight
               error={error.content} 
-              onChange={this.handleContentChange} />
+              onChange={this.handleContentChange} 
+            />
           </TabPane>
           <TabPane tab="预览" key="2">
             <div
@@ -132,7 +137,8 @@ class Publish extends React.Component {
                 minHeight: '0.88rem',
                 boxSizing: 'border-box'
               }}
-              dangerouslySetInnerHTML={{__html: content}} />
+              dangerouslySetInnerHTML={{__html: markdown}} 
+            />
           </TabPane>
         </Tabs>
         <Button type="primary" disabled={error.content || error.title || error.tab || submitting} onClick={this.publish}>{ submitting ? '发布中...' : '发帖'}</Button>
@@ -144,7 +150,6 @@ class Publish extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     publish: (payload) => {
-      dispatch(topics.setSubmitting());
       dispatch(topics.publish(payload));
     }
   };
@@ -152,7 +157,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    submitting: state.topics.submitting,
+    submitting: state.status.submitting,
     accesstoken: state.user.accesstoken
   }
 }

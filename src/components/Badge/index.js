@@ -5,7 +5,7 @@ export default ({top, good}) => {
   return (
     <div>
       {good && <Badge text="hot" />}
-      {top && <Badge text="top" style={{marginLeft: '8px'}}/>}
+      {top && <Badge text="top" style={{marginLeft: '8px'}} />}
     </div>
   );
 }

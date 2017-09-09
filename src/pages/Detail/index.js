@@ -46,6 +46,9 @@ class Detail extends React.Component {
     const loginname = author ? author.loginname : '';
     const avatar_url = author ? author.avatar_url: '';
 
+    console.log(detail);
+
+
     return (
       <div>
         <NavBar
@@ -53,7 +56,8 @@ class Detail extends React.Component {
           mode="light"
           iconName={null}
           onLeftClick={() => browserHistory.goBack()}
-        >主题详情</NavBar>
+        >主题详情
+        </NavBar>
         <Card style={{minHeight: 'auto', marginTop: '.1rem'}}>
           <Card.Header
           thumb={avatar_url}
@@ -69,7 +73,8 @@ class Detail extends React.Component {
           />
           <div dangerouslySetInnerHTML={{
             __html: detail.content
-          }}></div>
+          }} 
+          />
         </Card>
       </div>
     );
@@ -79,13 +84,14 @@ class Detail extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getDetail: (id) => {
-      dispatch(topics.setLoading());
       dispatch(topics.getDetail(id));
     },
     collect: (topic_id) => {
+      console.log('trigger');
       dispatch(topics.collect(topic_id));
     },
     decollect: (topic_id) => {
+      console.log('trigger');
       dispatch(topics.decollect(topic_id));
     }
   };
@@ -93,7 +99,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    loading: state.topics.loading,
+    loading: state.status.loading,
+    submitting: state.status.submitting,
     detail: state.topics.detail,
     accesstoken: state.user.accesstoken
   };

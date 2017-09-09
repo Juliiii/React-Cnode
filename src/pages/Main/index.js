@@ -1,13 +1,52 @@
 import React from 'react';
-import TabBar from '../../components/TabBar';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
+import { Icon, TabBar } from 'antd-mobile';
+import { colors } from '../../constants';
 
 class Main extends React.Component {
   render () {
+    const { changeUrl, tab, children } = this.props;
     return (
       <div>
-        <TabBar />
-        {this.props.children}
+        <TabBar
+          unselectedTintColor="#949494"
+          tintColor={colors.blue}
+          barTintColor="white"
+          hidden={false}
+        >
+          <TabBar.Item
+            icon={<Icon type={require('../../icons/homepage.svg')} size="md" />}
+            selectedIcon={<Icon type={require('../../icons/homepage_fill.svg')} size="md" />}
+            title="主页"
+            key="主页"
+            selected={tab === 'home'}
+            onPress={() => {
+              changeUrl('/');
+            }}
+          />
+          <TabBar.Item
+            icon={<Icon type={require('../../icons/brush.svg')} size="md" />}
+            selectedIcon={<Icon type={require('../../icons/brush_fill.svg')} size="md" />}
+            title="发帖"
+            key="发帖"
+            selected={tab === 'publish'}
+            onPress={() => {
+              changeUrl('/publish');
+            }}
+          />
+          <TabBar.Item
+            icon={<Icon type={require('../../icons/mine.svg')} size="md" />}
+            selectedIcon={<Icon type={require('../../icons/mine_fill.svg')} size="md" />}
+            title="我的"
+            key="我的"
+            selected={tab === 'mine'}
+            onPress={() => {
+              changeUrl('/mine');
+            }}
+          />
+        </TabBar>
+        {children}
       </div>
     );
   }
@@ -16,8 +55,16 @@ class Main extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    user: state.user
-  }
-};
+    tab: state.global.tab
+  };
+}
 
-export default connect(mapStateToProps)(Main);
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    changeUrl: (url) => {
+      dispatch(push(url));
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

@@ -1,6 +1,6 @@
 import React from 'react'
 import { InputItem, Button, Flex, Card, Icon } from 'antd-mobile';
-import { browserHistory  } from 'react-router';
+import { replace } from 'react-router-redux';
 import { connect } from 'react-redux';
 import { user } from '../../store/actions';
 
@@ -13,13 +13,6 @@ class Login extends React.Component {
       value: ''
     }
   }
-
-  componentDidMount () {
-    if (this.props.accesstoken) {
-      browserHistory.goBack();
-    }
-  }
-
 
   onChange = (value) => {
     this.setState({
@@ -34,7 +27,7 @@ class Login extends React.Component {
 
 
   render () {
-    const { submitting } = this.props;
+    const { submitting, toHome } = this.props;
     const { canSubmit } = this.state;
     return (
       <Card direction="column" style={{height: '100%', width: '100%'}}>
@@ -45,11 +38,11 @@ class Login extends React.Component {
             type="primary" 
             style={{width: '95%', marginTop: '0.5rem'}} 
             onClick={this.login} 
-            disabled={ !canSubmit || submitting }
+            disabled={!canSubmit || submitting}
           >
             { !submitting ? '确定' : '提交中...'}
           </Button>
-          <Icon type={require('../../icons/close.svg')} style={{marginTop: '0.5rem'}} onClick={() => browserHistory.push('/')} disabled={submitting} />
+          <Icon type={require('../../icons/close.svg')} style={{marginTop: '0.5rem'}} onClick={toHome} disabled={submitting} />
         </Flex>
       </Card>
     );
@@ -60,14 +53,17 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     login: (accesstoken) => {
       dispatch(user.login(accesstoken));
+    },
+    toHome: () => {
+      dispatch(replace('/'));
     }
   };
 };
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    submitting: state.user.submitting,
-    accesstoken: state.user.accesstoken
+    submitting: state.status.submitting,
+    accesstoken: state.status.accesstoken
   };
 };
 

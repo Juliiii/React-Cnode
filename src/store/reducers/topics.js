@@ -1,134 +1,50 @@
 import { topics as actionTypes } from '../actions';
 
+let tab = localStorage.getItem('tab');
+let data = localStorage.getItem('data');
+let page = localStorage.getItem('page');
+
 const topicsInitialState = {
-  loading: false,
-  reachEnd: false,
-  refresh: false,
-  submitting: false,
-  tab: 'all',
-  page: -1,
-  limit: 10,
-  data: [],
-  detail: {},
-  all: {
-    page: -1,
-    data: []
-  },
-  ask: {
-    page: -1,
-    data: []
-  },
-  share: {
-    page: -1,
-    data: []
-  },
-  job: {
-    page: -1,
-    data: []
-  },
-  dev: {
-    page: -1,
-    data: []
-  },
-  good: {
-    page: -1,
-    data: []
-  }
+  tab: tab ? JSON.parse(tab) : 'all',
+  page: page ? JSON.parse(page) : -1,
+  data: data ? JSON.parse(data) : [],
+  limit: 20,
+  detail: {}
 };
 const topics = (state = topicsInitialState, action) => {
   switch (action.type) {
     case actionTypes.CHANGETAB:
       return {
         ...state,
-        tab: action.tab,
-        loading: false,
-        reachEnd: false,
-        refresh: false,
-        data: [...state[action.tab].data],
-        page: state[action.tab].page
-      };
-    case actionTypes.GETDETAIL_FAIL:
-      return {
-        ...state,
-        loading: false
-      };
-    case actionTypes.GETDETAIL_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        detail: action.detail
-      };
-    case actionTypes.GETTOPICS_FAIL:
-      return {
-        ...state,
-        loading: false
-      };
-    case actionTypes.REFRESH_FAIL:
-      return {
-        ...state,
-        refresh: false
-      };
-    case actionTypes.PUBLISH_FAIL:
-      return {
-        ...state,
-        submitting: false
-      };
-    case actionTypes.PUBLISH_SUCCESS:
-      return {
-        ...state,
-        submitting: false
-      };
-    case actionTypes.REFRESH_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        reachEnd: false,        
-        refresh: false,
-        page: 0,
-        data: [...action.data],
-        [state.tab]: { page: 0, data: action.data }
-      };
-    case actionTypes.GETTOPICS_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        reachEnd: action.data.length === 0,        
-        data: [...state.data , ...action.data],
-        page: state[state.tab].page + 1,
-        [state.tab]: { page: state[state.tab].page + 1, data: [...state[state.tab].data, ...action.data] }       
+        data: [],
+        page: -1,
+        tab: action.tab
       };
     case actionTypes.COLLECT_SUCCESS:
-      return {
-        ...state,
-        detail: {
-          ...state.detail,
-          is_collect: true
-        }
-      };
-    case actionTypes.COLLECT_FAIL: return state;
     case actionTypes.DECOLLECT_SUCCESS:
       return {
         ...state,
         detail: {
           ...state.detail,
-          is_collect: false
+          is_collect: !state.detail.is_collect
         }
       };
-    case actionTypes.DECOLLECT_FAIL: return state;
-    case actionTypes.SETSUBMITTING:
+    case actionTypes.REFRESH_SUCCESS:
       return {
         ...state,
-        submitting: true
+        page: -1,
+        data: action.data
       };
-    case actionTypes.SETLOADING: 
+    case actionTypes.GETDETAIL_SUCCESS:
       return {
         ...state,
-        loading: true
+        detail: action.detail
       };
-    case actionTypes.SETREFRESH:
+    case actionTypes.GETTOPICS_SUCCESS:
       return {
         ...state,
-        refresh: true
+        data: action.data,
+        page: state.page + 1
       };
     default: return state;
   }

@@ -7,7 +7,8 @@ const BusinessCard = ({info}) => {
   return (
     <Card style={{
       padding: '0.3rem'
-    }}>
+    }}
+    >
     <Flex
       direction="column"
     >

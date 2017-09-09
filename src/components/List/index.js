@@ -1,26 +1,15 @@
 import React from 'react'
-import { ListView, ActivityIndicator, Flex, RefreshControl } from 'antd-mobile';
+import { ListView, RefreshControl } from 'antd-mobile';
 import ListItem from '../ListItem';
-import { connect } from 'react-redux';
-import { topics } from '../../store/actions';
-
+import Loading from '../Loading';
 
 const MyBody = (props) => (
   <div>{props.children}</div>
 );
 
-const Footer = ({loading}) => {
-  if (loading) {
-    return (
-      <Flex justify="center" style={{paddingBottom: '99px'}}>
-        <ActivityIndicator text="Loading..." /> 
-      </Flex>
-    );
-  } else {
-    return null;
-  }
-};
-
+const Footer = () => (
+  <Loading style={{paddingBottom: '99px'}} text="加载中..." />
+);
 
 class List extends React.Component {
   constructor (props) {
@@ -32,20 +21,15 @@ class List extends React.Component {
       dataSource: dataSource.cloneWithRows(this.props.data)
     }
   }
-  componentWillMount () {
-    if (this.props.data.length === 0) {
-      this.props.getData();
+
+  componentDidMount = () => {
+    if (this.props.firstCome) {
+      const scrollTop = localStorage.getItem('scrollTop');
+      if (scrollTop) {
+        this.ref.refs.listview.scrollTo(0, Number(scrollTop));
+        this.ref.refs.listview.scrollProperties.offset = Number(scrollTop);
+      }
     }
-  }
-
-  componentDidMount () {
-    let scrollTop = localStorage.getItem('scrollTop');
-    this.ref.refs.listview.scrollTo(0, scrollTop ? Number(scrollTop) : 0);
-    this.ref.refs.listview.scrollProperties.offset = Number(scrollTop);
-  }
-
-  componentWillUnmount () {
-    localStorage.setItem('scrollTop', this.ref.refs.listview.scrollProperties.offset);
   }
 
   componentWillReceiveProps (newProps) {
@@ -57,35 +41,42 @@ class List extends React.Component {
     });
   }
 
+  componentWillUnmount () {
+    if (this.props.saveScrollTop) {
+      this.props.saveScrollTop(this.ref.refs.listview.scrollProperties.offset);
+    }
+  }
 
   loadMore = () => {
-    const { loading, reachEnd, refreshing } = this.props;
-    if (loading || reachEnd || refreshing) return;
-    this.props.getData();
+    const { loading, reachEnd, refresh, getData } = this.props;
+    if (loading || reachEnd || refresh) return;
+    getData && getData();
   }
 
   refresh = () => {
-    const { loading, refreshing } = this.props;
-    if (loading || refreshing) return;
-    this.props.refresh();
+    const { loading, refresh, onRefresh } = this.props;
+    if (loading || refresh) return;
+    onRefresh && onRefresh();
   }
 
   render () {
+    const { loading, refresh } = this.props;
+    const { dataSource } = this.state;
     return (
       <ListView
         ref={lv => this.ref = lv}
-        dataSource={this.state.dataSource}
+        dataSource={dataSource}
         initialListSize={10}
         pageSize={10}
+        stickySectionHeadersEnabled={false}
         onEndReachedThreshold={20}
-        scrollEventThrottle={200}
+        scrollEventThrottle={500}
         renderBodyComponent={() => <MyBody />}
         onEndReached={this.loadMore}
         renderRow={(data) => <ListItem item={data} />}
-        renderFooter={() => <Footer loading={this.props.loading} />}
-        scrollerOptions={{ scrollbars: false }}
+        renderFooter={() => loading ? <Footer loading={loading} /> : null}
         refreshControl={
-          <RefreshControl refreshing={this.props.refreshing} onRefresh={this.refresh} />
+          <RefreshControl refreshing={refresh} onRefresh={this.refresh} />
         }
         style={{
           height: `${(document.body.clientHeight || document.documentElement.clientHeight) - 87}px`
@@ -95,28 +86,4 @@ class List extends React.Component {
   };
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    getData: () => {
-      dispatch(topics.setLoading());
-      dispatch(topics.getTopics());
-    },
-    refresh: () => {
-      dispatch(topics.setRefresh());
-      dispatch(topics.refresh());
-    }
-  };
-}
-
-
-const mapStateToProps = (state, ownProps) => {
-  return {
-    page: state.topics.page,
-    data: state.topics.data,
-    loading: state.topics.loading,
-    reachEnd: state.topics.reachEnd,
-    refreshing: state.topics.refresh
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(List);
+export default List;
