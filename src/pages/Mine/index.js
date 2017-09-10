@@ -14,30 +14,39 @@ class Mine extends React.Component {
       this.props.changeUrl('/login');
     } else {
       this.props.getInfo();
+      this.props.getMessageCount();
     }
   }
 
   render () {
-    const { info, logout, loading } = this.props;
+    const { info, logout, loading, messageCount, changeUrl } = this.props;
     if (loading) return ( <Loading /> );
     return (
       <div>
         <BusinessCard info={info} />
         <List style={{marginTop: '1rem'}}>
           <List.Item 
+            thumb={<Icon type={require('../../icons/like_fill.svg')} size="md" />} 
+            arrow="horizontal"
+            onClick={() => changeUrl('/mine/collection')}
+          >我的收藏
+          </List.Item>
+          <List.Item 
             thumb={<Icon type={require('../../icons/document_fill.svg')} size="md" />} 
             arrow="horizontal"
+            onClick={() => changeUrl('/mine/topic')}
           >最近话题
           </List.Item>
           <List.Item 
             thumb={<Icon type={require('../../icons/interactive_fill.svg')} size="md" />} 
             arrow="horizontal"
+            onClick={() => changeUrl('/mine/reply')}
           >最近回复
           </List.Item>
           <List.Item 
             thumb={<Icon type={require('../../icons/remind_fill.svg')} size="md" />}
             arrow="horizontal"
-            extra={<Badge text={88} overflowCount={99} />}
+            extra={<Badge text={messageCount} overflowCount={99} />}
           >未读消息
           </List.Item>
           <List.Item 
@@ -56,7 +65,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     info: state.user.info,
     accesstoken: state.user.accesstoken,
-    loading: state.status.loading
+    loading: state.status.loading,
+    messageCount: state.user.messageCount
   };
 }
 
@@ -64,6 +74,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getInfo: () => {
       dispatch(user.getuserInfo());
+    },
+    getMessageCount: () => {
+      dispatch(user.getMessageCount());
     },
     logout: () => {
       dispatch(global.setTab('home'));

@@ -11,7 +11,7 @@ class Collection extends Component {
     return (
       <div>
         <Navbar title="我的收藏" />
-        <List />
+        {/* <List /> */}
       </div>
     );
   }

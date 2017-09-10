@@ -1,9 +1,9 @@
 import React from 'react'
-import { NavBar, Icon, Card, Flex } from 'antd-mobile';
+import { Icon, Card, Flex } from 'antd-mobile';
 import { connect } from 'react-redux';
 import { topics } from '../../store/actions';
-import { browserHistory } from 'react-router';
 import Loading from '../../components/Loading';
+import NavBar from '../../components/NavBar';
 import { formatime } from '../../utils';
 
 const title = (props) => (
@@ -48,13 +48,7 @@ class Detail extends React.Component {
 
     return (
       <div>
-        <NavBar
-          leftContent={<Icon type={require('../../icons/return.svg')} />}
-          mode="light"
-          iconName={null}
-          onLeftClick={() => browserHistory.goBack()}
-        >主题详情
-        </NavBar>
+        <NavBar title="主题详情" />
         <Card style={{minHeight: 'auto', marginTop: '.1rem'}}>
           <Card.Header
           thumb={avatar_url}

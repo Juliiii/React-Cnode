@@ -7,6 +7,9 @@ import Default from '../pages/Main/Default';
 import Mine from '../pages/Mine';
 import Login from '../pages/Login';
 import Success from '../pages/Publish/Success';
+import Collection from '../pages/Mine/Collection';
+import Reply from '../pages/Mine/Reply';
+import Topic from '../pages/Mine/Topic';
 import Detail from '../pages/Detail';
 import { connect } from 'react-redux';
 import store from '../store';
@@ -35,6 +38,9 @@ const Layout = (props) => {
       </Route>
       <Route component={Login} path="/login" />
       <Route component={Detail} path="/detail/:id" />
+      <Route component={Topic} path="/mine/topic" />
+      <Route component={Reply} path="/mine/reply" />
+      <Route component={Collection} path="/mine/collection" />
     </Router>
   );
 }

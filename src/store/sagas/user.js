@@ -66,8 +66,7 @@ function* getMessageCount () {
   try {
     const accesstoken = yield select(state => state.user.accesstoken);
     const data = (yield call(axios.get, `/message/count?accesstoken=${accesstoken}`)).data;
-    console.log(data);
-    yield put(user.getMessageCountSuccess(data));
+    yield put(user.getMessageCountSuccess(data.data));
   } catch (err) {
     yield put(user.getMessageCountFail());
   }
@@ -107,10 +106,6 @@ function* getMessages () {
   }   
 }
 
-function* watchGetMessages () {
-  yield takeLatest(user.GETMESSAGES, getMessages);
-}
-
 function* markAll () {
   try {
     const accesstoken = yield select(state => state.user.accesstoken);
@@ -123,7 +118,13 @@ function* markAll () {
   }
 }
 
-function* watchMarkAll () {
+function* messageFlow () {
+  while (true) {
+    yield take(user.GETMESSAGES);
+    yield call(getMessages);
+    yield take(user.MARKALL);
+    yield call(markAll);
+  }
 }
 
 
@@ -132,5 +133,5 @@ export default function* root () {
   yield fork(watchGetInfo);
   yield fork(watchGetMessageCount);
   yield fork(watchGetCollections);
-  yield fork(watchGetMessages);
+  yield fork(messageFlow);
 }

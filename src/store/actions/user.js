@@ -20,6 +20,10 @@ export const GETCOLLECTIONS = 'GETCOLLECTIONS';
 export const GETCOLLECTIONS_SUCCESS = 'GETCOLLECTIONS_SUCCESS';
 export const GETCOLLECTIONS_FAIL = 'GETCOLLECTIONS_FAIL';
 
+export const MARKALL = 'MARKALL';
+export const MARKALL_SUCCESS = 'MARKALL_SUCCESS';
+export const MARKALL_FAIL = 'MARKALL_FAIL';
+
 export const getuserInfo = () => ({
   type: GETUSERINFO
 });
@@ -91,4 +95,16 @@ export const getCollectionsSuccess = (collections) => ({
 
 export const getCollectionsFail = () => ({
   type: GETCOLLECTIONS_FAIL
+});
+
+export const markAll = () => ({
+  type: MARKALL
+});
+
+export const markAllSuccess = () => ({
+  type: MARKALL_SUCCESS
+});
+
+export const markAllFail = () => ({
+  type: MARKALL_FAIL
 });
