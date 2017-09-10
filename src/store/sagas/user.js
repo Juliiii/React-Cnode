@@ -1,33 +1,60 @@
-import { call, put, takeLatest, fork, select } from 'redux-saga/effects';
+import { call, put, takeLatest, fork, select, take } from 'redux-saga/effects';
 import axios from '../../apis';
-import { user } from '../actions'; 
-import { browserHistory } from 'react-router';
+import { user, status } from '../actions'; 
+import { push } from 'react-router-redux';
+import { Toast } from 'antd-mobile';
+
+
+function delay (interval) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(), interval);
+  });
+}
 
 function* login ({accesstoken}) {
   try {
-    yield put(user.toggle());
+    yield put(status.setSubmitting());
     const data = (yield call(axios.post, '/accesstoken', {accesstoken})).data;
     yield put(user.loginSuccess(accesstoken, data.loginname));
     window.localStorage.setItem('accesstoken', accesstoken);
     window.localStorage.setItem('loginname', data.loginname);
-    browserHistory.push('/');
+    Toast.success('登录成功', 1);
+    yield call(delay, 500);
+    yield put(push('/'));
   } catch (err) {
     yield put(user.loginFail());
+  } finally {
+    yield put(status.setSubmitting());    
   }
 }
 
+function logout () {
+  return new Promise(resolve => {
+    window.localStorage.removeItem('accesstoken');
+    window.localStorage.removeItem('loginname');
+    resolve();    
+  })
+}
+
 function* watchLogin () {
-  yield takeLatest(user.LOGIN, login);
+  while (true) {
+    const actions = yield take(user.LOGIN);
+    yield call(login, actions);
+    yield take(user.LOGOUT);
+    yield call(logout);
+  }
 }
 
 function* getInfo ({loginname}) {
   if (!loginname) loginname = yield select(state => state.user.loginname);
-  yield put(user.setLoading());
   try {
+    yield put(status.setLoading());
     const data = (yield call(axios.get, `/user/${loginname}`)).data;
     yield put(user.getuserInfoSuccess(data.data));
   } catch (err) {
     yield put(user.getUserInfoFail());
+  } finally {
+    yield put(status.setLoading());    
   }
 }
 
@@ -35,9 +62,75 @@ function* watchGetInfo () {
   yield takeLatest(user.GETUSERINFO, getInfo);
 }
 
+function* getMessageCount () {
+  try {
+    const accesstoken = yield select(state => state.user.accesstoken);
+    const data = (yield call(axios.get, `/message/count?accesstoken=${accesstoken}`)).data;
+    console.log(data);
+    yield put(user.getMessageCountSuccess(data));
+  } catch (err) {
+    yield put(user.getMessageCountFail());
+  }
+}
+
+function* watchGetMessageCount () {
+  yield takeLatest(user.GETMESSAGECOUNT, getMessageCount);
+}
+
+function* getCollections () {
+  try {
+    const loginname = yield select(state => state.user.loginname);
+    yield put(status.setLoading());
+    const data = (yield call(axios.get, `/topic_collect/${loginname}`)).data;
+    yield put(user.getCollectionsSuccess(data.data));
+  } catch (err) {
+    yield put(user.getCollectionsFail());
+  } finally {
+    yield put(status.setLoading());    
+  }  
+}
+
+function* watchGetCollections () {
+  yield takeLatest(user.GETCOLLECTIONS, getCollections);
+}
+
+function* getMessages () {
+  try {
+    const accesstoken = yield select(state => state.user.accesstoken);
+    yield put(status.setLoading());
+    const data = (yield call(axios.get, `/messages?accesstoken=${accesstoken}`)).data;
+    yield put(user.getMessagesSuccess(data.data));
+  } catch (err) {
+    yield put(user.getMessagesFail());
+  } finally {
+    yield put(status.setLoading());    
+  }   
+}
+
+function* watchGetMessages () {
+  yield takeLatest(user.GETMESSAGES, getMessages);
+}
+
+function* markAll () {
+  try {
+    const accesstoken = yield select(state => state.user.accesstoken);
+    yield call(axios.post, `/message/mark_all`, {
+      accesstoken
+    });
+    yield put(user.markAllSuccess());
+  } catch (err) {
+    yield put(user.markAllFail());
+  }
+}
+
+function* watchMarkAll () {
+}
 
 
 export default function* root () {
   yield fork(watchLogin);
   yield fork(watchGetInfo);
+  yield fork(watchGetMessageCount);
+  yield fork(watchGetCollections);
+  yield fork(watchGetMessages);
 }

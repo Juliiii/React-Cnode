@@ -46,9 +46,6 @@ class Detail extends React.Component {
     const loginname = author ? author.loginname : '';
     const avatar_url = author ? author.avatar_url: '';
 
-    console.log(detail);
-
-
     return (
       <div>
         <NavBar
@@ -73,7 +70,7 @@ class Detail extends React.Component {
           />
           <div dangerouslySetInnerHTML={{
             __html: detail.content
-          }} 
+          }}
           />
         </Card>
       </div>

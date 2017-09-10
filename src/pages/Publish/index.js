@@ -96,7 +96,7 @@ class Publish extends React.Component {
 
 
   render () {
-    const { title, content, tab, error, markdown } = this.state;
+    const { title, tab, error, markdown } = this.state;
     const { submitting } = this.props;
 
     return (

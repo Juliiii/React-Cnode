@@ -1,17 +1,17 @@
 import React from 'react'
 import BusinessCard from '../../components/BusinessCard';
 import Loading from '../../components/Loading';
-import { List, Icon, Badge } from 'antd-mobile';
+import { List, Icon, Badge, Toast } from 'antd-mobile';
 import { connect } from 'react-redux';
 import { user, global } from '../../store/actions';
-import { browserHistory } from 'react-router';
+import { push } from 'react-router-redux';
 
 
 class Mine extends React.Component {
 
   componentDidMount () {
     if (!this.props.accesstoken) {
-      browserHistory.push('/login');
+      this.props.changeUrl('/login');
     } else {
       this.props.getInfo();
     }
@@ -56,7 +56,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     info: state.user.info,
     accesstoken: state.user.accesstoken,
-    loading: state.user.loading
+    loading: state.status.loading
   };
 }
 
@@ -68,7 +68,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     logout: () => {
       dispatch(global.setTab('home'));
       dispatch(user.logout());
-      browserHistory.push('/');
+      Toast.info('登出成功', 1);
+      dispatch(push('/'))
+    },
+    changeUrl: (url) => {
+      dispatch(push(url));
     }
   };
 }

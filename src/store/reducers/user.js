@@ -4,32 +4,20 @@ const loginname = window.localStorage.getItem('loginname');
 let initState = {
   accesstoken,
   loginname,
-  submitting: false,
-  loading: false,
   info: {},
-}
+  messageCount: 0,
+  messages: [],
+  collections: []
+};
 const user = (state = initState, action) => {
   switch (action.type) {
-    case actionTypes.TOGGLESUBMITTING:
-      return {
-        ...state,
-        submitting: true
-      };
-    case actionTypes.SETLOADING:
-      return {
-        ...state,
-        loading: true
-      };
     case actionTypes.LOGIN_SUCCESS:
       return {
         ...state,
         accesstoken: action.accesstoken,
         loginname: action.loginname,
-        submitting: false
       };
     case actionTypes.LOGOUT: 
-      window.localStorage.removeItem('accesstoken');
-      window.localStorage.removeItem('loginname');
       return {
         ...state,
         accesstoken: undefined,
@@ -39,20 +27,22 @@ const user = (state = initState, action) => {
       return {
         ...state,
         info: {...action.info},
-        loading: false
       };
-    case actionTypes.GETUSERINFO_FAIL:
+    case actionTypes.GETCOLLECTIONS_SUCCESS:
       return {
         ...state,
-        loading: false
+        collections: action.collections
       };
-    case actionTypes.LOGIN_FAIL:
+    case actionTypes.GETMESSAGECOUNT_SUCCESS:
       return {
         ...state,
-        submitting: false
+        messageCount: action.messageCount
       };
-    case actionTypes.GETUSERINFO:
-    case actionTypes.LOGIN: return state;
+    case actionTypes.GETMESSAGES_SUCCESS:
+      return {
+        ...state,
+        messages: action.messages
+      };
     default: return state;
   }
 };
