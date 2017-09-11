@@ -18,7 +18,7 @@ const title = ({author: {loginname}, create_at}) => (
       marginLeft: '0',
       fontSize: '0.25rem'
     }}
-    >{formatime(create_at)}
+    >{create_at ? formatime(create_at) : null}
     </Flex.Item>
   </Flex>
 );

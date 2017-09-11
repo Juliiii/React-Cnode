@@ -76,7 +76,7 @@ class List extends React.Component {
         renderRow={(data) => <ListItem item={data} />}
         renderFooter={() => loading ? <Footer loading={loading} /> : null}
         refreshControl={
-          <RefreshControl refreshing={refresh} onRefresh={this.refresh} />
+          refresh ? <RefreshControl refreshing={refresh} onRefresh={this.refresh} /> : null
         }
         style={{
           height: `${(document.body.clientHeight || document.documentElement.clientHeight) - 87}px`
