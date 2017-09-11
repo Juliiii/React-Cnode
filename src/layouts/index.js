@@ -11,6 +11,8 @@ import Collection from '../pages/Mine/Collection';
 import Reply from '../pages/Mine/Reply';
 import Topic from '../pages/Mine/Topic';
 import Detail from '../pages/Detail';
+import Homepage from '../pages/Homepage';
+
 import { connect } from 'react-redux';
 import store from '../store';
 import { global } from '../store/actions';
@@ -41,6 +43,7 @@ const Layout = (props) => {
       <Route component={Topic} path="/mine/topic" />
       <Route component={Reply} path="/mine/reply" />
       <Route component={Collection} path="/mine/collection" />
+      <Route component={Homepage} path="/homepage/:loginname" />
     </Router>
   );
 }

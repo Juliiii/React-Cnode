@@ -71,6 +71,7 @@ class List extends React.Component {
         stickySectionHeadersEnabled={false}
         onEndReachedThreshold={20}
         scrollEventThrottle={500}
+        scrollerOptions={{scrollbars: true}}
         renderBodyComponent={() => <MyBody />}
         onEndReached={this.loadMore}
         renderRow={(data) => <ListItem item={data} />}

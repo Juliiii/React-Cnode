@@ -24,8 +24,9 @@ export const MARKALL = 'MARKALL';
 export const MARKALL_SUCCESS = 'MARKALL_SUCCESS';
 export const MARKALL_FAIL = 'MARKALL_FAIL';
 
-export const getuserInfo = () => ({
-  type: GETUSERINFO
+export const getuserInfo = (loginname) => ({
+  type: GETUSERINFO,
+  loginname
 });
 
 export const getuserInfoSuccess = (info) => ({

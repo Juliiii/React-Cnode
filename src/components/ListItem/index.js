@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, WhiteSpace, Flex, Icon } from 'antd-mobile';
 import Badge from '../Badge';
+import Avatar from '../Avatar';
 import { colors } from '../../constants';
 import { formatime } from '../../utils';
 import { Link } from 'react-router';
@@ -58,12 +59,8 @@ const ListItem = ({item}) => {
         >
           <Card.Header
             title={title(item)}
-            thumb={item.author.avatar_url}
+            thumb={<Avatar src={item.author.avatar_url} loginname={item.author.loginname} isCircle={false} size={60} />}
             extra={extra(item)}
-            thumbStyle={{
-              height: '.6rem',
-              width: '.6rem'
-            }}
           />
           <Card.Body 
             style={{
