@@ -3,7 +3,7 @@ import List from '../../components/List';
 import Navbar from '../../components/NavBar';
 import { connect } from 'react-redux';
 import { user } from '../../store/actions';
-
+import Loading from '../../components/Loading';
 
 
 class Collections extends Component {
@@ -12,7 +12,8 @@ class Collections extends Component {
   }
 
   render () {
-    const { collections } = this.props;
+    const { collections, loading } = this.props;
+    if (loading) return <Loading />
     return (
       <div>
         <Navbar title="我的收藏" />
@@ -24,7 +25,8 @@ class Collections extends Component {
 
 
 const mapStateToProps = (state) => ({
-  collections: state.user.collections
+  collections: state.user.collections,
+  loading: state.status.loading
 });
 
 const mapDispatchToProps = (dispatch) => ({
