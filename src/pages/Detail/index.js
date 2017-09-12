@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon, Card, Flex, Popup, TextareaItem, Toast } from 'antd-mobile';
+import { Icon, Card, Flex, Popup, TextareaItem, Toast, Button } from 'antd-mobile';
 import { connect } from 'react-redux';
 import { topics } from '../../store/actions';
 import Loading from '../../components/Loading';
@@ -61,6 +61,7 @@ class Detail extends React.Component {
     this.state = {
       loading: false,
       reachEnd: false,
+      backTopShow: false,
       allData: [],
       data: []
     }
@@ -69,6 +70,17 @@ class Detail extends React.Component {
 
   componentWillMount () {
     this.props.getDetail(this.props.params.id);
+  }
+
+  componentDidMount () {
+    const node = document.getElementsByTagName('body')[0];
+    node.onscroll = () => {
+      const scrollTop = node.scrollTop;
+      const height = document.body.clientHeight || document.documentElement.clientHeight;
+      this.setState({
+        backTopShow: scrollTop > height - 30
+      });
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -81,6 +93,16 @@ class Detail extends React.Component {
       reachEnd: _replies.length === 0
     });
   }
+
+  componentWillDestory () {
+    const node = document.getElementsByTagName('body')[0];
+    node.onscroll = null;
+  }
+
+  backTop = () => {
+    window.scrollTo(0, 0);  
+  }
+
 
   loadMore = () => {
     const allData = [...this.state.allData];
@@ -115,6 +137,7 @@ class Detail extends React.Component {
 
   render () {
     const { loading, detail, accesstoken, collect, decollect } = this.props;
+    const { backTopShow } = this.state;
     if (loading) {
       return ( <Loading /> );
     } else {
@@ -158,6 +181,46 @@ class Detail extends React.Component {
                 onUps={this.onUps}
               />
             </Card>
+            { backTopShow 
+              ? <Button 
+                  style={{
+                    position: 'fixed',
+                    right: '.2rem',
+                    bottom: '1.5rem',
+                    borderRadius: '50%',
+                    height: '.9rem',
+                    width: '.9rem',
+                    padding: '0',
+                    zIndex: '99'
+                  }}
+                  type="text"
+                  size="small"
+                  onClick={this.backTop}
+                >
+                  <Flex align="center" justify="center" style={{height: '100%'}}>
+                    <Icon type={require('../../icons/back-top.svg')} size="md" />
+                  </Flex>
+                </Button>
+              : null
+            }
+            <Button 
+              style={{
+                position: 'fixed',
+                right: '.2rem',
+                bottom: '.4rem',
+                borderRadius: '50%',
+                height: '.9rem',
+                width: '.9rem',
+                lineHeight: '.9rem',
+                textAlign: 'center',
+                padding: '0',
+                zIndex: '99'
+              }}
+              type="primary"
+              size="small"
+              onClick={this.onComment}
+            >评论
+            </Button>
           </div>
         </div>
       );
