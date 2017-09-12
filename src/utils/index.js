@@ -17,6 +17,23 @@ function formatime (tar) {
   else return `${Math.floor(offset / (3600 * 24 * 30 * 12))}年前`;
 }
 
+/**
+ * translate the time to some forms like 1.7年
+ * 
+ * @param {any} tar 
+ * @returns 
+ */
+
+function toDetailedTime (tar) {
+  const now = (new Date()).valueOf();
+  const pre = (new Date(tar)).valueOf();
+  const offset = now - pre;
+  if (offset < 3600 * 24 * 30 * 1000) return `${Math.floor(offset / (3600 * 24 * 1000))}天`;
+  else if (offset < 3600 * 24 * 30 * 12 * 1000) return `${Math.floor(offset / (3600 * 24 * 30 * 1000))}个月`;
+  else return `${(offset / (3600 * 24 * 30 * 1000 * 12)).toFixed(1)}年`;
+}
+
 export {
-  formatime
+  formatime,
+  toDetailedTime
 };

@@ -43,7 +43,7 @@ const Layout = (props) => {
       <Route component={Topic} path="/mine/topic" />
       <Route component={Reply} path="/mine/reply" />
       <Route component={Collection} path="/mine/collection" />
-      <Route component={Homepage} path="/homepage/:loginname" />
+      <Route component={Homepage} path="/user/:loginname" />
     </Router>
   );
 }

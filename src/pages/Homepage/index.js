@@ -16,7 +16,7 @@ class Homepage extends React.Component {
 
   componentWillReceiveProps ({to, from, change}) {
     if (!change) return;
-    const reg = /\/homepage/;
+    const reg = /\/user/;
     if (reg.test(from) && reg.test(to) && from !== to) {
       this.props.getInfo(to.split('/')[2]);      
       this.props.setChange();

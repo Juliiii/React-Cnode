@@ -3,6 +3,7 @@ import { Icon, Card, Flex } from 'antd-mobile';
 import { connect } from 'react-redux';
 import { topics } from '../../store/actions';
 import Loading from '../../components/Loading';
+import CommentList from '../../components/CommentList';
 import NavBar from '../../components/NavBar';
 import { formatime } from '../../utils';
 
@@ -32,43 +33,83 @@ const title = (props) => (
 );
 
 class Detail extends React.Component {
-  componentDidMount () {
+  constructor (props) {
+    super(props);
+    this.state = {
+      loading: false,
+      reachEnd: false
+    }
+  } 
+
+
+  componentWillMount () {
+    console.log(1);
     this.props.getDetail(this.props.params.id);
+  }
+
+  componentWillReceiveProps (nextProps) {
+    const { detail: {replies} } = nextProps;
+    console.log(replies);
+    if (!replies || replies.length === 0) return;
+    const _replies = [...replies];
+    this.setState({
+      allData: _replies,
+      data: _replies.splice(0, 5),
+      reachEnd: _replies.length === 0
+    });
+  }
+
+  loadMore = () => {
+    const allData = [...this.state.allData];
+    const oldData = [...this.state.data];
+    const data = allData.splice(0, 5);
+    this.setState((preState) => ({
+      allData,
+      data: [...oldData, ...data],
+      reachEnd: allData.length === 0
+    }));
   }
 
   render () {
     const { loading, detail, accesstoken, collect, decollect } = this.props;
     if (loading) {
       return ( <Loading /> );
+    } else {
+      const { author } = detail;
+      const {reachEnd, data, loading : _loading} = this.state;
+      const loginname = author ? author.loginname : '';
+      const avatar_url = author ? author.avatar_url: '';
+      return (
+        <div>
+          <NavBar title="主题详情" />
+          <Card style={{minHeight: 'auto', marginTop: '.1rem'}}>
+            <Card.Header
+              thumb={avatar_url}
+              title={loginname}
+              extra={<span style={{fontSize: '.3rem'}}>楼主</span>}
+              thumbStyle={{height: '.6rem', width: '.6rem'}}
+            />
+          </Card>
+          <Card style={{padding: '0 0.4rem .2rem', marginTop: '.1rem'}}>
+            <Card.Header 
+              title={title({...detail, accesstoken, collect, decollect})}
+              style={{borderBottom: '1px solid #bfbfbf', marginBottom: '.2rem'}} 
+            />
+            <div dangerouslySetInnerHTML={{
+              __html: detail.content
+            }}
+            />
+          </Card>
+          <Card style={{padding: '0 0.4rem .2rem', margin: '.1rem 0'}}>
+            <Card.Header 
+                style={{width: '100%', paddingLeft: '0'}}
+                title="评论"
+            />
+            <CommentList data={data ? data : []} loading={_loading} reachEnd={reachEnd} getData={this.loadMore} />
+          </Card>
+        </div>
+      );
     }
-
-    const { author } = detail;
-    const loginname = author ? author.loginname : '';
-    const avatar_url = author ? author.avatar_url: '';
-
-    return (
-      <div>
-        <NavBar title="主题详情" />
-        <Card style={{minHeight: 'auto', marginTop: '.1rem'}}>
-          <Card.Header
-          thumb={avatar_url}
-          title={loginname}
-          extra={<span style={{fontSize: '.3rem'}}>楼主</span>}
-          thumbStyle={{height: '.6rem', width: '.6rem'}}
-          />
-        </Card>
-        <Card style={{padding: '0 0.4rem .2rem', marginTop: '.1rem'}}>
-          <Card.Header 
-            title={title({...detail, accesstoken, collect, decollect})}
-            style={{borderBottom: '1px solid #888', marginBottom: '.2rem'}} 
-          />
-          <div dangerouslySetInnerHTML={{
-            __html: detail.content
-          }}
-          />
-        </Card>
-      </div>
-    );
   }
 }
 
@@ -78,11 +119,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(topics.getDetail(id));
     },
     collect: (topic_id) => {
-      console.log('trigger');
       dispatch(topics.collect(topic_id));
     },
     decollect: (topic_id) => {
-      console.log('trigger');
       dispatch(topics.decollect(topic_id));
     }
   };

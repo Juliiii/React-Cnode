@@ -201,8 +201,8 @@ module.exports = {
             test: /\.(svg)$/i,
             loader: 'svg-sprite-loader',
             include: [
-              require.resolve('antd-mobile').replace(/warn\.js$/, ''),  // 1. svg files of antd-mobile
-              path.resolve(__dirname, 'src'),  // folder of svg files in your project
+              require.resolve('antd-mobile').replace(/warn\.js$/, ''), // 1. svg files of antd-mobile
+              path.resolve(__dirname, '../src/icons'), // folder of svg files in your project
             ]
           },
           {
@@ -354,7 +354,7 @@ module.exports = {
       },
       minify: true,
       // For unknown URLs, fallback to the index page
-      navigateFallback: publicUrl  '/index.html',
+      navigateFallback: publicUrl + '/index.html',
       // Ignores URLs starting from /__ (useful for Firebase):
       // https://github.com/facebookincubator/create-react-app/issues/2237#issuecomment-302693219
       navigateFallbackWhitelist: [/^(?!\/__).*/],

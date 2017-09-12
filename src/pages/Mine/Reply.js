@@ -1,24 +1,11 @@
 import React, { Component } from 'react';
-import List from '../../components/List';
-import Navbar from '../../components/NavBar';
 import { connect } from 'react-redux';
-import { user } from '../../store/actions'
-import Loading from '../../components/Loading';
+import { user } from '../../store/actions';
+import Wrapper from './StateLess';
 
-class Topics extends Component {
-  componentWillMount () {
-    this.props.getData(); 
-  }
-
+class Replys extends Component {
   render () {
-    const { data, loading } = this.props;
-    if (loading) return <Loading />
-    return (
-      <div>
-        <Navbar title="最近回复" />
-        <List data={data ? data : []} />
-      </div>
-    );
+    return <Wrapper {...this.props} title="最近回复" />
   }
 };
 
@@ -37,5 +24,5 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Topics);
+export default connect(mapStateToProps, mapDispatchToProps)(Replys);
 
