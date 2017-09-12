@@ -24,6 +24,9 @@ export const DECOLLECT = 'DECOLLECT';
 export const DECOLLECT_SUCCESS = 'DECOLLECT_SUCCESS';
 export const DECOLLECT_FAIL = 'DECOLLECT_FAIL';
 
+export const UPS = 'UPS';
+export const UPS_SUCCESS = 'UPS_SUCCESS';
+export const UPS_FAIL = 'UPS_FAIL';
 
 export const refresh = () => ({
   type: REFRESH
@@ -109,3 +112,19 @@ export const decollectSuccess = () => ({
 export const decollectFail = () => ({
   type: DECOLLECT_FAIL
 }); 
+
+export const ups = (reply_id) => ({
+  type: UPS,
+  reply_id
+});
+
+export const upsSuccess = (id, action, reply_id) => ({
+  type: UPS_SUCCESS,
+  id,
+  action,
+  reply_id
+});
+
+export const upsFail = () => ({
+  type: UPS_FAIL
+});

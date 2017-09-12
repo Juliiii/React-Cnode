@@ -1,9 +1,11 @@
 import { user as actionTypes } from '../actions';
 const accesstoken = window.localStorage.getItem('accesstoken');
 const loginname = window.localStorage.getItem('loginname');
+const id = window.localStorage.getItem('id');
 let initState = {
   accesstoken,
   loginname,
+  id,
   info: {},
   messageCount: 0,
   messages: [],
@@ -16,12 +18,14 @@ const user = (state = initState, action) => {
         ...state,
         accesstoken: action.accesstoken,
         loginname: action.loginname,
+        id: action.id
       };
     case actionTypes.LOGOUT: 
       return {
         ...state,
         accesstoken: undefined,
-        loginname: undefined
+        loginname: undefined,
+        id: undefined
       };
     case actionTypes.GETUSERINFO_SUCCESS:
       return {

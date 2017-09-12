@@ -43,10 +43,11 @@ export const login = (accesstoken) => ({
   accesstoken
 });
 
-export const loginSuccess = (accesstoken, loginname) => ({
+export const loginSuccess = (accesstoken, loginname, id) => ({
   type: LOGIN_SUCCESS,
   loginname,
-  accesstoken
+  accesstoken,
+  id
 });
 
 export const loginFail = () => ({
@@ -109,3 +110,4 @@ export const markAllSuccess = () => ({
 export const markAllFail = () => ({
   type: MARKALL_FAIL
 });
+

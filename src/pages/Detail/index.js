@@ -105,6 +105,14 @@ class Detail extends React.Component {
     Popup.show(<PopupContent />, { animationType: 'slide-up', maskProps });
   }
 
+  onUps = (id) => {
+    if (!this.props.accesstoken) {
+      Toast.info('请先登录', 1);
+      return;      
+    }
+    this.props.ups(id);
+  }
+
   render () {
     const { loading, detail, accesstoken, collect, decollect } = this.props;
     if (loading) {
@@ -147,6 +155,7 @@ class Detail extends React.Component {
                 reachEnd={reachEnd} 
                 getData={this.loadMore}
                 onComment={this.onComment}
+                onUps={this.onUps}
               />
             </Card>
           </div>
@@ -166,6 +175,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     decollect: (topic_id) => {
       dispatch(topics.decollect(topic_id));
+    },
+    ups: (id) => {
+      dispatch(topics.ups(id));
     }
   };
 }

@@ -15,9 +15,10 @@ function* login ({accesstoken}) {
   try {
     yield put(status.setSubmitting());
     const data = (yield call(axios.post, '/accesstoken', {accesstoken})).data;
-    yield put(user.loginSuccess(accesstoken, data.loginname));
+    yield put(user.loginSuccess(accesstoken, data.loginname, data.id));
     window.localStorage.setItem('accesstoken', accesstoken);
     window.localStorage.setItem('loginname', data.loginname);
+    window.localStorage.setItem('id', data.id);
     Toast.success('登录成功', 1);
     yield call(delay, 500);
     yield put(push('/'));
@@ -30,9 +31,9 @@ function* login ({accesstoken}) {
 
 function logout () {
   return new Promise(resolve => {
-    console.log(1);
     window.localStorage.removeItem('accesstoken');
     window.localStorage.removeItem('loginname');
+    window.localStorage.removeItem('id');
     resolve();    
   })
 }
@@ -132,7 +133,6 @@ function* messageFlow () {
     yield call(markAll);
   }
 }
-
 
 export default function* root () {
   yield fork(watchLogin);

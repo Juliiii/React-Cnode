@@ -46,8 +46,34 @@ const topics = (state = topicsInitialState, action) => {
         data: action.data,
         page: state.page + 1
       };
+    case actionTypes.UPS_SUCCESS:
+      return {
+        ...state,
+        detail: {
+          ...state.detail,
+          replies: editUps({...action, replies: state.detail.replies})
+        }
+      };
     default: return state;
   }
+}
+
+function editUps ({reply_id, action, replies, id}) {
+  return replies.map(reply => {
+    if (reply.id === reply_id) {
+      return {
+        ...reply,
+        ups: action === 'down' ? [...removeFromUps(reply_id, reply.ups)] : [...reply.ups, reply_id],
+        is_uped: action !== 'down'
+      };
+    } else {
+      return reply;
+    }
+  });
+}
+
+function removeFromUps (reply_id, ups) {
+  return ups.filter(item => item !== reply_id);
 }
 
 export default topics;

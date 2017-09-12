@@ -1,5 +1,5 @@
 import axios from '../../apis';
-import { call, put, select, fork, take, takeLatest } from 'redux-saga/effects';
+import { call, put, select, fork, take, takeLatest, takeEvery } from 'redux-saga/effects';
 import { topics, status } from '../actions';
 import { push } from 'react-router-redux';
 
@@ -137,10 +137,27 @@ function* watchCollect () {
   }
 }
 
+function* ups ({reply_id}) {
+  try {
+    const accesstoken = yield select(state => state.user.accesstoken);
+    const id = yield select(state => state.user.id);
+    const {data} = yield call(axios.post, `/reply/${reply_id}/ups`, { accesstoken });
+    console.log(data);
+    yield put(topics.upsSuccess(id, data.action, reply_id));
+  } catch (err) {
+    yield put(topics.upsFail());
+  }
+}
+
+function* watchUps () {
+  yield takeEvery(topics.UPS, ups);
+}
+
 export default function* root () {
   yield fork(watchGetData);
   yield fork(watchRefresh);
   yield fork(watchPublish);
   yield fork(watchGetDetail);
   yield fork(watchCollect);
+  yield fork(watchUps);
 }

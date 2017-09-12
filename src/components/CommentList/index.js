@@ -35,7 +35,7 @@ class List extends React.Component {
 
 
   render () {
-    const { loading, onComment } = this.props;
+    const { loading, onComment, onUps } = this.props;
     const { dataSource } = this.state;
     return (
       <ListView
@@ -48,7 +48,7 @@ class List extends React.Component {
         scrollEventThrottle={500}
         useBodyScroll
         onEndReached={this.loadMore}
-        renderRow={(rowData) => <ListItem {...rowData} onComment={onComment} />}
+        renderRow={(rowData) => <ListItem {...rowData} onComment={onComment} onUps={onUps} />}
         renderFooter={() => loading ? <Footer loading={loading} /> : null}
       />
     );

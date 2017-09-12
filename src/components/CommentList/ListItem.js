@@ -3,7 +3,7 @@ import Avatar from '../Avatar';
 import { Flex, Icon } from 'antd-mobile';
 import { formatime } from '../../utils';
 
-const ListItem = ({author, content, create_at, is_uped, ups, onComment}) => (
+const ListItem = ({author, content, create_at, is_uped, ups, onComment, onUps, id}) => (
   <div style={{borderBottom: '1px solid #bfbfbf', padding: '.2rem 0'}}>
     <Flex align="center">
       <Avatar size="70" src={author.avatar_url} loginname={author.loginname} />
@@ -27,6 +27,7 @@ const ListItem = ({author, content, create_at, is_uped, ups, onComment}) => (
             color: '#888',
             fontSize: '0.25rem'
           }}
+          onClick={() => onUps(id)}
         >{ups.length}人赞
         </span>
       </Flex>
