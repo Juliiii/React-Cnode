@@ -30,6 +30,7 @@ function* login ({accesstoken}) {
 
 function logout () {
   return new Promise(resolve => {
+    console.log(1);
     window.localStorage.removeItem('accesstoken');
     window.localStorage.removeItem('loginname');
     resolve();    
@@ -40,6 +41,11 @@ function* watchLogin () {
   while (true) {
     const actions = yield take(user.LOGIN);
     yield call(login, actions);
+  }
+}
+
+function* watchLogOut () {
+  while (true) {
     yield take(user.LOGOUT);
     yield call(logout);
   }
@@ -130,6 +136,7 @@ function* messageFlow () {
 
 export default function* root () {
   yield fork(watchLogin);
+  yield fork(watchLogOut);
   yield fork(watchGetInfo);
   yield fork(watchGetMessageCount);
   yield fork(watchGetCollections);

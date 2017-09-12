@@ -15,7 +15,9 @@ export default class Stateless extends Component {
     return (
       <div>
         <Navbar title={title} />
-        <List data={data ? data : []} />
+        <div style={{paddingTop: '.9rem'}}>
+          <List data={data ? data : []} />
+        </div>
       </div>
     );
   }

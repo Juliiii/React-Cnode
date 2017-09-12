@@ -1,11 +1,24 @@
 import React from 'react'
-import { Icon, Card, Flex } from 'antd-mobile';
+import { Icon, Card, Flex, Popup, TextareaItem, Toast } from 'antd-mobile';
 import { connect } from 'react-redux';
 import { topics } from '../../store/actions';
 import Loading from '../../components/Loading';
 import CommentList from '../../components/CommentList';
 import NavBar from '../../components/NavBar';
 import { formatime } from '../../utils';
+
+// fix touch to scroll background page on iOS
+// https://github.com/ant-design/ant-design-mobile/issues/307
+// https://github.com/ant-design/ant-design-mobile/issues/163
+const isIPhone = new RegExp('\\biPhone\\b|\\biPod\\b', 'i').test(window.navigator.userAgent);
+let maskProps;
+if (isIPhone) {
+  // Note: the popup content will not scroll.
+  maskProps = {
+    onTouchStart: e => e.preventDefault(),
+  };
+}
+
 
 const title = (props) => (
   <Flex direction="column" align="start" style={{width: '100%'}}>
@@ -32,24 +45,34 @@ const title = (props) => (
   </Flex>
 );
 
+const PopupContent = () => (
+  <div>
+    <TextareaItem
+      placeholder="回复xxx"
+      autoFocus
+      rows={6}
+    />
+  </div>
+);
+
 class Detail extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
       loading: false,
-      reachEnd: false
+      reachEnd: false,
+      allData: [],
+      data: []
     }
   } 
 
 
   componentWillMount () {
-    console.log(1);
     this.props.getDetail(this.props.params.id);
   }
 
   componentWillReceiveProps (nextProps) {
     const { detail: {replies} } = nextProps;
-    console.log(replies);
     if (!replies || replies.length === 0) return;
     const _replies = [...replies];
     this.setState({
@@ -70,6 +93,18 @@ class Detail extends React.Component {
     }));
   }
 
+  onClose = () => {
+    Popup.hide();
+  }
+
+  onComment = () => {
+    if (!this.props.accesstoken) {
+      Toast.info('请先登录', 1);
+      return;
+    }
+    Popup.show(<PopupContent />, { animationType: 'slide-up', maskProps });
+  }
+
   render () {
     const { loading, detail, accesstoken, collect, decollect } = this.props;
     if (loading) {
@@ -82,31 +117,39 @@ class Detail extends React.Component {
       return (
         <div>
           <NavBar title="主题详情" />
-          <Card style={{minHeight: 'auto', marginTop: '.1rem'}}>
-            <Card.Header
-              thumb={avatar_url}
-              title={loginname}
-              extra={<span style={{fontSize: '.3rem'}}>楼主</span>}
-              thumbStyle={{height: '.6rem', width: '.6rem'}}
-            />
-          </Card>
-          <Card style={{padding: '0 0.4rem .2rem', marginTop: '.1rem'}}>
-            <Card.Header 
-              title={title({...detail, accesstoken, collect, decollect})}
-              style={{borderBottom: '1px solid #bfbfbf', marginBottom: '.2rem'}} 
-            />
-            <div dangerouslySetInnerHTML={{
-              __html: detail.content
-            }}
-            />
-          </Card>
-          <Card style={{padding: '0 0.4rem .2rem', margin: '.1rem 0'}}>
-            <Card.Header 
-                style={{width: '100%', paddingLeft: '0'}}
-                title="评论"
-            />
-            <CommentList data={data ? data : []} loading={_loading} reachEnd={reachEnd} getData={this.loadMore} />
-          </Card>
+          <div style={{paddingTop: '.9rem'}}>
+            <Card style={{minHeight: 'auto', marginTop: '.1rem'}}>
+              <Card.Header
+                thumb={avatar_url}
+                title={loginname}
+                extra={<span style={{fontSize: '.3rem'}}>楼主</span>}
+                thumbStyle={{height: '.6rem', width: '.6rem'}}
+              />
+            </Card>
+            <Card style={{padding: '0 0.4rem .2rem', marginTop: '.1rem'}}>
+              <Card.Header 
+                title={title({...detail, accesstoken, collect, decollect})}
+                style={{borderBottom: '1px solid #bfbfbf', marginBottom: '.2rem'}} 
+              />
+              <div dangerouslySetInnerHTML={{
+                __html: detail.content
+              }}
+              />
+            </Card>
+            <Card style={{padding: '0 0.4rem .2rem', margin: '.1rem 0'}}>
+              <Card.Header 
+                  style={{width: '100%', paddingLeft: '0'}}
+                  title="评论"
+              />
+              <CommentList 
+                data={data ? data : []} 
+                loading={_loading} 
+                reachEnd={reachEnd} 
+                getData={this.loadMore}
+                onComment={this.onComment}
+              />
+            </Card>
+          </div>
         </div>
       );
     }
