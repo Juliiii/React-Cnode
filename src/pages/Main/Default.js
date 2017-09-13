@@ -9,8 +9,7 @@ const tabs = {
   '精华': 'good',
   '分享': 'share',
   '问答': 'ask',
-  '招聘': 'job',
-  '11': 'dev'
+  '招聘': 'job'
 };
 
 class MyTabs extends React.Component {

@@ -31,11 +31,11 @@ const extra = ({good, top}) => (
 const footer = ({reply_count, visit_count}) => (
   <Flex>
     <Flex align="center">
-      {visit_count ? <Icon type={require('../../icons/browse.svg')} /> : null}
+      {visit_count !== undefined ? <Icon type={require('../../icons/browse.svg')} /> : null}
       {visit_count}
     </Flex>
     <Flex align="center" style={{marginLeft: '10px'}}>
-      {reply_count ? <Icon type={require('../../icons/message.svg')} /> : null}
+      {reply_count !== undefined ? <Icon type={require('../../icons/message.svg')} /> : null}
       {reply_count}
     </Flex>
   </Flex>

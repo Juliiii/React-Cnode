@@ -2,6 +2,7 @@ import axios from '../../apis';
 import { call, put, select, fork, take, takeLatest, takeEvery } from 'redux-saga/effects';
 import { topics, status } from '../actions';
 import { push } from 'react-router-redux';
+import { Toast } from 'antd-mobile';
 
 function dbSave (args) {
   for (const arg of Object.entries(args)) {
@@ -142,15 +143,40 @@ function* ups ({reply_id}) {
     const accesstoken = yield select(state => state.user.accesstoken);
     const id = yield select(state => state.user.id);
     const {data} = yield call(axios.post, `/reply/${reply_id}/ups`, { accesstoken });
-    console.log(data);
     yield put(topics.upsSuccess(id, data.action, reply_id));
   } catch (err) {
+    if (err.response && err.response.status === 403) {
+      Toast.info(err.response.data.error_msg, 1);
+    }
     yield put(topics.upsFail());
   }
 }
 
 function* watchUps () {
   yield takeEvery(topics.UPS, ups);
+}
+
+function* comment ({content, reply_id, topic_id}) {
+  try {
+    yield put(status.setSubmitting());
+    const accesstoken = yield select(state => state.user.accesstoken);
+    let body = {
+      accesstoken,
+      content
+    }
+    if (reply_id) body.reply_id = reply_id;
+    yield call(axios.post, `/topic/${topic_id}/replies`, body);
+    const {data} = yield call(axios.get, `/topic/${topic_id}?mdrender=true&accesstoken=${accesstoken}`);
+    yield put(topics.commentSuccess(data.data));
+  } catch (err) {
+    yield put(topics.commentFail());
+  } finally {
+    yield put(status.setSubmitting());
+  }
+}
+
+function* watchComment () {
+  yield takeLatest(topics.COMMENT, comment);
 }
 
 export default function* root () {
@@ -160,4 +186,5 @@ export default function* root () {
   yield fork(watchGetDetail);
   yield fork(watchCollect);
   yield fork(watchUps);
+  yield fork(watchComment);
 }

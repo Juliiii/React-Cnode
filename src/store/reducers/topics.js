@@ -54,6 +54,11 @@ const topics = (state = topicsInitialState, action) => {
           replies: editUps({...action, replies: state.detail.replies})
         }
       };
+    case actionTypes.COMMENT_SUCCESS:
+      return {
+        ...state,
+        detail: {...action.detail}
+      };
     default: return state;
   }
 }

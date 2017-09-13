@@ -1,10 +1,11 @@
 import React from 'react'
-import { Icon, Card, Flex, Popup, TextareaItem, Toast, Button } from 'antd-mobile';
+import { Icon, Card, Flex, Popup, Toast, Button } from 'antd-mobile';
 import { connect } from 'react-redux';
 import { topics } from '../../store/actions';
 import Loading from '../../components/Loading';
 import CommentList from '../../components/CommentList';
 import NavBar from '../../components/NavBar';
+import PopupContent from './components/PopupContent';
 import { formatime } from '../../utils';
 
 // fix touch to scroll background page on iOS
@@ -18,7 +19,6 @@ if (isIPhone) {
     onTouchStart: e => e.preventDefault(),
   };
 }
-
 
 const title = (props) => (
   <Flex direction="column" align="start" style={{width: '100%'}}>
@@ -45,16 +45,6 @@ const title = (props) => (
   </Flex>
 );
 
-const PopupContent = () => (
-  <div>
-    <TextareaItem
-      placeholder="回复xxx"
-      autoFocus
-      rows={6}
-    />
-  </div>
-);
-
 class Detail extends React.Component {
   constructor (props) {
     super(props);
@@ -66,7 +56,6 @@ class Detail extends React.Component {
       data: []
     }
   } 
-
 
   componentWillMount () {
     this.props.getDetail(this.props.params.id);
@@ -94,7 +83,7 @@ class Detail extends React.Component {
     });
   }
 
-  componentWillDestory () {
+  componentWillUnmount () {
     const node = document.getElementsByTagName('body')[0];
     node.onscroll = null;
   }
@@ -119,12 +108,31 @@ class Detail extends React.Component {
     Popup.hide();
   }
 
-  onComment = () => {
+  onComment = (...arg) => {
     if (!this.props.accesstoken) {
       Toast.info('请先登录', 1);
       return;
     }
-    Popup.show(<PopupContent />, { animationType: 'slide-up', maskProps });
+    const props = {
+      onPublish: this.onPublish
+    }
+
+    if (arg.length) {
+      props.reply_id = arg[0].id;
+      props.loginname = arg[0].author.loginname;
+    }
+
+    Popup.show(<PopupContent {...props} />, { animationType: 'slide-up', maskProps });
+  }
+
+  onPublish = (content, reply_id) => {
+    if (content === '') {
+      Toast.info('不能为空', 1);
+      return;
+    }
+    this.props.comment({content, reply_id, topic_id: this.props.params.id});
+
+    this.onClose();
   }
 
   onUps = (id) => {
@@ -218,7 +226,7 @@ class Detail extends React.Component {
               }}
               type="primary"
               size="small"
-              onClick={this.onComment}
+              onClick={() => this.onComment()}
             >评论
             </Button>
           </div>
@@ -241,6 +249,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     ups: (id) => {
       dispatch(topics.ups(id));
+    },
+    comment: (obj) => {
+      dispatch(topics.comment(obj));
     }
   };
 }
@@ -248,7 +259,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const mapStateToProps = (state, ownProps) => {
   return {
     loading: state.status.loading,
-    submitting: state.status.submitting,
     detail: state.topics.detail,
     accesstoken: state.user.accesstoken
   };

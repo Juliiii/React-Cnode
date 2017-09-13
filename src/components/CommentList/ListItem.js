@@ -37,7 +37,7 @@ const ListItem = ({author, content, create_at, is_uped, ups, onComment, onUps, i
             color: '#888',
             fontSize: '0.25rem'
           }}
-          onClick={onComment}
+          onClick={() => onComment({id, author})}
         >回复
         </span>
       </Flex>

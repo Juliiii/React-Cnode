@@ -28,6 +28,10 @@ export const UPS = 'UPS';
 export const UPS_SUCCESS = 'UPS_SUCCESS';
 export const UPS_FAIL = 'UPS_FAIL';
 
+export const COMMENT = 'COMMENT';
+export const COMMENT_SUCCESS = 'COMMENT_SUCCESS';
+export const COMMENT_FAIL = 'COMMENT_FAIL';
+
 export const refresh = () => ({
   type: REFRESH
 });
@@ -127,4 +131,21 @@ export const upsSuccess = (id, action, reply_id) => ({
 
 export const upsFail = () => ({
   type: UPS_FAIL
+});
+
+
+export const comment = ({content, reply_id, topic_id}) => ({
+  type: COMMENT,
+  reply_id,
+  content,
+  topic_id
+});
+
+export const commentSuccess = (detail) => ({
+  type: COMMENT_SUCCESS,
+  detail
+});
+
+export const commentFail = () => ({
+  type: COMMENT_FAIL
 });
