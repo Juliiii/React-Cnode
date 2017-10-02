@@ -2,22 +2,22 @@
 
 react web app, api 由 **cnode社区** 提供， 求打赏个start呗，客观
 
-####  技术栈
+###  技术栈
 react全家桶 + axios + react-saga + antd-mobile
 
-####  demo
+###  demo
 ##### ps: 暂时没有提高live demo，见谅
 ![a](https://user-images.githubusercontent.com/23744602/31090988-1f432d4e-a7dc-11e7-8969-b31a29e44c6e.gif)
 
-####  文件架构
+### 文件架构
 ![snipaste_20171003_013310](https://user-images.githubusercontent.com/23744602/31090948-04e1ed50-a7dc-11e7-96cc-ccdd4bd14110.png)
 
 
-#### 待做
+### 待做
 
 1、消息
 
-####  如何启动
+###  如何启动
 Step 1
 ```
 git clone git@github.com:Juliiii/React-Cnode.git
