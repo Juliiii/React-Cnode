@@ -1,17 +1,45 @@
 import React from 'react'
 import { ListView, RefreshControl } from 'antd-mobile';
-import ListItem from '../ListItem';
 import Loading from '../Loading';
+import PropTypes from 'prop-types';
 
 const MyBody = (props) => (
   <div>{props.children}</div>
 );
 
 const Footer = () => (
-  <Loading style={{paddingBottom: '99px'}} text="加载中..." />
+  <Loading text="加载中..." />
 );
 
 class List extends React.Component {
+  static propTypes = {
+    disableRefresh: PropTypes.bool,
+    disableLoadMore: PropTypes.bool,
+    reachEnd: PropTypes.bool,
+    loading: PropTypes.bool,
+    refresh: PropTypes.bool,
+    onRefresh: PropTypes.func,
+    getData: PropTypes.func,
+    useBodyScroll: PropTypes.bool,
+    saveScrollTop: PropTypes.func,
+    ListItem: PropTypes.func.isRequired,
+    data: PropTypes.array.isRequired
+  }
+
+  static defaultProps = {
+    disableRefresh: false,
+    disableLoadMore: false,
+    reachEnd: false,
+    loading: false,
+    refresh: false,
+    useBodyScroll: false,
+    onRefresh () {},
+    getData () {},
+    saveScrollTop () {},
+    ListItem () {},
+    data: []
+  }
+
   constructor (props) {
     super(props);
     let dataSource = new ListView.DataSource({
@@ -48,20 +76,39 @@ class List extends React.Component {
   }
 
   loadMore = () => {
-    const { loading, reachEnd, refresh, getData } = this.props;
-    if (loading || reachEnd || refresh) return;
+    const { loading, reachEnd, refresh, getData, disableLoadMore } = this.props;
+    console.log(loading, reachEnd);
+    if (disableLoadMore || loading || reachEnd || refresh) return;
     getData && getData();
   }
 
   refresh = () => {
-    const { loading, refresh, onRefresh } = this.props;
-    if (loading || refresh) return;
+    const { loading, refresh, onRefresh, disableRefresh } = this.props;
+    if (disableRefresh || loading || refresh) return;
     onRefresh && onRefresh();
   }
 
   render () {
-    const { loading, refresh } = this.props;
+    const { loading, refresh, disableRefresh, disableLoadMore, useBodyScroll, ListItem } = this.props;
     const { dataSource } = this.state;
+    if (useBodyScroll) {
+      return (
+        <ListView
+          ref={lv => this.ref = lv}
+          dataSource={dataSource}
+          initialListSize={10}
+          pageSize={10}
+          stickySectionHeadersEnabled={false}
+          scrollEventThrottle={500}
+          useBodyScroll
+          scrollRenderAheadDistance={500}
+          onEndReachedThreshold={20}
+          onEndReached={disableLoadMore ? null : this.loadMore}
+          renderRow={(rowData) => <ListItem item={rowData} {...this.props} />}
+          renderFooter={() => loading ? <Footer loading={loading} /> : null}
+        />
+      );
+    }
     return (
       <ListView
         ref={lv => this.ref = lv}
@@ -71,13 +118,12 @@ class List extends React.Component {
         stickySectionHeadersEnabled={false}
         onEndReachedThreshold={20}
         scrollEventThrottle={500}
-        scrollerOptions={{scrollbars: true}}
         renderBodyComponent={() => <MyBody />}
-        onEndReached={this.loadMore}
-        renderRow={(data) => <ListItem item={data} />}
+        onEndReached={disableLoadMore ? null : this.loadMore}
+        renderRow={(rowData) => <ListItem item={rowData} {...this.props} />}
         renderFooter={() => loading ? <Footer loading={loading} /> : null}
         refreshControl={
-          refresh ? <RefreshControl refreshing={refresh} onRefresh={this.refresh} /> : null
+          !disableRefresh ? <RefreshControl refreshing={refresh} onRefresh={this.refresh} /> : null
         }
         style={{
           height: `${(document.body.clientHeight || document.documentElement.clientHeight) - 87}px`
