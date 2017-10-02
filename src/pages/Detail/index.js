@@ -7,7 +7,7 @@ import List from '../../components/List';
 import ListItem from '../../components/CommentListItem';
 import NavBar from '../../components/NavBar';
 import PopupContent from './components/PopupContent';
-import { formatime } from '../../utils';
+import { formatime, throttle } from '../../utils';
 
 // fix touch to scroll background page on iOS
 // https://github.com/ant-design/ant-design-mobile/issues/307
@@ -64,13 +64,13 @@ class Detail extends React.Component {
 
   componentDidMount () {
     const node = document.body;
-    node.onscroll = () => {
+    node.onscroll = throttle(() => {
       const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
       const height = document.body.clientHeight || document.documentElement.clientHeight;
       this.setState({
         backTopShow: scrollTop > height - 30
       });
-    }
+    }, 200);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -89,8 +89,9 @@ class Detail extends React.Component {
     node.onscroll = null;
   }
 
-  backTop = () => {
-    window.scrollTo(0, 0);  
+  backTop = (e) => {
+    e.preventDefault();
+    window.scrollTo(0, 0);
   }
 
 

@@ -33,7 +33,29 @@ function toDetailedTime (tar) {
   else return `${(offset / (3600 * 24 * 30 * 1000 * 12)).toFixed(1)}年`;
 }
 
+/**
+ * 
+ * 
+ * @param {any} fn 需要被节流的函数
+ * @param {any} atleast 间隔
+ * @returns 
+ */
+function throttle (fn, delay) {
+  var previous = null;
+
+  return function () {
+    var now = +new Date();
+    if ( !previous ) previous = now;
+    if ( now - previous > delay ) {
+      fn();
+      // 重置上一次开始时间为本次结束时间
+      previous = now;
+    }
+  }
+};
+
 export {
   formatime,
-  toDetailedTime
+  toDetailedTime,
+  throttle
 };
