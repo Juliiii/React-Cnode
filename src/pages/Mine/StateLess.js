@@ -54,8 +54,15 @@ export default class Stateless extends Component {
     return (
       <div>
         <Navbar title={title} />
-        <div style={{paddingTop: '.9rem'}}>
-          <List data={sliceData} ListItem={ListItem} disableRefresh loading={_loading} getData={this.loadMore} reachEnd={!_hasMore} />
+        <div style={{padding: '.9rem 0 .99rem 0'}}>
+          <List 
+            data={sliceData} 
+            ListItem={ListItem} 
+            disableRefresh 
+            loading={_loading} 
+            getData={this.loadMore} 
+            reachEnd={!_hasMore} 
+          />
         </div>
       </div>
     );

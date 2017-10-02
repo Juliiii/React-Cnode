@@ -20,6 +20,7 @@ class MyTabs extends React.Component {
     this.state = {
       firstCome: true
     }
+    document.body.style.overflowY = 'hidden';
   }
 
 

@@ -4,7 +4,7 @@ import { Flex, Icon } from 'antd-mobile';
 import { formatime } from '../../utils';
 
 const ListItem = ({item : {author, content, create_at, is_uped, ups, id}, onComment, onUps}) => (
-  <div style={{borderBottom: '1px solid #bfbfbf', padding: '.2rem 0'}}>
+  <div style={{borderBottom: '1px solid #ddd', padding: '.2rem 0'}}>
     <Flex align="center">
       <Avatar size="70" src={author.avatar_url} loginname={author.loginname} />
       <Flex direction="column" align="start" style={{marginLeft: '0.2rem'}}>
@@ -19,7 +19,7 @@ const ListItem = ({item : {author, content, create_at, is_uped, ups, id}, onComm
         </span>
       </Flex>
     </Flex>
-    <div dangerouslySetInnerHTML={{__html: content}} style={{padding: '0.25rem 0'}} />
+    <div dangerouslySetInnerHTML={{__html: content}} style={{padding: '0.25rem 0', fontSize: '.3rem' }} />
     <Flex>
       <Flex align="center">
         {is_uped ? <Icon type={require('../../icons/praise_fill.svg')} /> : <Icon type={require('../../icons/praise.svg')} />}

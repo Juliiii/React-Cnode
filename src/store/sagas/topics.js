@@ -108,6 +108,7 @@ function* collect ({id}) {
     yield put(status.setSubmitting());
     yield call(axios.post, '/topic_collect/collect', { accesstoken, topic_id: id });
     yield put(topics.collectSuccess());
+    Toast.success('收藏成功', 1);
   } catch (err) {
     yield put(topics.collectFail());
   } finally {
@@ -122,6 +123,7 @@ function* decollect ({id}) {
     yield put(status.setSubmitting());
     yield call(axios.post, '/topic_collect/de_collect', { accesstoken, topic_id: id });
     yield put(topics.decollectSuccess());
+    Toast.success('取消成功', 1);
   } catch (err) {
     yield put(topics.decollectFail());
   } finally {
@@ -133,7 +135,12 @@ function* watchCollect () {
   while (true) {
     let actions = yield take(topics.COLLECT);
     yield call(collect, actions);
-    actions = yield take(topics.DECOLLECT);
+  }
+}
+
+function* watchDecollect () {
+  while (true) {
+    let actions = yield take(topics.DECOLLECT);
     yield call(decollect, actions);
   }
 }
@@ -184,6 +191,7 @@ export default function* root () {
   yield fork(watchRefresh);
   yield fork(watchPublish);
   yield fork(watchGetDetail);
+  yield fork(watchDecollect);
   yield fork(watchCollect);
   yield fork(watchUps);
   yield fork(watchComment);
