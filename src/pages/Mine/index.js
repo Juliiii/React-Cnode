@@ -24,7 +24,7 @@ class Mine extends React.Component {
     return (
       <div>
         <BusinessCard info={info} />
-        <List style={{marginTop: '1rem'}}>
+        <List style={{marginTop: '.5rem'}}>
           <List.Item 
             thumb={<Icon type={require('../../icons/like_fill.svg')} size="md" />} 
             arrow="horizontal"

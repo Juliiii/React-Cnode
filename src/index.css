@@ -28,3 +28,7 @@ pre {
 ::-webkit-scrollbar { 
   display: none; 
 }
+
+:global(.am-list-footer) {
+  padding: 0 !important;
+}

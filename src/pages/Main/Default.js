@@ -1,5 +1,6 @@
 import React from 'react'
 import List from '../../components/List';
+import ListItem from '../../components/ListItem';
 import { Tabs } from 'antd-mobile';
 import { connect } from 'react-redux';
 import { topics } from '../../store/actions';
@@ -59,7 +60,10 @@ class MyTabs extends React.Component {
           onChange={this.changeTab}
         >
           {
-            Object.entries(tabs).map((item, index) => <TabPane tab={item[0]} key={item[1]}><List {...{...this.props, saveScrollTop: this.saveScrollTop, ...this.state}} /></TabPane>)
+            Object.entries(tabs).map((item, index) => 
+              (<TabPane tab={item[0]} key={item[1]} style={{paddingBottom: '99px'}}>
+                  <List {...{...this.props, saveScrollTop: this.saveScrollTop, ...this.state, ListItem}} />
+               </TabPane>))
           }
         </Tabs>
       </div>

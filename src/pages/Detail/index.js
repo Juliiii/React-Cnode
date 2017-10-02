@@ -3,7 +3,8 @@ import { Icon, Card, Flex, Popup, Toast, Button } from 'antd-mobile';
 import { connect } from 'react-redux';
 import { topics } from '../../store/actions';
 import Loading from '../../components/Loading';
-import CommentList from '../../components/CommentList';
+import List from '../../components/List';
+import ListItem from '../../components/CommentListItem';
 import NavBar from '../../components/NavBar';
 import PopupContent from './components/PopupContent';
 import { formatime } from '../../utils';
@@ -62,9 +63,9 @@ class Detail extends React.Component {
   }
 
   componentDidMount () {
-    const node = document.getElementsByTagName('body')[0];
+    const node = document.body;
     node.onscroll = () => {
-      const scrollTop = node.scrollTop;
+      const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
       const height = document.body.clientHeight || document.documentElement.clientHeight;
       this.setState({
         backTopShow: scrollTop > height - 30
@@ -84,7 +85,7 @@ class Detail extends React.Component {
   }
 
   componentWillUnmount () {
-    const node = document.getElementsByTagName('body')[0];
+    const node = document.body;
     node.onscroll = null;
   }
 
@@ -165,7 +166,7 @@ class Detail extends React.Component {
                 thumbStyle={{height: '.6rem', width: '.6rem'}}
               />
             </Card>
-            <Card style={{padding: '0 0.4rem .2rem', marginTop: '.1rem'}}>
+            <Card style={{padding: '0 0.3rem .2rem', marginTop: '.1rem'}}>
               <Card.Header 
                 title={title({...detail, accesstoken, collect, decollect})}
                 style={{borderBottom: '1px solid #bfbfbf', marginBottom: '.2rem'}} 
@@ -175,18 +176,21 @@ class Detail extends React.Component {
               }}
               />
             </Card>
-            <Card style={{padding: '0 0.4rem .2rem', margin: '.1rem 0'}}>
+            <Card style={{padding: '0 0.3rem .2rem', margin: '.1rem 0'}}>
               <Card.Header 
                   style={{width: '100%', paddingLeft: '0'}}
                   title="评论"
               />
-              <CommentList 
-                data={data ? data : []} 
+              <List 
+                data={data} 
                 loading={_loading} 
                 reachEnd={reachEnd} 
                 getData={this.loadMore}
                 onComment={this.onComment}
                 onUps={this.onUps}
+                useBodyScroll
+                disabledRefresh
+                ListItem={ListItem}
               />
             </Card>
             { backTopShow 
