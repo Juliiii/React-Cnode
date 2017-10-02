@@ -54,7 +54,8 @@ class Detail extends React.Component {
       reachEnd: false,
       backTopShow: false,
       allData: [],
-      data: []
+      data: [],
+      limit: 10
     }
     document.body.style.overflowY = 'auto';
   } 
@@ -75,7 +76,7 @@ class Detail extends React.Component {
       // 只能手动判断到底底部了，kuku
       const scrollHeight = document.body.scrollHeight || document.documentElement.scrollHeight;
       const clientHeight = document.body.clientHeight || document.documentElement.clientHeight;
-      if (scrollHeight <= clientHeight + scrollTop + 350) {
+      if (scrollHeight <= clientHeight + scrollTop + 450) {
         console.log(1);
         this.loadMore();
       }
@@ -85,11 +86,12 @@ class Detail extends React.Component {
 
   componentWillReceiveProps (nextProps) {
     const { detail: {replies} } = nextProps;
+    const { limit } = this.state;
     if (!replies || replies.length === 0) return;
     const _replies = [...replies];
     this.setState({
       allData: _replies,
-      data: _replies.splice(0, 5),
+      data: _replies.splice(0, limit),
       reachEnd: _replies.length === 0
     });
   }
@@ -106,14 +108,14 @@ class Detail extends React.Component {
 
 
   loadMore = () => {
-    const { allData: _allData, data: _data, loading, reachEnd } = this.state;
+    const { allData: _allData, data: _data, loading, reachEnd, limit } = this.state;
     if (loading || reachEnd) return;
     this.setState({
       loading: true
     });
     const allData = [..._allData];
     const oldData = [..._data];
-    const data = allData.splice(0, 5);
+    const data = allData.splice(0, limit);
     this.setState((preState) => ({
       allData,
       data: [...oldData, ...data],
@@ -121,7 +123,7 @@ class Detail extends React.Component {
     }));
     setTimeout(() => this.setState({
       loading: false
-    }), 200);
+    }), 100);
   }
 
   onClose = () => {
@@ -200,15 +202,18 @@ class Detail extends React.Component {
                   style={{width: '100%', paddingLeft: '0'}}
                   title="评论"
               />
-              <List 
-                data={data} 
-                onComment={this.onComment}
-                onUps={this.onUps}
-                useBodyScroll
-                disabledRefresh
-                disabledLoadMore
-                ListItem={ListItem}
-              />
+              { data.length
+              ? <List 
+                  data={data} 
+                  onComment={this.onComment}
+                  onUps={this.onUps}
+                  useBodyScroll
+                  disabledRefresh
+                  disabledLoadMore
+                  ListItem={ListItem}
+                />
+              : <Flex align="center" justify="center" style={{fontSize: '.3rem', color: '#bfbfbf'}}>暂时没有评论</Flex>
+              }
             </Card>
             { backTopShow 
               ? <Button 

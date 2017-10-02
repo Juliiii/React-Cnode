@@ -77,7 +77,6 @@ class List extends React.Component {
 
   loadMore = () => {
     const { loading, reachEnd, refresh, getData, disableLoadMore } = this.props;
-    console.log(loading, reachEnd);
     if (disableLoadMore || loading || reachEnd || refresh) return;
     getData && getData();
   }
@@ -97,12 +96,7 @@ class List extends React.Component {
           ref={lv => this.ref = lv}
           dataSource={dataSource}
           initialListSize={data.length}
-          pageSize={10}
-          stickySectionHeadersEnabled={false}
-          scrollEventThrottle={500}
           useBodyScroll
-          scrollRenderAheadDistance={500}
-          onEndReachedThreshold={20}
           onEndReached={disableLoadMore ? null : this.loadMore}
           renderRow={(rowData) => <ListItem item={rowData} {...this.props} />}
           renderFooter={() => loading ? <Footer loading={loading} /> : null}
@@ -116,7 +110,7 @@ class List extends React.Component {
         initialListSize={10}
         pageSize={10}
         stickySectionHeadersEnabled={false}
-        onEndReachedThreshold={20}
+        onEndReachedThreshold={80}
         scrollEventThrottle={500}
         renderBodyComponent={() => <MyBody />}
         onEndReached={disableLoadMore ? null : this.loadMore}

@@ -31,15 +31,17 @@ class Homepage extends React.Component {
     return (
       <div style={{height: '100%'}}>
         <Navbar title="个人主页" />
-        <BusinessCard info={info} defaultActiveKey="1" />
-        <Tabs swipeable={false}>
-          <TabPane tab="最近回复" key= "1">
-            {recent_replies.map(item => <ListItem item={item} key={item.id} />)}
-          </TabPane>
-          <TabPane tab="最近主题" key= "2">
-            {recent_topics.map(item => <ListItem item={item} key={item.id} />)}
-          </TabPane>
-        </Tabs>
+        <div style={{paddingTop: '.9rem'}}>
+          <BusinessCard info={info} />
+          <Tabs swipeable={false} defaultActiveKey="1">
+            <TabPane tab="最近回复" key= "1" style={{paddingBottom: '.99rem'}}>
+              {recent_replies.map(item => <ListItem item={item} key={item.id} />)}
+            </TabPane>
+            <TabPane tab="最近主题" key= "2" style={{paddingBottom: '.99rem'}}>
+              {recent_topics.map(item => <ListItem item={item} key={item.id} />)}
+            </TabPane>
+          </Tabs>
+        </div>
       </div>
     );
   }
