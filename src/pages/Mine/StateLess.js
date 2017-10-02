@@ -54,7 +54,7 @@ export default class Stateless extends Component {
     return (
       <div>
         <Navbar title={title} />
-        <div style={{padding: '.9rem 0 .99rem 0'}}>
+        <div style={{padding: '.9rem 0 0 0'}}>
           <List 
             data={sliceData} 
             ListItem={ListItem} 
