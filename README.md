@@ -10,7 +10,8 @@ react全家桶 + axios + react-saga + antd-mobile
 ![Alt text](./a.gif)
 
 ####  文件架构
-![Alt text](./snipaste_20171003_013310.png)
+![snipaste_20171003_013310](https://user-images.githubusercontent.com/23744602/31090948-04e1ed50-a7dc-11e7-96cc-ccdd4bd14110.png)
+
 
 #### 待做
 
