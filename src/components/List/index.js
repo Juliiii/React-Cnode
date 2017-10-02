@@ -89,14 +89,14 @@ class List extends React.Component {
   }
 
   render () {
-    const { loading, refresh, disableRefresh, disableLoadMore, useBodyScroll, ListItem } = this.props;
+    const { loading, refresh, disableRefresh, disableLoadMore, useBodyScroll, ListItem, data } = this.props;
     const { dataSource } = this.state;
     if (useBodyScroll) {
       return (
         <ListView
           ref={lv => this.ref = lv}
           dataSource={dataSource}
-          initialListSize={10}
+          initialListSize={data.length}
           pageSize={10}
           stickySectionHeadersEnabled={false}
           scrollEventThrottle={500}

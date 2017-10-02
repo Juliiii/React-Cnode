@@ -56,6 +56,7 @@ class Detail extends React.Component {
       allData: [],
       data: []
     }
+    document.body.style.overflowY = 'auto';
   } 
 
   componentWillMount () {
@@ -70,6 +71,15 @@ class Detail extends React.Component {
       this.setState({
         backTopShow: scrollTop > height - 30
       });
+      
+      // 只能手动判断到底底部了，kuku
+      const scrollHeight = document.body.scrollHeight || document.documentElement.scrollHeight;
+      const clientHeight = document.body.clientHeight || document.documentElement.clientHeight;
+      if (scrollHeight <= clientHeight + scrollTop + 350) {
+        console.log(1);
+        this.loadMore();
+      }
+
     }, 200);
   }
 
@@ -96,14 +106,22 @@ class Detail extends React.Component {
 
 
   loadMore = () => {
-    const allData = [...this.state.allData];
-    const oldData = [...this.state.data];
+    const { allData: _allData, data: _data, loading, reachEnd } = this.state;
+    if (loading || reachEnd) return;
+    this.setState({
+      loading: true
+    });
+    const allData = [..._allData];
+    const oldData = [..._data];
     const data = allData.splice(0, 5);
     this.setState((preState) => ({
       allData,
       data: [...oldData, ...data],
       reachEnd: allData.length === 0
     }));
+    setTimeout(() => this.setState({
+      loading: false
+    }), 200);
   }
 
   onClose = () => {
@@ -152,11 +170,11 @@ class Detail extends React.Component {
       return ( <Loading /> );
     } else {
       const { author } = detail;
-      const {reachEnd, data, loading : _loading} = this.state;
+      const { data } = this.state;
       const loginname = author ? author.loginname : '';
       const avatar_url = author ? author.avatar_url: '';
       return (
-        <div>
+        <div style={{height: '100%'}}>
           <NavBar title="主题详情" />
           <div style={{paddingTop: '.9rem'}}>
             <Card style={{minHeight: 'auto', marginTop: '.1rem'}}>
@@ -184,13 +202,11 @@ class Detail extends React.Component {
               />
               <List 
                 data={data} 
-                loading={_loading} 
-                reachEnd={reachEnd} 
-                getData={this.loadMore}
                 onComment={this.onComment}
                 onUps={this.onUps}
                 useBodyScroll
                 disabledRefresh
+                disabledLoadMore
                 ListItem={ListItem}
               />
             </Card>
