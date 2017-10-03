@@ -1,6 +1,6 @@
 ## React-Cnode
 
-react web app, api 由 **cnode社区** 提供， 求打赏个start呗，客观
+> react web app, api 由 **cnode社区** 提供
 
 ###  技术栈
 react全家桶 + axios + react-saga + antd-mobile
