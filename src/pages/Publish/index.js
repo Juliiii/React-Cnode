@@ -120,11 +120,11 @@ class Publish extends React.Component {
             <List.Item>选择主题</List.Item>
           </Picker>
         </List>
-        <Tabs defaultActiveKey="1" style={{margin: '.5rem 0'}}>
+        <Tabs defaultActiveKey="1" style={{margin: '.5rem 0'}} swipeable={false}>
           <TabPane tab="正文" key="1">
             <TextareaItem 
               placeholder="支持markdown" 
-              autoHeight
+              rows={8}
               error={error.content} 
               onChange={this.handleContentChange} 
             />
@@ -134,8 +134,8 @@ class Publish extends React.Component {
               style={{
                 padding: '0.23rem 0 0.21rem 0.3rem',
                 backgroundColor: 'white',
-                minHeight: '0.88rem',
-                boxSizing: 'border-box'
+                boxSizing: 'border-box',
+                height: '4.52rem'
               }}
               dangerouslySetInnerHTML={{__html: markdown}} 
             />

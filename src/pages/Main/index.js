@@ -36,8 +36,8 @@ class Main extends React.Component {
             }}
           />
           <TabBar.Item
-            icon={<Icon type={require('../../icons/mine.svg')} size="md" />}
-            selectedIcon={<Icon type={require('../../icons/mine_fill.svg')} size="md" />}
+            icon={<Icon type={require('../../icons/people.svg')} size="md" />}
+            selectedIcon={<Icon type={require('../../icons/people_fill.svg')} size="md" />}
             title="我的"
             key="我的"
             selected={tab === 'mine'}

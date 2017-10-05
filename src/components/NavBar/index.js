@@ -9,6 +9,7 @@ export const BackNavBar = ({title}) => (
     style={{
       position: 'fixed',
       width: '100%',
+      height: '0.87rem',
       top: '0',
       left: '0',
       zIndex: '999'

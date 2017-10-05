@@ -52,10 +52,13 @@ pre {
   background-color: rgb(255, 255, 255) !important;
 }
 
-.mainpageTab .am-card-body {
+.am-card-body {
   border-top: transparent !important;
 }
-
+.am-card,
+.am-navbar {
+  box-shadow: 0 1px 6px rgba(0,0,0,.2);
+}
 .am-navbar-dark {
   background-color: #3a40f5 !important;
 }
