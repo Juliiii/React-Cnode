@@ -102,6 +102,7 @@ class Detail extends React.Component {
 
   backTop = (e) => {
     e.preventDefault();
+    this.setState({backTopShow: false});
     window.scrollTo(0, 0);
   }
 
@@ -186,7 +187,7 @@ class Detail extends React.Component {
                 thumbStyle={{height: '.6rem', width: '.6rem'}}
               />
             </Card>
-            <Card style={{padding: '0 0.3rem .2rem', marginTop: '.1rem'}}>
+            <Card style={{padding: '0 0.2rem .2rem', marginTop: '.1rem'}}>
               <Card.Header 
                 title={title({...detail, accesstoken, collect, decollect})}
                 style={{borderBottom: '1px solid #bfbfbf', marginBottom: '.2rem'}} 

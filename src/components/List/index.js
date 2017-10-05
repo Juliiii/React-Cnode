@@ -70,7 +70,6 @@ class List extends React.Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    console.log(nextProps, nextState);
     return true;
   }
 

@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  font-size: 24px;
+  font-size: 0.28rem !important;
   overflow-x: hidden;
 }
 
@@ -13,6 +13,8 @@ html, body {
 
 p {
   margin: 0;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
 img {
@@ -23,6 +25,9 @@ img {
 pre {
   line-height: 1.25;
   overflow-x: scroll;
+  background-color: #f6f6f6;
+  color: #657b83;
+  padding: .1rem;
 }
 
 ::-webkit-scrollbar { 
