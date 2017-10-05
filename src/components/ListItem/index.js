@@ -9,7 +9,8 @@ import { Link } from 'react-router';
 const title = ({author: {loginname}, create_at}) => (
   <Flex direction="column" align="start" style={{padding: '0 .1rem'}}>
     <Flex.Item style={{
-      color: colors.blue
+      color: colors.blue,
+      fontSize: '0.28rem'
     }}
     >{loginname}
     </Flex.Item>
@@ -17,7 +18,7 @@ const title = ({author: {loginname}, create_at}) => (
       color: '#888',
       marginTop: '0.1rem',
       marginLeft: '0',
-      fontSize: '0.25rem'
+      fontSize: '0.24rem'
     }}
     >{create_at ? formatime(create_at) : null}
     </Flex.Item>
@@ -42,7 +43,7 @@ const footer = ({reply_count, visit_count}) => (
 );
 
 const footerExtra = ({last_reply_at}) => (
-  <Flex align="center" justify="end" style={{height: '100%'}}>最新动态: {formatime(last_reply_at)}</Flex>
+  <Flex align="center" justify="end" style={{height: '100%', fontSize: '0.24rem'}}>最新动态: {formatime(last_reply_at)}</Flex>
 );
 
 
@@ -64,7 +65,7 @@ const ListItem = ({item}) => {
           />
           <Card.Body 
             style={{
-              padding: '0 0.3rem',
+              padding: '0.1rem 0.3rem',
               height: '1rem',
               display: 'flex',
               alignItems: 'center'
@@ -75,7 +76,7 @@ const ListItem = ({item}) => {
           <Card.Footer content={footer(item)} extra={footerExtra(item)} />
         </Card>
       </Link>
-      <WhiteSpace size="xs" />
+      <WhiteSpace size="md" />
     </div>
   );
 };
