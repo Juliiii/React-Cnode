@@ -5,7 +5,7 @@ import { topics } from '../../store/actions';
 import Loading from '../../components/Loading';
 import List from '../../components/List';
 import ListItem from '../../components/CommentListItem';
-import NavBar from '../../components/NavBar';
+import { BackNavBar } from '../../components/NavBar';
 import PopupContent from './components/PopupContent';
 import { formatime, throttle } from '../../utils';
 
@@ -177,7 +177,7 @@ class Detail extends React.Component {
       const avatar_url = author ? author.avatar_url: '';
       return (
         <div style={{height: '100%'}}>
-          <NavBar title="主题详情" />
+          <BackNavBar title="主题详情" />
           <div style={{paddingTop: '.9rem'}}>
             <Card style={{minHeight: 'auto', marginTop: '.1rem'}}>
               <Card.Header

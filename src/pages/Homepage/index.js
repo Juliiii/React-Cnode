@@ -1,7 +1,7 @@
 import React from 'react';
 import BusinessCard from '../../components/BusinessCard';
 import ListItem from '../../components/ListItem';
-import Navbar from '../../components/NavBar';
+import { BackNavBar } from '../../components/NavBar';
 import Loading from '../../components/Loading';
 import { Tabs } from 'antd-mobile';
 import { user, global } from '../../store/actions';
@@ -30,7 +30,7 @@ class Homepage extends React.Component {
     const recent_topics = info.recent_topics ? info.recent_topics : [];
     return (
       <div style={{height: '100%'}}>
-        <Navbar title="个人主页" />
+        <BackNavBar title="个人主页" />
         <div style={{paddingTop: '.9rem'}}>
           <BusinessCard info={info} />
           <Tabs swipeable={false} defaultActiveKey="1">

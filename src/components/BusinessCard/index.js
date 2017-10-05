@@ -8,7 +8,7 @@ const BusinessCard = ({info}) => {
   const { avatar_url, loginname, score, create_at } = info;
   return (
     <Card style={{
-      padding: '0.3rem'
+      padding: '0.2rem'
     }}
     >
     <Flex

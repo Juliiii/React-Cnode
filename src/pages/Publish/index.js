@@ -3,7 +3,7 @@ import { InputItem, TextareaItem, Tabs, Button, Picker, List } from 'antd-mobile
 import { topics } from '../../store/actions';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-
+import { SimpleNavbar } from '../../components/NavBar';
 
 import marked from 'marked';
 
@@ -52,7 +52,6 @@ class Publish extends React.Component {
 
 
   handleContentChange = (value) => {
-    console.log(marked(value));
     this.setState({ 
       content: value,
       markdown: marked(value),
@@ -101,6 +100,7 @@ class Publish extends React.Component {
 
     return (
       <div>
+        <SimpleNavbar title="发布" />
         <InputItem
           placeholder="最少10个字"
           clear

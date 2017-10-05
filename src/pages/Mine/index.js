@@ -1,11 +1,11 @@
 import React from 'react'
 import BusinessCard from '../../components/BusinessCard';
 import Loading from '../../components/Loading';
+import { SimpleNavbar } from '../../components/NavBar';
 import { List, Icon, Badge, Toast } from 'antd-mobile';
 import { connect } from 'react-redux';
 import { user, global } from '../../store/actions';
 import { push } from 'react-router-redux';
-
 
 class Mine extends React.Component {
 
@@ -22,36 +22,36 @@ class Mine extends React.Component {
     const { info, logout, loading, messageCount, changeUrl } = this.props;
     if (loading) return ( <Loading /> );
     return (
-      <div>
+      <div
+        style={{
+          overflowY: 'auto'
+        }}
+      >
+        <SimpleNavbar title="我" />
         <BusinessCard info={info} />
-        <List style={{marginTop: '.5rem'}}>
+        <List style={{marginTop: '.2rem'}}>
           <List.Item 
             thumb={<Icon type={require('../../icons/like_fill.svg')} size="md" />} 
-            arrow="horizontal"
             onClick={() => changeUrl('/mine/collection')}
           >我的收藏
           </List.Item>
           <List.Item 
             thumb={<Icon type={require('../../icons/document_fill.svg')} size="md" />} 
-            arrow="horizontal"
             onClick={() => changeUrl('/mine/topic')}
           >最近话题
           </List.Item>
           <List.Item 
             thumb={<Icon type={require('../../icons/interactive_fill.svg')} size="md" />} 
-            arrow="horizontal"
             onClick={() => changeUrl('/mine/reply')}
           >最近回复
           </List.Item>
           <List.Item 
             thumb={<Icon type={require('../../icons/remind_fill.svg')} size="md" />}
-            arrow="horizontal"
             extra={<Badge text={messageCount} overflowCount={99} />}
           >未读消息
           </List.Item>
           <List.Item 
             thumb={<Icon type={require('../../icons/undo.svg')} size="md" />}
-            arrow="horizontal"
             onClick={logout}
           >登出
           </List.Item>
