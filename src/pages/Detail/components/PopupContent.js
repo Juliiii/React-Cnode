@@ -27,7 +27,7 @@ class PopupContent extends React.Component {
       <div>
         <TextareaItem
           value={content}
-          placeholder="回复xxx"
+          placeholder="评论或回复一下吧"
           autoFocus
           rows={6}
           onChange={this.onChange}
