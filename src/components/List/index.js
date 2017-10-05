@@ -69,6 +69,10 @@ class List extends React.Component {
     });
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    return true;
+  }
+
   componentWillUnmount () {
     if (this.props.saveScrollTop) {
       this.props.saveScrollTop(this.ref.refs.listview.scrollProperties.offset);

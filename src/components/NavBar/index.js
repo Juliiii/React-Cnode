@@ -2,8 +2,7 @@ import React from 'react'
 import { NavBar, Icon } from 'antd-mobile';
 import { browserHistory } from 'react-router';
 
-
-const MyNavBar = (props) => (
+export const BackNavBar = ({title}) => (
   <NavBar
     leftContent={<Icon type={require('../../icons/return.svg')} />}
     mode="light"
@@ -16,8 +15,22 @@ const MyNavBar = (props) => (
     }}
     iconName={null}
     onLeftClick={() => browserHistory.goBack()}
-  >{props.title}
+  >{title}
   </NavBar>
 );
 
-export default MyNavBar;
+export const SimpleNavbar = ({title, mode = 'dark'}) => (
+  <div 
+    style= {{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '100%',
+      height: '87px',
+      backgroundColor: mode === 'dark' ? '#3a40f5' : '#fff',
+      color: mode === 'dark' ? '#fff' : '#333',
+      fontSize: '0.36rem'
+    }}
+  >{title}
+  </div>
+)

@@ -87,7 +87,7 @@ module.exports = {
     // https://github.com/facebookincubator/create-react-app/issues/290
     // `web` extension prefixes have been added for better support
     // for React Native Web.
-    extensions: ['.web.js', '.js', '.json', '.web.jsx', '.jsx', 'css'],
+    extensions: ['.web.js', '.js', '.json', '.web.jsx', '.jsx', '.css'],
     alias: {
       
       // Support React Native Web
@@ -166,8 +166,7 @@ module.exports = {
               {
                 loader: require.resolve('css-loader'),
                 options: {
-                  importLoaders: 1,
-                  modules: true
+                  importLoaders: 1
                 },
               },
               {
@@ -181,7 +180,7 @@ module.exports = {
                     autoprefixer({
                       browsers: [
                         '>1%',
-                        'last 4 versions',
+                        'last 10 versions',
                         'Firefox ESR',
                         'not ie < 9', // React doesn't support IE8 anyway
                       ],
