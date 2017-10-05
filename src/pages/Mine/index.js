@@ -51,7 +51,7 @@ class Mine extends React.Component {
           >未读消息
           </List.Item>
           <List.Item 
-            thumb={<Icon type={require('../../icons/undo.svg')} size="md" />}
+            thumb={<Icon type={require('../../icons/logout.svg')} size="md" />}
             onClick={logout}
           >登出
           </List.Item>
