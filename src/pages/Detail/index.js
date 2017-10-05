@@ -77,7 +77,6 @@ class Detail extends React.Component {
       const scrollHeight = document.body.scrollHeight || document.documentElement.scrollHeight;
       const clientHeight = document.body.clientHeight || document.documentElement.clientHeight;
       if (scrollHeight <= clientHeight + scrollTop + 450) {
-        console.log(1);
         this.loadMore();
       }
 
@@ -87,7 +86,7 @@ class Detail extends React.Component {
   componentWillReceiveProps (nextProps) {
     const { detail: {replies} } = nextProps;
     const { limit } = this.state;
-    if (!replies || replies.length === 0) return;
+    if (!replies) return;
     const _replies = [...replies];
     this.setState({
       allData: _replies,
