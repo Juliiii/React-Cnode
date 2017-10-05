@@ -32,3 +32,17 @@ pre {
 :global(.am-list-footer) {
   padding: 0 !important;
 }
+
+:global(.am-tabs-tab) {
+  background-color: #3a40f5 !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: .25rem !important;
+}
+
+:global(.am-tabs-tab-active) {
+  color: rgb(255, 255, 255) !important;
+}
+
+:global(.am-tabs-ink-bar) {
+  background-color: rgb(255, 255, 255) !important;
+}
