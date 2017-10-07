@@ -15,6 +15,7 @@ react全家桶 + axios + react-saga + antd-mobile
 ### 正做
 
 1、2017年10月7日，当前版本引入immuable，优化性能
+
 2、2017年10月7日，新开一个版本，用mobx重构
 
 ### 待做
