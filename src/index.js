@@ -4,11 +4,11 @@ import './index.css';
 import Router from './router';
 import registerServiceWorker from './registerServiceWorker';
 import store from './store';
-import { Provider } from 'react-redux';
+import { Provider } from 'mobx-react';
 
 
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider {...store}>
     <Router />
   </Provider>
 , document.getElementById('root'));
