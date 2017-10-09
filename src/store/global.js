@@ -11,7 +11,7 @@ class Global {
     this.to = to;
   }
 
-  @action
+  @action.bound
   updateRouteTable (newPath) {
     this.from = this.to;
     this.to = newPath;
@@ -19,7 +19,7 @@ class Global {
     localStorage.setItem('to', this.to);
   }
 
-  @action
+  @action.bound
   changeTab (tab) {
     this.tab = tab;
     switch (tab) {
