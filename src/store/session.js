@@ -6,8 +6,8 @@ import routing from './routing';
 class Session {
   @observable accesstoken;
   @observable loginname;
+  @observable avatar_url;
   @observable id;
-  @observable info;
   @observable submitting;
 
   constructor () {
@@ -18,7 +18,7 @@ class Session {
     this.accesstoken = '';
     this.loginname = '';
     this.id = '';
-    this.info = {};
+    this.avatar_url = '';
     this.submitting = false;    
   }
 
@@ -36,7 +36,11 @@ class Session {
     try {
       this.submitting = true;
       const { data } = await axios.post('/accesstoken', {accesstoken: this.accesstoken});
-      console.log(data);
+      Object.entries(data.data).forEach(([key, value]) => {
+        if (key !== 'success') {
+          this[key] = value;
+        }
+      });
       Toast.success('登录成功', 1);
       routing.replace('/mine');
     } catch (err) {
