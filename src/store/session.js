@@ -4,11 +4,23 @@ import { Toast } from 'antd-mobile';
 import routing from './routing';
 
 class Session {
-  @observable accesstoken = '';
-  @observable loginname = '';
-  @observable id = '';
-  @observable info = {};
-  @observable submitting = false;
+  @observable accesstoken;
+  @observable loginname;
+  @observable id;
+  @observable info;
+  @observable submitting;
+
+  constructor () {
+    this.init();
+  }
+
+  init () {
+    this.accesstoken = '';
+    this.loginname = '';
+    this.id = '';
+    this.info = {};
+    this.submitting = false;    
+  }
 
   @computed get canSubmit () {
     return this.accesstoken !== '';
@@ -19,7 +31,7 @@ class Session {
     this.accesstoken = value;
   }
 
-  @action 
+  @action.bound 
   async login () {
     try {
       this.submitting = true;
@@ -32,6 +44,11 @@ class Session {
     } finally {
       this.submitting = false;
     }
+  }
+
+  @action.bound
+  clear () {
+    this.init();
   }
 }
 

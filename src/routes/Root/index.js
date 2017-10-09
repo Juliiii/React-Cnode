@@ -1,15 +1,7 @@
 // import Detail from '../Detail';
-// import Main from '../Main';
-import Login from '../Login';
+import Main from '../Main';
 
 export default [
-  // Main,
+  Main,
   // Detail
-  {
-    path: '/',
-    getComponent (location, callback) {
-      import('../../pages/Login').then(module => callback(null, module.default));
-    }
-  },
-  Login
 ];

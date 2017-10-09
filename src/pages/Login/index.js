@@ -9,25 +9,30 @@ import { inject, observer } from 'mobx-react';
   submitting: session.submitting,
   canSubmit: session.canSubmit,
   accesstoken: session.accesstoken,
-  onChange: (value) => session.inputAccesstoken(value),
+  changeInput: (value) => session.inputAccesstoken(value),
   login: () => session.login(),
+  clear: () => session.clear(),
   toHome: () => routing.goBack()
 }))
 @observer
 class Login extends React.Component {
   // change accesstoken when input
   onChange = (value) => {
-    this.props.onChange(value);
+    this.props.changeInput(value);
   }
   // login
   login = () => {
     this.props.login();
   }
+  // link to home and clear the accesstoken
+  toHome = () => {
+    this.props.clear();
+    this.props.toHome();
+  }
 
   render () {
     // canSubmit and submitting is for prevent users clicking again before finishing request
-    // toHome is for linking to home
-    const { canSubmit, submitting, toHome } = this.props;
+    const { canSubmit, submitting } = this.props;
     return (
       <Card direction="column" style={{height: '100%', width: '100%'}}>
         <Flex direction="column" style={{padding: '0.5rem 0'}}>
@@ -41,7 +46,7 @@ class Login extends React.Component {
           >
             { !submitting ? '确定' : '提交中...'}
           </Button>
-         <Icon type={require('../../icons/close.svg')} style={{marginTop: '0.5rem'}} disabled={submitting} onClick={toHome} />
+         <Icon type={require('../../icons/close.svg')} style={{marginTop: '0.5rem'}} disabled={submitting} onClick={this.toHome} />
         </Flex>
       </Card>
     );

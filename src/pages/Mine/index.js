@@ -1,6 +1,7 @@
 import React from 'react'
 import BusinessCard from '../../components/BusinessCard';
 import Loading from '../../components/Loading';
+import { Link } from 'react-router';
 import { SimpleNavbar } from '../../components/NavBar';
 import { List, Icon, Badge, Toast } from 'antd-mobile';
 import { connect } from 'react-redux';
@@ -30,11 +31,12 @@ class Mine extends React.Component {
         <SimpleNavbar title="我" />
         <BusinessCard info={info} />
         <List style={{marginTop: '.2rem'}}>
-          <List.Item 
-            thumb={<Icon type={require('../../icons/like_fill.svg')} size="md" />} 
-            onClick={() => changeUrl('/mine/collection')}
-          >我的收藏
-          </List.Item>
+          <Link to="/mine/collection">
+            <List.Item 
+              thumb={<Icon type={require('../../icons/like_fill.svg')} size="md" />} 
+            >我的收藏
+            </List.Item>
+          </Link>
           <List.Item 
             thumb={<Icon type={require('../../icons/document_fill.svg')} size="md" />} 
             onClick={() => changeUrl('/mine/topic')}
@@ -52,7 +54,6 @@ class Mine extends React.Component {
           </List.Item>
           <List.Item 
             thumb={<Icon type={require('../../icons/logout.svg')} size="md" />}
-            onClick={logout}
           >登出
           </List.Item>
         </List>
@@ -61,34 +62,36 @@ class Mine extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    info: state.user.info,
-    accesstoken: state.user.accesstoken,
-    loading: state.status.loading,
-    messageCount: state.user.messageCount
-  };
-}
+export default Mine;
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    getInfo: () => {
-      dispatch(user.getuserInfo());
-    },
-    getMessageCount: () => {
-      dispatch(user.getMessageCount());
-    },
-    logout: () => {
-      dispatch(global.setTab('home'));
-      dispatch(user.logout());
-      Toast.info('登出成功', 1);
-      dispatch(push('/'))
-    },
-    changeUrl: (url) => {
-      dispatch(push(url));
-    }
-  };
-}
+// const mapStateToProps = (state, ownProps) => {
+//   return {
+//     info: state.user.info,
+//     accesstoken: state.user.accesstoken,
+//     loading: state.status.loading,
+//     messageCount: state.user.messageCount
+//   };
+// }
+
+// const mapDispatchToProps = (dispatch, ownProps) => {
+//   return {
+//     getInfo: () => {
+//       dispatch(user.getuserInfo());
+//     },
+//     getMessageCount: () => {
+//       dispatch(user.getMessageCount());
+//     },
+//     logout: () => {
+//       dispatch(global.setTab('home'));
+//       dispatch(user.logout());
+//       Toast.info('登出成功', 1);
+//       dispatch(push('/'))
+//     },
+//     changeUrl: (url) => {
+//       dispatch(push(url));
+//     }
+//   };
+// }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Mine)
+// export default connect(mapStateToProps, mapDispatchToProps)(Mine)

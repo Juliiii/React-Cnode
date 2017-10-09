@@ -2,8 +2,8 @@ import React from 'react'
 import List from '../../components/List';
 import ListItem from '../../components/ListItem';
 import { Tabs } from 'antd-mobile';
-import { connect } from 'react-redux';
-import { topics } from '../../store/actions';
+// import { connect } from 'react-redux';
+// import { topics } from '../../store/actions';
 const TabPane = Tabs.TabPane;
 const tabs = {
   '全部': 'all',
@@ -73,28 +73,30 @@ class MyTabs extends React.Component {
   }
 };
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    tab: state.topics.tab,
-    data: state.topics.data,
-    loading: state.status.loading,
-    refresh: state.status.refresh,
-    reachEnd: state.status.reachEnd
-  };
-}
+export default MyTabs;
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    changeTab: (tab) => {
-      dispatch(topics.changeTab(tab));
-    },
-    getData: () => {
-      dispatch(topics.getTopics());
-    },
-    onRefresh: () => {
-      dispatch(topics.refresh());
-    }
-  }
-}
+// const mapStateToProps = (state, ownProps) => {
+//   return {
+//     tab: state.topics.tab,
+//     data: state.topics.data,
+//     loading: state.status.loading,
+//     refresh: state.status.refresh,
+//     reachEnd: state.status.reachEnd
+//   };
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyTabs);
+// const mapDispatchToProps = (dispatch, ownProps) => {
+//   return {
+//     changeTab: (tab) => {
+//       dispatch(topics.changeTab(tab));
+//     },
+//     getData: () => {
+//       dispatch(topics.getTopics());
+//     },
+//     onRefresh: () => {
+//       dispatch(topics.refresh());
+//     }
+//   }
+// }
+
+// export default connect(mapStateToProps, mapDispatchToProps)(MyTabs);
