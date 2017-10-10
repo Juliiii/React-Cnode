@@ -1,26 +1,25 @@
-import { obversable, action } from 'mobx';
+import { obversable, action, useStrict, runInAction } from 'mobx';
 import session from './session';
+import status from './status';
 import axios from '../axios';
 
-class User {
-  @obversable info;
-  @obversable loading;
+useStrict(true);
 
-  constructor () {
-    this.info = {};
-    this.loading = false;
-  }
+class User {
+  @obversable info = {};
 
   @action.bound
   async getInfo ({loginname}) {
-    if (this.loading) return;
+    if (status.loading) return;
     if (!loginname) loginname = session.loginname;
     try {
-      this.loading = true;
+      status.setLoading(true);
       const { data } = await axios.get(`/user/${loginname}`);
-      this.info = data.data;
+      runInAction(() => {
+        this.info = data.data;
+      });
     } finally {
-      this.loading = false;
+      status.setLoading(false);
     }
   }
 }

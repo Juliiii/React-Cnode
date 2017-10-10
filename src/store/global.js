@@ -1,5 +1,7 @@
-import { observable, action } from 'mobx';
+import { observable, action, useStrict } from 'mobx';
 import routing from './routing';
+
+useStrict(true);
 
 class Global {
   @observable tab = 'home'

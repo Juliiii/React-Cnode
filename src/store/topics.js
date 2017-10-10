@@ -1,69 +1,69 @@
-import { observable, action } from 'mobx';
+import { observable, action, useStrict, runInAction } from 'mobx';
 import axios from '../axios';
+import status from './status';
+
+useStrict(true);
 
 class Topics {
   @observable tab;
   @observable page;
   @observable data;
-  @observable loading;
-  @observable refreshing;
   @observable reachEnd;
-  limit;
+  limit = 20;
 
   constructor(obj) {
     this.init(obj)
-    this.limit = 20;
   }
   // init data
+  @action.bound
   init ({tab, page, data}) {
     this.tab = tab ? JSON.parse(tab) : 'all';
     this.page = page ? JSON.parse(page) : -1;
     this.data = data ? JSON.parse(data) : [];
-    this.loading = false;
-    this.refreshing = false;
     this.reachEnd = false;
   }
   // change the types of topics
-  @action
+  @action.bound
   async changeTab (tab) {
-    this.init({tab: JSON.stringify(tab)});
-    await this.refresh();
+    await this.refresh({tab});
   }
   // refresh
-  @action
-  async refresh () {
-    if (this.loading || this.refreshing) return;
+  @action.bound
+  async refresh (obj) {
+    if (status.loading || status.refreshing) return;
     try {
-      this.refreshing = true;
-      const { data } = await axios.get(`/topics?tab=${this.tab}&page=${this.page+1}&limit=${this.limit}`);
-      this.data = data.data;
-      this.page++;
+      status.setRefreshing(true);
+      const tab = obj && obj.tab ? obj.tab : this.tab;
+      const { data } = await axios.get(`/topics?tab=${tab}&page=0&limit=${this.limit}`);
+      this.init({tab, page: 0, data: data.data});
       localSave({
-        tab: this.tab,
-        page: this.page,
-        data: this.data
+        tab,
+        page: 0,
+        data: data.data
       });
     } finally {
-      this.refreshing = false;
+      status.setRefreshing(false);
     }
   }
   // loadMoreData
-  @action
+  @action.bound
   async loadData () {
-    if (this.reachEnd || this.loading || this.refreshing) return;
+    if (this.reachEnd || status.loading || status.refreshing) return;
     try {
-      this.loading = true;
+      status.setLoading(true);
       const { data } = await axios.get(`/topics?tab=${this.tab}&page=${this.page+1}&limit=${this.limit}`);
-      this.data = [...this.data, ...data.data];
-      this.page++;
-      this.reachEnd = data.data.length === 0;
-      localSave({
-        tab: this.tab,
-        page: this.page,
-        data: this.data
+      runInAction(() => {
+        this.data = [...this.data, ...data.data];
+        this.page++;
+        this.reachEnd = data.data.length === 0;
+        localSave({
+          tab: this.tab,
+          page: this.page,
+          data: this.data
+        });
       });
     } finally {
-      this.loading = false;
+      status.setLoading(false);
     }
   }
 }

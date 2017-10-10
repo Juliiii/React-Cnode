@@ -1,25 +1,27 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed, useStrict, runInAction } from 'mobx';
 import axios from '../axios';
 import { Toast } from 'antd-mobile';
 import routing from './routing';
+import status from './status';
+
+useStrict(true);
 
 class Session {
   @observable accesstoken;
   @observable loginname;
   @observable avatar_url;
   @observable id;
-  @observable submitting;
 
   constructor () {
     this.init();
   }
 
+  @action.bound
   init () {
     this.accesstoken = '';
     this.loginname = '';
     this.id = '';
     this.avatar_url = '';
-    this.submitting = false;    
   }
 
   @computed get canSubmit () {
@@ -34,19 +36,21 @@ class Session {
   @action.bound 
   async login () {
     try {
-      this.submitting = true;
+      status.setSubmitting(true);
       const { data } = await axios.post('/accesstoken', {accesstoken: this.accesstoken});
-      Object.entries(data.data).forEach(([key, value]) => {
-        if (key !== 'success') {
-          this[key] = value;
-        }
+      runInAction(() => {
+        Object.entries(data.data).forEach(([key, value]) => {
+          if (key !== 'success') {
+            this[key] = value;
+          }
+        });
       });
       Toast.success('登录成功', 1);
       routing.replace('/mine');
     } catch (err) {
       Toast.success('登录失败', 1);
     } finally {
-      this.submitting = false;
+      status.setSubmitting(false);
     }
   }
 

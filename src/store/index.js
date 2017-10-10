@@ -7,7 +7,7 @@ import topics from './topics';
 import user from './user';
 import detail from './detail';
 import messages from './messages';
-
+import status from './status';
 
 export default {
   session,
@@ -18,5 +18,6 @@ export default {
   topics,
   user,
   detail,
-  messages
+  messages,
+  status
 };

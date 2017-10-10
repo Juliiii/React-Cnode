@@ -1,36 +1,36 @@
-import { observable, action } from 'mobx';
+import { observable, action, useStrict, runInAction } from 'mobx';
 import axios from '../axios';
 import session from './session';
+import status from './status';
+
+useStrict(true);
 
 class Messages {
-  @observable unreadmessages;
-  @observable readmessages;
-  @observable messageCount;
-  @observable loading;
-
-  constructor () {
-    this.unreadmessages = this.readmessages = [];
-    this.messageCount = 0;
-    this.loading = false;
-  }
+  @observable unreadmessages = [];
+  @observable readmessages = [];
+  @observable messageCount = 0;
 
   @action.bound
   async getMessageCount () {
     if (!session.accesstoken) return;
     const { data } = await axios.get(`/message/count?accesstoken=${session.accesstoken}`);
-    this.messageCount = data.data;
+    runInAction(() => {
+      this.messageCount = data.data;
+    });
   }
 
   @action.bound
   async getMessages () {
-    if (!session.accesstoken || this.loading) return;
+    if (!session.accesstoken || status.loading) return;
     try {
-      this.loading = true;
+      status.setLoading(true);
       const { data } = await axios.get(`/messages?accesstoken=${accesstoken}`);
-      this.unreadmessages = data.data.hasnot_read_messages;
-      this.readmessages = data.data.has_read_messages;
+      runInAction(() => {
+        this.unreadmessages = data.data.hasnot_read_messages;
+        this.readmessages = data.data.has_read_messages;
+      });
     } finally {
-      this.loading = false;
+      status.setLoading(false);
     }
   }
 

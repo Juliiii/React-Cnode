@@ -1,23 +1,23 @@
-import { observable, action } from 'mobx';
+import { observable, action, runInAction, useStrict } from 'mobx';
 import session from './session';
+import status from './status';
 import axios from '../axios';
 
-class Collections {
-  @observable collections;
-  @observable loading;
+useStrict(true);
 
-  constructor () {
-    this.collections = [];
-  }
+class Collections {
+  @observable collections = [];
 
   @action.bound
   async getCollections () {
     try {
-      this.loading = true;
+      status.setLoading(true);
       const { data } = await axios.get(`/topic_collect/${session.loginname}`);
-      this.collections = data.data;
+      runInAction(() => {
+        this.collections = data.data;
+      });
     } finally {
-      this.loading = false;
+      status.setLoading(false);
     }
   }
 }
