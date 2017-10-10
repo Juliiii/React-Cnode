@@ -1,24 +1,26 @@
 import React from 'react';
-import { InputItem, TextareaItem, Tabs, Button, Picker, List } from 'antd-mobile';
-import { topics } from '../../store/actions';
-import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
 import { SimpleNavbar } from '../../components/NavBar';
+import { InputItem, TextareaItem, Tabs, Button, Picker, List } from 'antd-mobile';
+import { inject, observer } from 'mobx-react';
+// import { topics } from '../../store/actions';
+// import { connect } from 'react-redux';
+// import { browserHistory } from 'react-router';
+// import marked from 'marked';
 
-import marked from 'marked';
+
 
 const TabPane = Tabs.TabPane;
 
-marked.setOptions({
-  renderer: new marked.Renderer(),
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
-  sanitize: false,
-  smartLists: true,
-  smartypants: false
-});
+// marked.setOptions({
+//   renderer: new marked.Renderer(),
+//   gfm: true,
+//   tables: true,
+//   breaks: false,
+//   pedantic: false,
+//   sanitize: false,
+//   smartLists: true,
+//   smartypants: false
+// });
 
 const data = [
   {label: '问答', value: 'ask'},
@@ -26,78 +28,31 @@ const data = [
   {label: '工作', value: 'job'},
   {label: '测试', value: 'dev'}
 ];
-
+@inject('publish', 'status')
+@observer
 class Publish extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      title: '',
-      content: '',
-      markdown: '',
-      tab: [],
-      error: {
-        title: false,
-        tab: true,
-        content: false
-      }
-    };
-  }
-
-  componentWillMount() {
-    if (!this.props.accesstoken) {
-      browserHistory.replace('/login');
-    }
-  }
-
-
 
   handleContentChange = (value) => {
-    this.setState({ 
-      content: value,
-      markdown: marked(value),
-      error: {
-        ...this.state.error,
-        content: !value
-      } 
-    });
+    this.props.publish.handleChange('content', value);
   }
 
-  handleTitleChange = (title) => {
-    this.setState({
-      title,
-      error: {
-        ...this.state.error,
-        title: !title || title.length < 10
-      }
-    });
+  handleTitleChange = (value) => {
+    this.props.publish.handleChange('title', value);
   }
 
   handleTabChange = (tab) => {
-    this.setState({
-      tab,
-      error: {
-        ...this.state.error,
-        tab: false
-      }
-    });
+    this.props.publish.handleChange('tab', tab);
   }
 
 
   publish = () => {
-    const { title, content, tab } = this.state;
-    const payload = {
-      title,
-      content,
-      tab: tab[0]
-    };
-    this.props.publish(payload);
+    this.props.publish.publish();
   }
 
 
   render () {
-    const { title, tab, error, markdown } = this.state;
-    const { submitting } = this.props;
-
+    const { title, tab, error, markdown, canSubmit } = this.props.publish;
+    const { submitting } = this.props.status;
     return (
       <div>
         <SimpleNavbar title="发布" />
@@ -141,25 +96,27 @@ class Publish extends React.Component {
             />
           </TabPane>
         </Tabs>
-        <Button type="primary" disabled={error.content || error.title || error.tab || submitting} onClick={this.publish}>{ submitting ? '发布中...' : '发帖'}</Button>
+        <Button type="primary" disabled={!canSubmit || submitting} onClick={this.publish}>{ submitting ? '发布中...' : '发帖'}</Button>
       </div>
     );
   }
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    publish: (payload) => {
-      dispatch(topics.publish(payload));
-    }
-  };
-}
+export default Publish;
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    submitting: state.status.submitting,
-    accesstoken: state.user.accesstoken
-  }
-}
+// const mapDispatchToProps = (dispatch, ownProps) => {
+//   return {
+//     publish: (payload) => {
+//       dispatch(topics.publish(payload));
+//     }
+//   };
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Publish);
+// const mapStateToProps = (state, ownProps) => {
+//   return {
+//     submitting: state.status.submitting,
+//     accesstoken: state.user.accesstoken
+//   }
+// }
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Publish);

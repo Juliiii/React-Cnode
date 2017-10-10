@@ -1,12 +1,21 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+// import { connect } from 'react-redux';
+// import { push } from 'react-router-redux';
 import { Icon, TabBar } from 'antd-mobile';
 import { colors } from '../../constants';
+import { inject, observer } from 'mobx-react';
 
+
+@inject(({global}) => ({
+  tab: global.tab,
+  changeTab: (val) => {
+    global.changeTab(val);
+  }
+}))
+@observer
 class Main extends React.Component {
   render () {
-    const { changeUrl, tab, children } = this.props;
+    const { changeTab, tab, children } = this.props;
     return (
       <div>
         <TabBar
@@ -22,7 +31,7 @@ class Main extends React.Component {
             key="主页"
             selected={tab === 'home'}
             onPress={() => {
-              changeUrl('/');
+              changeTab('home');
             }}
           />
           <TabBar.Item
@@ -32,7 +41,7 @@ class Main extends React.Component {
             key="发帖"
             selected={tab === 'publish'}
             onPress={() => {
-              changeUrl('/publish');
+              changeTab('publish');
             }}
           />
           <TabBar.Item
@@ -42,7 +51,7 @@ class Main extends React.Component {
             key="我的"
             selected={tab === 'mine'}
             onPress={() => {
-              changeUrl('/mine');
+              changeTab('mine');
             }}
           />
         </TabBar>
@@ -52,19 +61,20 @@ class Main extends React.Component {
   }
 };
 
+export default Main;
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    tab: state.global.tab
-  };
-}
+// const mapStateToProps = (state, ownProps) => {
+//   return {
+//     tab: state.global.tab
+//   };
+// }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    changeUrl: (url) => {
-      dispatch(push(url));
-    }
-  };
-}
+// const mapDispatchToProps = (dispatch, ownProps) => {
+//   return {
+//     changeUrl: (url) => {
+//       dispatch(push(url));
+//     }
+//   };
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+// export default connect(mapStateToProps, mapDispatchToProps)(Main);

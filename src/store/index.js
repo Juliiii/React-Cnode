@@ -8,6 +8,7 @@ import user from './user';
 import detail from './detail';
 import messages from './messages';
 import status from './status';
+import publish from './publish';
 
 export default {
   session,
@@ -19,5 +20,6 @@ export default {
   user,
   detail,
   messages,
-  status
+  status,
+  publish
 };

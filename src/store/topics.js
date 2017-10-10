@@ -9,6 +9,7 @@ class Topics {
   @observable page;
   @observable data;
   @observable reachEnd;
+  @observable firstcome = true;
   limit = 20;
 
   constructor(obj) {
@@ -65,6 +66,11 @@ class Topics {
     } finally {
       status.setLoading(false);
     }
+  }
+
+  @action.bound
+  setFirstCome (val) {
+    this.firstcome = val;
   }
 }
 

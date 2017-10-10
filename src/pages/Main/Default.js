@@ -2,6 +2,7 @@ import React from 'react'
 import List from '../../components/List';
 import ListItem from '../../components/ListItem';
 import { Tabs } from 'antd-mobile';
+import { observer, inject } from 'mobx-react';
 // import { connect } from 'react-redux';
 // import { topics } from '../../store/actions';
 const TabPane = Tabs.TabPane;
@@ -12,14 +13,31 @@ const tabs = {
   '问答': 'ask',
   '招聘': 'job'
 };
-
+@inject(({topics, status}) => ({
+  loading: status.loading,
+  refreshing: status.refreshing,
+  reachEnd: topics.reachEnd,
+  data: topics.data,
+  tab: topics.tab,
+  firstcome: topics.firstcome,
+  changeTab (val) {
+    topics.changeTab(val);
+  },
+  getData () {
+    topics.loadData();
+  },
+  refresh () {
+    topics.refresh();
+  },
+  setFirstCome (val) {
+    topics.setFirstCome(val);
+  }
+}))
+@observer
 class MyTabs extends React.Component {
 
   constructor (props) {
     super(props);
-    this.state = {
-      firstCome: true
-    }
     document.body.style.overflowY = 'hidden';
   }
 
@@ -31,16 +49,14 @@ class MyTabs extends React.Component {
     }
   }
 
-  componentWillReceiveProps (newProps) {
-    if (newProps.tab !== this.props.tab) {
-      this.props.getData();
-    }
+  componentWillUnmount () {
+    this.props.setFirstCome(true);
   }
 
   changeTab = (value) => {
-    if (this.state.firstCome) this.setState({firstCome: false});
-    const { loading, refresh, changeTab } = this.props;
-    if (loading || refresh) return;
+    if (this.props.firstCome) this.props.setFirstCome(false);
+    const { loading, refreshing, changeTab } = this.props;
+    if (loading || refreshing) return;
     changeTab(value);
   }
 
@@ -64,7 +80,7 @@ class MyTabs extends React.Component {
           {
             Object.entries(tabs).map((item, index) => 
               (<TabPane tab={item[0]} key={item[1]} style={{paddingBottom: '99px'}}>
-                  <List {...{...this.props, saveScrollTop: this.saveScrollTop, ...this.state, ListItem}} />
+                  <List {...{...this.props, saveScrollTop: this.saveScrollTop, ListItem}} />
                </TabPane>))
           }
         </Tabs>

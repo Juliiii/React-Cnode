@@ -17,8 +17,8 @@ class List extends React.Component {
     disableLoadMore: PropTypes.bool,
     reachEnd: PropTypes.bool,
     loading: PropTypes.bool,
-    refresh: PropTypes.bool,
-    onRefresh: PropTypes.func,
+    refreshing: PropTypes.bool,
+    refresh: PropTypes.func,
     getData: PropTypes.func,
     useBodyScroll: PropTypes.bool,
     saveScrollTop: PropTypes.func,
@@ -31,9 +31,9 @@ class List extends React.Component {
     disableLoadMore: false,
     reachEnd: false,
     loading: false,
-    refresh: false,
+    refreshing: false,
     useBodyScroll: false,
-    onRefresh () {},
+    refresh () {},
     getData () {},
     saveScrollTop () {},
     ListItem () {},
@@ -69,10 +69,6 @@ class List extends React.Component {
     });
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    return true;
-  }
-
   componentWillUnmount () {
     if (this.props.saveScrollTop) {
       this.props.saveScrollTop(this.ref.refs.listview.scrollProperties.offset);
@@ -80,19 +76,19 @@ class List extends React.Component {
   }
 
   loadMore = () => {
-    const { loading, reachEnd, refresh, getData, disableLoadMore } = this.props;
-    if (disableLoadMore || loading || reachEnd || refresh) return;
+    const { getData, disableLoadMore } = this.props;
+    if (disableLoadMore) return;
     getData && getData();
   }
 
   refresh = () => {
-    const { loading, refresh, onRefresh, disableRefresh } = this.props;
-    if (disableRefresh || loading || refresh) return;
-    onRefresh && onRefresh();
+    const { refresh, disableRefresh } = this.props;
+    if (disableRefresh) return;
+    refresh && refresh();
   }
 
   render () {
-    const { loading, refresh, disableRefresh, disableLoadMore, useBodyScroll, ListItem, data } = this.props;
+    const { loading, refreshing, disableRefresh, disableLoadMore, useBodyScroll, ListItem, data } = this.props;
     const { dataSource } = this.state;
     if (useBodyScroll) {
       return (
@@ -121,7 +117,7 @@ class List extends React.Component {
         renderRow={(rowData) => <ListItem item={rowData} {...this.props} />}
         renderFooter={() => loading ? <Footer loading={loading} /> : null}
         refreshControl={
-          !disableRefresh ? <RefreshControl refreshing={refresh} onRefresh={this.refresh} /> : null
+          !disableRefresh ? <RefreshControl refreshing={refreshing} onRefresh={this.refresh} /> : null
         }
         style={{
           height: `${(document.body.clientHeight || document.documentElement.clientHeight) - 87}px`

@@ -1,12 +1,9 @@
 import React from 'react'
 import { InputItem, Button, Flex, Card, Icon } from 'antd-mobile';
-// import { replace } from 'react-router-redux';
-// import { connect } from 'react-redux';
-// import { user } from '../../store/actions';
 import { inject, observer } from 'mobx-react';
 
-@inject(({session, routing}) => ({
-  submitting: session.submitting,
+@inject(({session, routing, status}) => ({
+  submitting: status.submitting,
   canSubmit: session.canSubmit,
   accesstoken: session.accesstoken,
   changeInput: (value) => session.inputAccesstoken(value),
@@ -54,23 +51,3 @@ class Login extends React.Component {
 };
 
 export default Login;
-
-// const mapDispatchToProps = (dispatch, ownProps) => {
-//   return {
-//     login: (accesstoken) => {
-//       dispatch(user.login(accesstoken));
-//     },
-//     toHome: () => {
-//       dispatch(replace('/'));
-//     }
-//   };
-// };
-
-// const mapStateToProps = (state, ownProps) => {
-//   return {
-//     submitting: state.status.submitting,
-//     accesstoken: state.status.accesstoken
-//   };
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Login);

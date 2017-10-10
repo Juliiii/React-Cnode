@@ -1,8 +1,12 @@
 import React from 'react'
 import { Result, Icon, Button } from 'antd-mobile';
-import { browserHistory } from 'react-router';
+import { inject, observer } from 'mobx-react';
 
-export const Success = (props) => {
+
+const Success = ({routing}) => {
+  function toPublish () {
+    routing.replace('/public');
+  }
   return (
     <div style={{
       position: 'absolute',
@@ -16,9 +20,9 @@ export const Success = (props) => {
         title="发帖成功"
         message="所提交内容已成功发布"
       />
-      <Button type="primary" style={{marginTop: '1rem'}} onClick={() => browserHistory.replace('/publish')}>继续发布</Button>
+      <Button type="primary" style={{marginTop: '1rem'}} onClick={toPublish}>继续发布</Button>
     </div>
   );
 }
 
-export default Success;
+export default inject('routing')(observer(Success));
