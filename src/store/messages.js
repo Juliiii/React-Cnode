@@ -24,7 +24,7 @@ class Messages {
     if (!session.accesstoken || status.loading) return;
     try {
       status.setLoading(true);
-      const { data } = await axios.get(`/messages?accesstoken=${accesstoken}`);
+      const { data } = await axios.get(`/messages?accesstoken=${session.accesstoken}`);
       runInAction(() => {
         this.unreadmessages = data.data.hasnot_read_messages;
         this.readmessages = data.data.has_read_messages;

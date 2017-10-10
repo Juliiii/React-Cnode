@@ -9,19 +9,17 @@ useStrict(true);
 class Session {
   @observable accesstoken;
   @observable loginname;
-  @observable avatar_url;
   @observable id;
 
   constructor () {
-    this.init();
+    this.init(get());
   }
 
   @action.bound
-  init () {
-    this.accesstoken = '';
-    this.loginname = '';
-    this.id = '';
-    this.avatar_url = '';
+  init ({accesstoken, loginname, id}) {
+    this.accesstoken = accesstoken ? JSON.parse(accesstoken) : '';
+    this.loginname = loginname ? JSON.parse(loginname) : '';
+    this.id = id ? JSON.stringify(id) : '';
   }
 
   @computed get canSubmit () {
@@ -45,6 +43,7 @@ class Session {
           }
         });
       });
+      save(data.data);
       Toast.success('登录成功', 1);
       routing.replace('/mine');
     } catch (err) {
@@ -58,6 +57,34 @@ class Session {
   clear () {
     this.init();
   }
+
+  @action.bound
+  logout () {
+    this.clear();
+    remove();
+  }
+}
+
+const keys = ['accesstoken', 'id', 'loginname'];
+
+function remove () {
+  for (const key of keys) {
+    localStorage.removeItem(key);
+  }
+}
+
+function save (obj) {
+  for (const key of keys) {
+    localStorage.setItem(key, JSON.stringify(obj[key]));
+  }
+}
+
+function get () {
+  let obj = {};
+  for (const key of keys) {
+    obj[key] = localStorage.getItem(key);
+  }
+  return obj;
 }
 
 export default new Session();

@@ -2,6 +2,7 @@ import { observable, action, runInAction, useStrict } from 'mobx';
 import { Toast } from 'antd-mobile';
 import session from './session';
 import status from './status';
+import axios from '../axios';
 
 useStrict(true);
 
@@ -15,13 +16,13 @@ class Comments {
   @action.bound
   setReplies (allReplies) {
     this.allReplies = allReplies;
-    this.replies = allReplies.slice(++this.page * limit, limit);
+    this.replies = allReplies.slice(++this.page * this.limit, this.limit);
   }
 
   @action.bound
   loadMore () {
     if (this.reachEnd || status.loading) return;
-    this.replies = this.allReplies.slice(++this.page * limit, limit);
+    this.replies = this.allReplies.slice(++this.page * this.limit, this.limit);
     this.reachEnd = this.replies.length === this.allReplies.length;
     setTimeout(action(() => {
       this.loading = false;
@@ -69,7 +70,7 @@ class Comments {
           },
           content,
           ups: [],
-          create_at: new Data(),
+          create_at: new Date(),
           reply_id: reply_id ? reply_id : null,
           is_uped: false
         });

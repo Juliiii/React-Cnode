@@ -48,7 +48,7 @@ class Detail {
   async decollect ({id}) {
     if (!session.accesstoken || status.submitting) return;
     try {
-      status,setSubmitting(true);
+      status.setSubmitting(true);
       await axios.post('/topic_collect/de_collect', { accesstoken: session.accesstoken, topic_id: id });
       runInAction(() => {
         this.detail.is_collect = false;

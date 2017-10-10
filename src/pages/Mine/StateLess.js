@@ -21,6 +21,7 @@ export default class Stateless extends Component {
   componentWillMount () {
     this.props.getData();
   }
+  
   componentWillReceiveProps (newProps) {
     this.genData(newProps.data, []);
   }

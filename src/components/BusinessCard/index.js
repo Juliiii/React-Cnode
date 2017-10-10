@@ -3,6 +3,7 @@ import Avatar from '../Avatar';
 import { Card, Flex } from 'antd-mobile';
 import { colors } from '../../constants';
 import { toDetailedTime } from '../../utils';
+import { observer, inject } from 'mobx-react';
 
 const BusinessCard = ({info}) => {
   const { avatar_url, loginname, score, create_at } = info;
@@ -32,4 +33,4 @@ const styles = {
   color: colors.blue
 };
 
-export default BusinessCard;
+export default inject(({user}) => ({info: user.info}))(observer(BusinessCard));
