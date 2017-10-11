@@ -4,7 +4,7 @@ import status from './status';
 import session from './session';
 import routing from './routing';
 import axios from '../axios';
-import Toast from 'antd-mobile';
+import { Toast } from 'antd-mobile';
 
 useStrict(true);
 
@@ -13,7 +13,7 @@ const rules = {
     return !val;
   },
   tab (val) {
-    return false
+    return false;
   },
   title (val) {
     return !val || val.length < 10
@@ -35,11 +35,11 @@ marked.setOptions({
 class Publish {
   @observable content = '';
   @observable title = ''
-  @observable tab = []
+  @observable tab = ['ask']
   @observable error = {
-    title: true,
-    tab: true,
-    content: true
+    title: null,
+    tab: false,
+    content: null
   }
 
   @computed get markdown () {
@@ -48,7 +48,7 @@ class Publish {
 
   @computed get canSubmit () {
     for (const val of Object.values(this.error)) {
-      if (val) {
+      if (val === null || val) {
         return false;
       }
     }
@@ -58,7 +58,7 @@ class Publish {
   @action.bound
   handleChange (key, val) {
     this[key] = val;
-    this.error[key] = rules(val);
+    this.error[key] = rules[key](this[key]);
   }
 
   @action.bound

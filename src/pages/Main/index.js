@@ -1,6 +1,4 @@
 import React from 'react';
-// import { connect } from 'react-redux';
-// import { push } from 'react-router-redux';
 import { Icon, TabBar } from 'antd-mobile';
 import { colors } from '../../constants';
 import { inject, observer } from 'mobx-react';
@@ -16,6 +14,7 @@ import { inject, observer } from 'mobx-react';
 class Main extends React.Component {
   render () {
     const { changeTab, tab, children } = this.props;
+    console.log(tab, 'publish');
     return (
       <div>
         <TabBar
@@ -62,19 +61,3 @@ class Main extends React.Component {
 };
 
 export default Main;
-
-// const mapStateToProps = (state, ownProps) => {
-//   return {
-//     tab: state.global.tab
-//   };
-// }
-
-// const mapDispatchToProps = (dispatch, ownProps) => {
-//   return {
-//     changeUrl: (url) => {
-//       dispatch(push(url));
-//     }
-//   };
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Main);

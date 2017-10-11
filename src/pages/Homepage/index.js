@@ -4,24 +4,47 @@ import ListItem from '../../components/ListItem';
 import { BackNavBar } from '../../components/NavBar';
 import Loading from '../../components/Loading';
 import { Tabs } from 'antd-mobile';
-import { user, global } from '../../store/actions';
-import { connect } from 'react-redux';
-const TabPane = Tabs.TabPane;
+import { observer, inject } from 'mobx-react';
+import { autorun } from 'mobx';
+// import { user, gklobal } from '../../store/actions';
+// import { connect } from 'react-redux';
 
+const TabPane = Tabs.TabPane;
+@inject(({status, user, global}) => ({
+  info: user.info,
+  loading: status.loading,
+  getInfo: user.getInfo,
+  from: global.from,
+  to: global.to
+}))
+@observer
 class Homepage extends React.Component {
   componentWillMount () {
     const { loginname } = this.props.params;
-    this.props.getInfo(loginname);
+    this.props.getInfo({loginname});
   }
 
-  componentWillReceiveProps ({to, from, change}) {
-    if (!change) return;
-    const reg = /\/user/;
-    if (reg.test(from) && reg.test(to) && from !== to) {
-      this.props.getInfo(to.split('/')[2]);      
-      this.props.setChange();
-    }
+  componentDidMount () {
+    this.dispoer = autorun(() => {
+      const reg = /\/user/;
+      if (reg.test(this.props.from) && reg.test(this.props.to) && this.props.from !== this.props.to) {
+        this.props.getInfo({loginname: this.props.to.split('/')[2]});
+      }
+    })
   }
+
+  componentWillUnmount () {
+    this.dispoer();
+  }
+
+  // componentWillReceiveProps ({to, from, change}) {
+  //   if (!change) return;
+  //   const reg = /\/user/;
+  //   if (reg.test(from) && reg.test(to) && from !== to) {
+  //     this.props.getInfo(to.split('/')[2]);      
+  //     this.props.setChange();
+  //   }
+  // }
 
   render () {
     const { info, loading } = this.props;
@@ -47,21 +70,23 @@ class Homepage extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  getInfo (loginname) {
-    dispatch(user.getuserInfo(loginname));
-  },
-  setChange () {
-    dispatch(global.setRouterChange(false));
-  }
-});
+export default Homepage;
 
-const mapStateToProps = (state, ownProps) => ({
-  info: state.user.info,
-  loading: state.status.loading,
-  from: state.global.from,
-  to: state.global.to,
-  change: state.global.change
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   getInfo (loginname) {
+//     dispatch(user.getuserInfo(loginname));
+//   },
+//   setChange () {
+//     dispatch(global.setRouterChange(false));
+//   }
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Homepage);
+// const mapStateToProps = (state, ownProps) => ({
+//   info: state.user.info,
+//   loading: state.status.loading,
+//   from: state.global.from,
+//   to: state.global.to,
+//   change: state.global.change
+// });
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Homepage);

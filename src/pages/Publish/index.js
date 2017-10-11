@@ -1,26 +1,10 @@
 import React from 'react';
 import { SimpleNavbar } from '../../components/NavBar';
-import { InputItem, TextareaItem, Tabs, Button, Picker, List } from 'antd-mobile';
+import { InputItem, TextareaItem, Tabs, Button, Picker, List, Toast } from 'antd-mobile';
 import { inject, observer } from 'mobx-react';
-// import { topics } from '../../store/actions';
-// import { connect } from 'react-redux';
-// import { browserHistory } from 'react-router';
-// import marked from 'marked';
-
 
 
 const TabPane = Tabs.TabPane;
-
-// marked.setOptions({
-//   renderer: new marked.Renderer(),
-//   gfm: true,
-//   tables: true,
-//   breaks: false,
-//   pedantic: false,
-//   sanitize: false,
-//   smartLists: true,
-//   smartypants: false
-// });
 
 const data = [
   {label: '问答', value: 'ask'},
@@ -28,9 +12,21 @@ const data = [
   {label: '工作', value: 'job'},
   {label: '测试', value: 'dev'}
 ];
-@inject('publish', 'status')
+@inject(({publish, routing, session, status}) => ({
+  publish,
+  push: routing.push,
+  accesstoken: session.accesstoken,
+  submitting: status.submitting
+}))
 @observer
 class Publish extends React.Component {
+
+  componentWillMount () {
+    if (!this.props.accesstoken) {
+      Toast.info('请先登录', 1);
+      this.props.push('/login');
+    }
+  }
 
   handleContentChange = (value) => {
     this.props.publish.handleChange('content', value);
@@ -41,6 +37,7 @@ class Publish extends React.Component {
   }
 
   handleTabChange = (tab) => {
+    console.log(tab);
     this.props.publish.handleChange('tab', tab);
   }
 
@@ -52,7 +49,7 @@ class Publish extends React.Component {
 
   render () {
     const { title, tab, error, markdown, canSubmit } = this.props.publish;
-    const { submitting } = this.props.status;
+    const { submitting } = this.props;
     return (
       <div>
         <SimpleNavbar title="发布" />
@@ -90,6 +87,8 @@ class Publish extends React.Component {
                 padding: '0.23rem 0 0.21rem 0.3rem',
                 backgroundColor: 'white',
                 boxSizing: 'border-box',
+                wordWrap: 'break-word',
+                wordBreak: 'break-all',
                 height: '4.52rem'
               }}
               dangerouslySetInnerHTML={{__html: markdown}} 
@@ -103,20 +102,3 @@ class Publish extends React.Component {
 };
 
 export default Publish;
-
-// const mapDispatchToProps = (dispatch, ownProps) => {
-//   return {
-//     publish: (payload) => {
-//       dispatch(topics.publish(payload));
-//     }
-//   };
-// }
-
-// const mapStateToProps = (state, ownProps) => {
-//   return {
-//     submitting: state.status.submitting,
-//     accesstoken: state.user.accesstoken
-//   }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Publish);

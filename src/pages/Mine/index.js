@@ -5,10 +5,6 @@ import { Link } from 'react-router';
 import { SimpleNavbar } from '../../components/NavBar';
 import { List, Icon, Badge, Toast } from 'antd-mobile';
 import { inject, observer } from 'mobx-react';
-// import { connect } from 'react-redux';
-// import { user, global } from '../../store/actions';
-// import { push } from 'react-router-redux';
-
 
 @inject(({user, session, messages, routing, status}) => ({
   messageCount: messages.messageCount,
@@ -29,8 +25,9 @@ class Mine extends React.Component {
   componentDidMount () {
     if (!this.props.accesstoken) {
       this.props.push('/login');
+      Toast.info('请先登录', 1);
     } else {
-      this.props.getInfo();
+      this.props.getInfo({});
       this.props.getMessageCount();
     }
   }
@@ -80,35 +77,3 @@ class Mine extends React.Component {
 }
 
 export default Mine;
-
-// const mapStateToProps = (state, ownProps) => {
-//   return {
-//     info: state.user.info,
-//     accesstoken: state.user.accesstoken,
-//     loading: state.status.loading,
-//     messageCount: state.user.messageCount
-//   };
-// }
-
-// const mapDispatchToProps = (dispatch, ownProps) => {
-//   return {
-//     getInfo: () => {
-//       dispatch(user.getuserInfo());
-//     },
-//     getMessageCount: () => {
-//       dispatch(user.getMessageCount());
-//     },
-//     logout: () => {
-//       dispatch(global.setTab('home'));
-//       dispatch(user.logout());
-//       Toast.info('登出成功', 1);
-//       dispatch(push('/'))
-//     },
-//     changeUrl: (url) => {
-//       dispatch(push(url));
-//     }
-//   };
-// }
-
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Mine)

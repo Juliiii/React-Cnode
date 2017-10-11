@@ -17,11 +17,11 @@ const tabs = {
   loading: status.loading,
   refreshing: status.refreshing,
   reachEnd: topics.reachEnd,
-  data: topics.data,
-  tab: topics.tab,
+  data: topics.data.slice(),
+  type: topics.type,
   firstcome: topics.firstcome,
-  changeTab (val) {
-    topics.changeTab(val);
+  changeType (val) {
+    topics.changeType(val);
   },
   getData () {
     topics.loadData();
@@ -41,23 +41,15 @@ class MyTabs extends React.Component {
     document.body.style.overflowY = 'hidden';
   }
 
-
-  componentDidMount () {
-    const { data, getData } = this.props;
-    if (data.length === 0) {
-      getData();
-    }
-  }
-
   componentWillUnmount () {
     this.props.setFirstCome(true);
   }
 
-  changeTab = (value) => {
+  changeType = (value) => {
     if (this.props.firstCome) this.props.setFirstCome(false);
-    const { loading, refreshing, changeTab } = this.props;
+    const { loading, refreshing, changeType } = this.props;
     if (loading || refreshing) return;
-    changeTab(value);
+    changeType(value);
   }
 
   saveScrollTop = (value) => {
@@ -65,17 +57,17 @@ class MyTabs extends React.Component {
   }
 
   render () {
-    const { tab } = this.props;
+    const { type } = this.props;
     return (
       <div>
         <Tabs 
-          activeKey={tab}
-          defaultActiveKey={tab}
+          activeKey={type}
+          defaultActiveKey={type}
           swipeable={false}
           className="mainpageTab"
           animated
           destroyInactiveTabPane
-          onChange={this.changeTab}
+          onChange={this.changeType}
         >
           {
             Object.entries(tabs).map((item, index) => 
@@ -90,29 +82,3 @@ class MyTabs extends React.Component {
 };
 
 export default MyTabs;
-
-// const mapStateToProps = (state, ownProps) => {
-//   return {
-//     tab: state.topics.tab,
-//     data: state.topics.data,
-//     loading: state.status.loading,
-//     refresh: state.status.refresh,
-//     reachEnd: state.status.reachEnd
-//   };
-// }
-
-// const mapDispatchToProps = (dispatch, ownProps) => {
-//   return {
-//     changeTab: (tab) => {
-//       dispatch(topics.changeTab(tab));
-//     },
-//     getData: () => {
-//       dispatch(topics.getTopics());
-//     },
-//     onRefresh: () => {
-//       dispatch(topics.refresh());
-//     }
-//   }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(MyTabs);

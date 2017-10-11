@@ -1,11 +1,12 @@
 import { observable, action, useStrict, runInAction } from 'mobx';
 import axios from '../axios';
 import status from './status';
+import db from '../utils/db';
 
 useStrict(true);
 
 class Topics {
-  @observable tab;
+  @observable type;
   @observable page;
   @observable data;
   @observable reachEnd;
@@ -17,30 +18,35 @@ class Topics {
   }
   // init data
   @action.bound
-  init ({tab, page, data}) {
-    this.tab = tab ? JSON.parse(tab) : 'all';
+  init ({type, page, data}) {
+    this.type = type ? JSON.parse(type) : 'all';
     this.page = page ? JSON.parse(page) : -1;
     this.data = data ? JSON.parse(data) : [];
     this.reachEnd = false;
   }
   // change the types of topics
   @action.bound
-  async changeTab (tab) {
-    await this.refresh({tab});
+  async changeType (type) {
+    this.init({type: JSON.stringify(type), page: -1});
+    await this.loadData();
   }
   // refresh
   @action.bound
   async refresh (obj) {
     if (status.loading || status.refreshing) return;
     try {
+      console.log('trigger 1');
       status.setRefreshing(true);
-      const tab = obj && obj.tab ? obj.tab : this.tab;
-      const { data } = await axios.get(`/topics?tab=${tab}&page=0&limit=${this.limit}`);
-      this.init({tab, page: 0, data: data.data});
-      localSave({
-        tab,
+      const type = obj && obj.type ? obj.type : this.type;
+      this.init({type: JSON.stringify(type), page: 0});
+      const { data } = await axios.get(`/topics?tab=${type}&page=0&limit=${this.limit}`);
+      runInAction(() => {
+        this.data = data.data;
+      });
+      db.save(['type', 'page', 'data'], {
+        type,
         page: 0,
-        data: data.data
+        data: data.data.slice()
       });
     } finally {
       status.setRefreshing(false);
@@ -52,15 +58,15 @@ class Topics {
     if (this.reachEnd || status.loading || status.refreshing) return;
     try {
       status.setLoading(true);
-      const { data } = await axios.get(`/topics?tab=${this.tab}&page=${this.page+1}&limit=${this.limit}`);
+      const { data } = await axios.get(`/topics?type=${this.type}&page=${this.page+1}&limit=${this.limit}`);
       runInAction(() => {
         this.data = [...this.data, ...data.data];
         this.page++;
         this.reachEnd = data.data.length === 0;
-        localSave({
-          tab: this.tab,
+        db.save(['type', 'page', 'data'], {
+          type: this.type,
           page: this.page,
-          data: this.data
+          data: this.data.slice()
         });
       });
     } finally {
@@ -74,8 +80,4 @@ class Topics {
   }
 }
 
-function localSave(obj) {
-  Object.entries(obj).map(([key, value]) => localStorage.setItem(key, JSON.stringify(value)));
-}
-
-export default new Topics();
+export default new Topics(db.get(['type', 'data', 'page']));

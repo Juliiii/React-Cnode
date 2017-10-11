@@ -11,8 +11,8 @@ import status from './status';
 import publish from './publish';
 
 export default {
-  session,
   routing,
+  session,
   global,
   collections,
   comments,

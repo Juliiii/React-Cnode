@@ -14,7 +14,7 @@ class Status {
 
   @action.bound
   setSubmitting (val) {
-    this.setSubmitting = val;
+    this.submitting = val;
   }
 
   @action.bound

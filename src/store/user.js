@@ -1,4 +1,4 @@
-import { obversable, action, useStrict, runInAction } from 'mobx';
+import { observable, action, useStrict, runInAction } from 'mobx';
 import session from './session';
 import status from './status';
 import axios from '../axios';
@@ -6,7 +6,7 @@ import axios from '../axios';
 useStrict(true);
 
 class User {
-  @obversable info = {};
+  @observable info = {};
 
   @action.bound
   async getInfo ({loginname}) {

@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 
 const Success = ({routing}) => {
   function toPublish () {
-    routing.replace('/public');
+    routing.replace('/publish');
   }
   return (
     <div style={{

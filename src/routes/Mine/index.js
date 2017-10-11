@@ -3,7 +3,7 @@ import Topic from './topic';
 import Collection from './collection';
 
 export default {
-  path: 'mine',
+  path: '/mine',
   indexRoute:{
     getComponent (location, callback) {
       import('../../pages/Mine').then(module => callback(null, module.default));

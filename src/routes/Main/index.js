@@ -1,8 +1,7 @@
 import Login from '../Login';
-// import Homepage from '../Homepage';
-// import Mine from '../Mine';
-// import Publish from '../Publish';
-// import Success from '../Publish/success';
+import Mine from '../Mine';
+import Publish from '../Publish';
+import Success from '../Publish/success';
 
 export default {
   path: '/',
@@ -19,10 +18,9 @@ export default {
     });
   },
   childRoutes: [
-    // Homepage,
     Login,
-    // Mine,
-    // Publish,
-    // Success    
+    Mine,
+    Publish,
+    Success    
   ]
 }
