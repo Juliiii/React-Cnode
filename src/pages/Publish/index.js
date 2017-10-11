@@ -12,6 +12,7 @@ const data = [
   {label: '工作', value: 'job'},
   {label: '测试', value: 'dev'}
 ];
+
 @inject(({publish, routing, session, status}) => ({
   publish,
   push: routing.push,
@@ -37,7 +38,6 @@ class Publish extends React.Component {
   }
 
   handleTabChange = (tab) => {
-    console.log(tab);
     this.props.publish.handleChange('tab', tab);
   }
 

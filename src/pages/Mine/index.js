@@ -33,7 +33,7 @@ class Mine extends React.Component {
   }
 
   render () {
-    const { logout, loading, messageCount, changeUrl } = this.props;
+    const { logout, loading, messageCount } = this.props;
     if (loading) return ( <Loading /> );
     return (
       <div
@@ -50,16 +50,18 @@ class Mine extends React.Component {
             >我的收藏
             </List.Item>
           </Link>
-          <List.Item 
-            thumb={<Icon type={require('../../icons/document_fill.svg')} size="md" />} 
-            onClick={() => changeUrl('/mine/topic')}
-          >最近话题
-          </List.Item>
-          <List.Item 
-            thumb={<Icon type={require('../../icons/interactive_fill.svg')} size="md" />} 
-            onClick={() => changeUrl('/mine/reply')}
-          >最近回复
-          </List.Item>
+          <Link to="/mine/topic">
+            <List.Item 
+              thumb={<Icon type={require('../../icons/document_fill.svg')} size="md" />} 
+            >最近话题
+            </List.Item>
+          </Link>
+          <Link to="/mine/reply">
+            <List.Item 
+              thumb={<Icon type={require('../../icons/interactive_fill.svg')} size="md" />} 
+            >最近回复
+            </List.Item>
+          </Link>
           <List.Item 
             thumb={<Icon type={require('../../icons/remind_fill.svg')} size="md" />}
             extra={<Badge text={messageCount} overflowCount={99} />}

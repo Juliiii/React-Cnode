@@ -16,6 +16,7 @@ class User {
       status.setLoading(true);
       const { data } = await axios.get(`/user/${loginname}`);
       runInAction(() => {
+        console.log(data.data);
         this.info = data.data;
       });
     } finally {

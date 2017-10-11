@@ -5,7 +5,7 @@ import { browserHistory } from 'react-router';
 export const BackNavBar = ({title}) => (
   <NavBar
     leftContent={<Icon type={require('../../icons/return.svg')} />}
-    mode="light"
+    mode="dark"
     style={{
       position: 'fixed',
       width: '100%',

@@ -19,7 +19,7 @@ export default class Stateless extends Component {
 
   
   componentWillMount () {
-    this.props.getData();
+    this.props.getData({});
   }
   
   componentWillReceiveProps (newProps) {
@@ -27,7 +27,7 @@ export default class Stateless extends Component {
   }
 
   loadMore = () => {
-    if (this.state._loading) return;
+    if (this.state._loading || !this.state._hasMore) return;
     this.setState({
       _loading: true
     });

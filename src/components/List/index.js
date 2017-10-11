@@ -23,7 +23,8 @@ class List extends React.Component {
     useBodyScroll: PropTypes.bool,
     saveScrollTop: PropTypes.func,
     ListItem: PropTypes.func.isRequired,
-    data: PropTypes.array.isRequired
+    data: PropTypes.array.isRequired,
+    onScroll: PropTypes.func
   }
 
   static defaultProps = {
@@ -37,6 +38,7 @@ class List extends React.Component {
     getData () {},
     saveScrollTop () {},
     ListItem () {},
+    onScroll () {},
     data: []
   }
 
@@ -58,6 +60,10 @@ class List extends React.Component {
         this.ref.refs.listview.scrollProperties.offset = Number(scrollTop);
       }
     }
+
+    if (this.props.useBodyScroll) {
+      window.addEventListener('scroll', this._onScroll);
+    }
   }
 
   componentWillReceiveProps (newProps) {
@@ -73,6 +79,10 @@ class List extends React.Component {
     if (this.props.saveScrollTop) {
       this.props.saveScrollTop(this.ref.refs.listview.scrollProperties.offset);
     }
+
+    if (this.props.useBodyScroll) {
+      window.removeEventListener('scroll', this._onScroll);
+    }
   }
 
   loadMore = () => {
@@ -87,6 +97,22 @@ class List extends React.Component {
     refresh && refresh();
   }
 
+  _onScroll = () => {
+    if (this._reachEnd()) {
+      this.loadMore && this.loadMore();
+    }
+    this.props.onScroll && this.props.onScroll();
+  }
+
+  _reachEnd = () => {
+    const node = document.body ? document.body : document.documentElement;
+    const scrollHeight = node.scrollHeight;
+    const scrollTop = node.scrollTop;
+    const contentHeight = node.clientHeight;
+    const onEndReachedThreshold = 30;
+    return scrollTop + contentHeight + onEndReachedThreshold >= scrollHeight;
+  }
+
   render () {
     const { loading, refreshing, disableRefresh, disableLoadMore, useBodyScroll, ListItem, data } = this.props;
     const { dataSource } = this.state;
@@ -97,33 +123,33 @@ class List extends React.Component {
           dataSource={dataSource}
           initialListSize={data.length}
           useBodyScroll
-          onEndReached={disableLoadMore ? null : this.loadMore}
           renderRow={(rowData) => <ListItem item={rowData} {...this.props} />}
           renderFooter={() => loading ? <Footer loading={loading} /> : null}
         />
       );
+    } else {
+      return (
+        <ListView
+          ref={lv => this.ref = lv}
+          dataSource={dataSource}
+          initialListSize={10}
+          pageSize={10}
+          stickySectionHeadersEnabled={false}
+          onEndReachedThreshold={80}
+          scrollEventThrottle={500}
+          renderBodyComponent={() => <MyBody />}
+          onEndReached={disableLoadMore ? null : this.loadMore}
+          renderRow={(rowData) => <ListItem item={rowData} {...this.props} />}
+          renderFooter={() => loading ? <Footer loading={loading} /> : null}
+          refreshControl={
+            !disableRefresh ? <RefreshControl refreshing={refreshing} onRefresh={this.refresh} /> : null
+          }
+          style={{
+            height: `${(document.body.clientHeight || document.documentElement.clientHeight) - 87}px`
+          }}
+        />
+      );
     }
-    return (
-      <ListView
-        ref={lv => this.ref = lv}
-        dataSource={dataSource}
-        initialListSize={10}
-        pageSize={10}
-        stickySectionHeadersEnabled={false}
-        onEndReachedThreshold={80}
-        scrollEventThrottle={500}
-        renderBodyComponent={() => <MyBody />}
-        onEndReached={disableLoadMore ? null : this.loadMore}
-        renderRow={(rowData) => <ListItem item={rowData} {...this.props} />}
-        renderFooter={() => loading ? <Footer loading={loading} /> : null}
-        refreshControl={
-          !disableRefresh ? <RefreshControl refreshing={refreshing} onRefresh={this.refresh} /> : null
-        }
-        style={{
-          height: `${(document.body.clientHeight || document.documentElement.clientHeight) - 87}px`
-        }}
-      />
-    );
   };
 }
 

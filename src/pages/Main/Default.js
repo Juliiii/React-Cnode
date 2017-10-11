@@ -11,7 +11,8 @@ const tabs = {
   '精华': 'good',
   '分享': 'share',
   '问答': 'ask',
-  '招聘': 'job'
+  '招聘': 'job',
+  '111': 'dev'
 };
 @inject(({topics, status}) => ({
   loading: status.loading,

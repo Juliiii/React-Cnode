@@ -24,7 +24,6 @@ class Storage {
     for (const key of keys) {
       obj[key] = localStorage.getItem(key);
     }
-    console.log(obj);
     return obj;
   }
 

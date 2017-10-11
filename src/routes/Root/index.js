@@ -1,9 +1,15 @@
-// import Detail from '../Detail';
+import Detail from '../Detail';
 import Main from '../Main';
 import Homepage from '../Homepage';
+import Reply from '../Mine/reply';
+import Topic from '../Mine/topic';
+import Collection from '../Mine/collection';
 
 export default [
   Main,
-  Homepage
-  // Detail,
+  Homepage,
+  Reply,
+  Collection,
+  Topic,
+  Detail,
 ];
