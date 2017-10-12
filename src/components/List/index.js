@@ -48,7 +48,7 @@ class List extends React.Component {
       rowHasChanged: (r1, r2) => r1 !== r2
     });
     this.state = {
-      dataSource: dataSource.cloneWithRows(this.props.data)
+      dataSource: dataSource.cloneWithRows(this.props.data.slice())
     }
   }
 
@@ -71,7 +71,7 @@ class List extends React.Component {
       rowHasChanged: (r1, r2) => r1 !== r2
     });
     this.setState({
-      dataSource: dataSource.cloneWithRows(newProps.data)
+      dataSource: dataSource.cloneWithRows(newProps.data.slice())
     });
   }
 

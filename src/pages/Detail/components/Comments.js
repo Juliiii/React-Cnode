@@ -32,7 +32,7 @@ const Comments = (props) => {
 
 export default inject(({detail}) => ({
   loadMore: detail.loadMore,
-  data: detail.replies.slice(),
+  data: detail.replies,
   ups: detail.ups,
   loading: detail.loading,
 }))(observer(Comments));

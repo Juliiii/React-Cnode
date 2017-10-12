@@ -9,6 +9,12 @@ useStrict(true);
 
 class Collections {
   @observable collections = [];
+  @observable loading = false;
+  reachEnd = false;
+  allCollections = [];
+  limit = 10
+  page = 0
+
 
   @action.bound
   async getCollections () {
@@ -16,7 +22,10 @@ class Collections {
       status.setLoading(true);
       const { data } = await axios.get(`/topic_collect/${session.loginname}`);
       runInAction(() => {
-        this.collections = data.data;
+        this.allCollections = data.data;
+        this.collections = this.allCollections.slice(0, this.limit);
+        this.page = 0;
+        this.loading = this.reachEnd = false;
       });
     } finally {
       status.setLoading(false);
@@ -51,6 +60,17 @@ class Collections {
     } finally {
       status.setSubmitting(false);
     }
+  }
+
+  @action.bound
+  loadMore () {
+    if (this.reachEnd || this.loading) return;
+    this.loading = true;
+    this.collections = [...this.collections, ...this.allCollections.slice(++this.page * this.limit, this.page * this.limit)];
+    this.reachEnd = this.collections.length === this.allCollections.length;
+    setTimeout(action(() => {
+      this.loading = false;
+    }), 500);
   }
 }
 

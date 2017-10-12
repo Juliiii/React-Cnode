@@ -12,6 +12,7 @@ class Global {
     this.from = from ? JSON.parse(from) : '/';
     this.to = to ? JSON.parse(to) : '/';
     this.tab = tab ? JSON.parse(tab) : 'home';
+    this.LinkTo();
   }
 
   @action.bound
@@ -25,7 +26,11 @@ class Global {
   changeTab (tab) {
     this.tab = tab;
     db.save(['tab'], { tab });
-    switch (tab) {
+    this.LinkTo();
+  }
+
+  LinkTo () {
+    switch (this.tab) {
       case 'publish': routing.push('/publish'); break;
       case 'mine': routing.push('/mine'); break;
       default: routing.push('/');

@@ -6,15 +6,12 @@ import { inject, observer } from 'mobx-react';
 
 @inject(({global}) => ({
   tab: global.tab,
-  changeTab: (val) => {
-    global.changeTab(val);
-  }
+  changeTab: global.changeTab
 }))
 @observer
 class Main extends React.Component {
   render () {
     const { changeTab, tab, children } = this.props;
-    console.log(tab, 'publish');
     return (
       <div>
         <TabBar

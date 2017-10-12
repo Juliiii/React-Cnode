@@ -7,7 +7,6 @@ class Storage {
    * @memberof Storage
    */
   save (keys, obj) {
-    console.log(obj);
     for (const key of keys) {
       localStorage.setItem(key, JSON.stringify(obj[key]));
     }

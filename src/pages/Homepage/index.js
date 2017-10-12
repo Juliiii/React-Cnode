@@ -25,6 +25,7 @@ class Homepage extends React.Component {
   componentDidMount () {
     this.dispoer = autorun(() => {
       const reg = /\/user/;
+      console.log(this.props.from, this.props.to);
       if (reg.test(this.props.from) && reg.test(this.props.to) && this.props.from !== this.props.to) {
         this.props.getInfo({loginname: this.props.to.split('/')[2]});
       }

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
-// import { user } from '../../store/actions';
 import { inject, observer } from 'mobx-react';
 import Wrapper from './StateLess';
 
 @inject(({user, status}) => ({
-  data: user.info.recent_topics,
+  data: user.recent_topics,
   loading: status.loading,
-  getData: user.getInfo
+  getData: user.getInfo,
+  _loading: user.recent_topics_loading,
+  loadMore: user.loadMoreTopics
 }))
 @observer
 class Topics extends Component {
@@ -17,16 +17,3 @@ class Topics extends Component {
 };
 
 export default Topics;
-
-// const mapStateToProps = (state) => ({
-//   // data: state.user.info.recent_topics,
-//   // loading: state.status.loading
-// // });
-
-// // const mapDispatchToProps = (dispatch) => ({
-//   // getData () {
-  // //  dispatch(user.getuserInfo()); 
-//   // }
-// // });
-  
-// // export default connect(mapStateToProps, mapDispatchToProps)(Topics);

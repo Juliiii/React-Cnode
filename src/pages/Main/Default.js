@@ -3,8 +3,6 @@ import List from '../../components/List';
 import ListItem from '../../components/ListItem';
 import { Tabs } from 'antd-mobile';
 import { observer, inject } from 'mobx-react';
-// import { connect } from 'react-redux';
-// import { topics } from '../../store/actions';
 const TabPane = Tabs.TabPane;
 const tabs = {
   '全部': 'all',
@@ -18,21 +16,13 @@ const tabs = {
   loading: status.loading,
   refreshing: status.refreshing,
   reachEnd: topics.reachEnd,
-  data: topics.data.slice(),
+  data: topics.data,
   type: topics.type,
   firstcome: topics.firstcome,
-  changeType (val) {
-    topics.changeType(val);
-  },
-  getData () {
-    topics.loadData();
-  },
-  refresh () {
-    topics.refresh();
-  },
-  setFirstCome (val) {
-    topics.setFirstCome(val);
-  }
+  changeType: topics.changeType,
+  getData: topics.loadData,
+  refresh: topics.refresh,
+  setFirstCome: topics.setFirstCome
 }))
 @observer
 class MyTabs extends React.Component {
