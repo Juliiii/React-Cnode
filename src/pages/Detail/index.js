@@ -25,6 +25,8 @@ if (isIPhone) {
 @inject(({status, detail, session})=>({
   loading: status.loading,
   getDetail: detail.getDetail,
+  comment: detail.comment,
+  ups: detail.ups,
   setBackTopShow: detail.setBackTopShow,
   accesstoken: session.accesstoken
 }))
@@ -33,15 +35,16 @@ class Detail extends React.Component {
   constructor (props) {
     super(props);
     document.body.style.overflowY = 'auto';
-  } 
+  }
 
   componentWillMount () {
     this.props.getDetail({id : this.props.params.id});
   }
   
   onScroll = () => {
-    const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-    const height = document.body.clientHeight || document.documentElement.clientHeight;
+    const node = document.documentElement || document.body;
+    const scrollTop = node.scrollTop;
+    const height = node.clientHeight;
     this.props.setBackTopShow(scrollTop > height - 30);
   }
 

@@ -5,6 +5,7 @@ import ListItem from '../../../components/CommentListItem';
 import { inject, observer } from 'mobx-react';
 
 const Comments = (props) => {
+  console.log('data change');
   return (
     <Card style={{padding: '0 0.3rem .2rem', margin: '.1rem 0'}}>
       <Card.Header 

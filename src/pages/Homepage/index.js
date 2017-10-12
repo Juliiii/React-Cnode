@@ -6,8 +6,6 @@ import Loading from '../../components/Loading';
 import { Tabs } from 'antd-mobile';
 import { observer, inject } from 'mobx-react';
 import { autorun } from 'mobx';
-// import { user, gklobal } from '../../store/actions';
-// import { connect } from 'react-redux';
 
 const TabPane = Tabs.TabPane;
 @inject(({status, user, global}) => ({
@@ -37,15 +35,6 @@ class Homepage extends React.Component {
     this.dispoer();
   }
 
-  // componentWillReceiveProps ({to, from, change}) {
-  //   if (!change) return;
-  //   const reg = /\/user/;
-  //   if (reg.test(from) && reg.test(to) && from !== to) {
-  //     this.props.getInfo(to.split('/')[2]);      
-  //     this.props.setChange();
-  //   }
-  // }
-
   render () {
     const { info, loading } = this.props;
     if (loading) return <Loading />
@@ -55,7 +44,7 @@ class Homepage extends React.Component {
       <div style={{height: '100%'}}>
         <BackNavBar title="个人主页" />
         <div style={{paddingTop: '.9rem'}}>
-          <BusinessCard info={info} />
+          <BusinessCard />
           <Tabs swipeable={false} defaultActiveKey="1">
             <TabPane tab="最近回复" key= "1" style={{paddingBottom: '.99rem'}}>
               {recent_replies.map(item => <ListItem item={item} key={item.id} />)}
@@ -71,22 +60,3 @@ class Homepage extends React.Component {
 }
 
 export default Homepage;
-
-// const mapDispatchToProps = (dispatch) => ({
-//   getInfo (loginname) {
-//     dispatch(user.getuserInfo(loginname));
-//   },
-//   setChange () {
-//     dispatch(global.setRouterChange(false));
-//   }
-// });
-
-// const mapStateToProps = (state, ownProps) => ({
-//   info: state.user.info,
-//   loading: state.status.loading,
-//   from: state.global.from,
-//   to: state.global.to,
-//   change: state.global.change
-// });
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Homepage);

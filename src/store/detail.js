@@ -1,5 +1,6 @@
 import { observable, action, runInAction, useStrict } from 'mobx';
 import { Toast } from 'antd-mobile';
+import Reply from './Reply';
 import session from './session';
 import status from './status';
 import axios from '../axios';
@@ -58,15 +59,17 @@ class Detail {
 
   @action.bound
   setReplies (allReplies) {
-    this.allReplies = allReplies;
-    this.replies = allReplies.slice(++this.page * this.limit, this.limit);
+    for (const r of allReplies) {
+      this.allReplies.push(new Reply(r));
+    }
+    this.replies = this.allReplies.slice(++this.page * this.limit, this.limit);
   }
-
+  
   @action.bound
   loadMore () {
     if (this.reachEnd || this.loading) return;
     this.loading = true;
-    this.replies = this.allReplies.slice(++this.page * this.limit, this.limit);
+    this.replies = [...this.replies, ...this.allReplies.slice(++this.page * this.limit, (this.page + 1) * this.limit)];
     this.reachEnd = this.replies.length === this.allReplies.length;
     setTimeout(action(() => {
       this.loading = false;
@@ -78,21 +81,13 @@ class Detail {
     try {
       const { data } = await axios.post(`/reply/${reply_id}/ups`, {accesstoken : session.accesstoken});
       runInAction(() => {
-        this.replies.forEach(reply => {
-          if (reply.id === reply_id) {
-            reply.ups = data.data.action === 'down' ? reply.ups.filter(id => id !== session.id) : [...reply.ups, session.id];
-            reply.is_uped = data.data.action !== 'down';
-          }
-        });
-        this.replies = this.replies.map(reply => {
-          if (reply.id === reply_id) {
-            reply.ups = data.data.action === 'down' ? reply.ups.filter(id => id !== session.id) : [...reply.ups, session.id];
-            reply.is_uped = data.data.action !== 'down';
-            return {...reply};
-          } else {
-            return reply;
-          }     
-        })
+        let i;
+        for (i = this.replies.length - 1; i >= 0; i-- ) {
+          if (this.replies[i].id === reply_id) break;
+        }
+        this.replies[i].updateVal('is_uped', data.action !== 'down');
+        this.replies[i].updateVal('ups',
+        data.action === 'down' ? this.replies[i].ups.filter(id => id !== session.id) : [...this.replies[i].ups, session.id]);
       });
     } catch (err) {
       if (err.response && err.response.status === 403) {
@@ -114,12 +109,10 @@ class Detail {
       };
       if (reply_id) body.reply_id = reply_id;
       const {data} = await axios.post(`/topic/${topic_id}/replies`, body);
-      console.log(data);
       runInAction(() => {
-        console.log(1);
         try {
-          this.allReplies.push({
-            id: data.data.reply_id,
+          this.allReplies.push(new Reply({
+            id: data.reply_id,
             author: {
               loginname: session.loginname,
               avatar_url: session.avatar_url
@@ -129,7 +122,10 @@ class Detail {
             create_at: new Date(),
             reply_id: reply_id ? reply_id : null,
             is_uped: false
-          });
+          }));
+          if (this.replies.slice().length === this.allReplies.slice().length - 1) {
+            this.replies = [...this.allReplies];
+          }
         } catch (err) {
           console.log(err);
         }

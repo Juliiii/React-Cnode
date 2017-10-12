@@ -99,13 +99,13 @@ class List extends React.Component {
 
   _onScroll = () => {
     if (this._reachEnd()) {
-      this.loadMore && this.loadMore();
+      this.loadMore();
     }
     this.props.onScroll && this.props.onScroll();
   }
 
   _reachEnd = () => {
-    const node = document.body ? document.body : document.documentElement;
+    const node = document.documentElement ? document.documentElement : document.body;
     const scrollHeight = node.scrollHeight;
     const scrollTop = node.scrollTop;
     const contentHeight = node.clientHeight;
@@ -145,7 +145,7 @@ class List extends React.Component {
             !disableRefresh ? <RefreshControl refreshing={refreshing} onRefresh={this.refresh} /> : null
           }
           style={{
-            height: `${(document.body.clientHeight || document.documentElement.clientHeight) - 87}px`
+            height: `${(document.documentElement.clientHeight || document.body.clientHeight) - 87}px`
           }}
         />
       );

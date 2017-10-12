@@ -39,7 +39,6 @@ class Session {
     try {
       status.setSubmitting(true);
       const { data } = await axios.post('/accesstoken', {accesstoken: this.accesstoken});
-      console.log(data);
       runInAction(() => {
         Object.entries(data).forEach(([key, value]) => {
           if (key !== 'success') {
