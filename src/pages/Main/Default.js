@@ -9,8 +9,7 @@ const tabs = {
   '精华': 'good',
   '分享': 'share',
   '问答': 'ask',
-  '招聘': 'job',
-  '111': 'dev'
+  '招聘': 'job'
 };
 @inject(({topics, status}) => ({
   loading: status.loading,

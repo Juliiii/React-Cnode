@@ -66,7 +66,7 @@ class Collections {
   loadMore () {
     if (this.reachEnd || this.loading) return;
     this.loading = true;
-    this.collections = [...this.collections, ...this.allCollections.slice(++this.page * this.limit, this.page * this.limit)];
+    this.collections = this.allCollections.slice(0, ++this.page * this.limit);
     this.reachEnd = this.collections.length === this.allCollections.length;
     setTimeout(action(() => {
       this.loading = false;

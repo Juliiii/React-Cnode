@@ -2,6 +2,7 @@ import { observable, action, useStrict, runInAction } from 'mobx';
 import session from './session';
 import status from './status';
 import axios from '../axios';
+import global from './global';
 
 useStrict(true);
 
@@ -26,13 +27,13 @@ class User {
       status.setLoading(true);
       const { data } = await axios.get(`/user/${loginname}`);
       runInAction(() => {
-        console.log(data.data);
         this.info = data.data;
         this.recent_replies = data.data.recent_replies.slice(0, this.limit);
         this.recent_topics = data.data.recent_topics.slice(0, this.limit);
         this.recent_replies_page = this.recent_topics_page = 0;
         this.recent_replies_reachEnd = this.recent_topics_reachEnd = this.recent_replies_loading = this.recent_topics_loading = false;
       });
+      global.updateVal('changed', true);
     } finally {
       status.setLoading(false);
     }
@@ -42,14 +43,11 @@ class User {
   loadMore (prefix) {
     if (this[`${prefix}_reachEnd`] || this[`${prefix}_loading`]) return;
     this[`${prefix}_loading`] = true;
-    this[prefix] = [
-      ...this[prefix],
-      ...this.info[prefix].slice(++this[`${prefix}_page`] * this.limit, this[`${prefix}_page`]* this.limit)
-    ];
+    this[prefix] = this.info[prefix].slice(0, ++this[`${prefix}_page`] * this.limit);
     this[`${prefix}_reachEnd`] = this[prefix].length === this.info[prefix].length;
     setTimeout(action(() => {
       this[`${prefix}_loading`] = false;
-    }), 500);
+    }), 1000);
   }
 
   @action.bound

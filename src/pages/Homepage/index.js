@@ -1,32 +1,36 @@
 import React from 'react';
 import BusinessCard from '../../components/BusinessCard';
-import ListItem from '../../components/ListItem';
 import { BackNavBar } from '../../components/NavBar';
 import Loading from '../../components/Loading';
+import RecentReplies from './components/RecentReplies';
+import RecentTopics from './components/RecentTopics';
 import { Tabs } from 'antd-mobile';
 import { observer, inject } from 'mobx-react';
-import { autorun } from 'mobx';
+import { autorunAsync } from 'mobx';
 
 const TabPane = Tabs.TabPane;
 @inject(({status, user, global}) => ({
-  info: user.info,
   loading: status.loading,
   getInfo: user.getInfo,
   from: global.from,
-  to: global.to
+  to: global.to,
+  changed: global.changed
 }))
 @observer
 class Homepage extends React.Component {
   componentWillMount () {
     const { loginname } = this.props.params;
     this.props.getInfo({loginname});
+    document.body.style.overflowY = 'auto';
   }
 
   componentDidMount () {
-    this.dispoer = autorun(() => {
+    this.dispoer = autorunAsync(() => {
       const reg = /\/user/;
-      console.log(this.props.from, this.props.to);
-      if (reg.test(this.props.from) && reg.test(this.props.to) && this.props.from !== this.props.to) {
+      if (reg.test(this.props.from) && 
+          reg.test(this.props.to) && 
+          !this.props.changed && 
+          this.props.from !== this.props.to) {
         this.props.getInfo({loginname: this.props.to.split('/')[2]});
       }
     })
@@ -37,21 +41,19 @@ class Homepage extends React.Component {
   }
 
   render () {
-    const { info, loading } = this.props;
+    const { loading } = this.props;
     if (loading) return <Loading />
-    const recent_replies = info.recent_replies ? info.recent_replies : [];
-    const recent_topics = info.recent_topics ? info.recent_topics : [];
     return (
-      <div style={{height: '100%'}}>
+      <div>
         <BackNavBar title="个人主页" />
         <div style={{paddingTop: '.9rem'}}>
           <BusinessCard />
           <Tabs swipeable={false} defaultActiveKey="1">
-            <TabPane tab="最近回复" key= "1" style={{paddingBottom: '.99rem'}}>
-              {recent_replies.map(item => <ListItem item={item} key={item.id} />)}
+            <TabPane tab="最近回复" key= "1">
+              <RecentReplies />
             </TabPane>
-            <TabPane tab="最近主题" key= "2" style={{paddingBottom: '.99rem'}}>
-              {recent_topics.map(item => <ListItem item={item} key={item.id} />)}
+            <TabPane tab="最近主题" key= "2">
+              <RecentTopics />
             </TabPane>
           </Tabs>
         </div>

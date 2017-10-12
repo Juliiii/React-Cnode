@@ -23,8 +23,9 @@ class List extends React.Component {
     useBodyScroll: PropTypes.bool,
     saveScrollTop: PropTypes.func,
     ListItem: PropTypes.func.isRequired,
-    data: PropTypes.array.isRequired,
-    onScroll: PropTypes.func
+    data: PropTypes.object.isRequired,
+    onScroll: PropTypes.func,
+    firstCome: PropTypes.bool
   }
 
   static defaultProps = {
@@ -34,12 +35,13 @@ class List extends React.Component {
     loading: false,
     refreshing: false,
     useBodyScroll: false,
+    firstCome: false,
     refresh () {},
     getData () {},
     saveScrollTop () {},
     ListItem () {},
     onScroll () {},
-    data: []
+    data: {}
   }
 
   constructor (props) {

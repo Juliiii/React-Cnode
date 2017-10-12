@@ -69,7 +69,7 @@ class Detail {
   loadMore () {
     if (this.reachEnd || this.loading) return;
     this.loading = true;
-    this.replies = [...this.replies, ...this.allReplies.slice(++this.page * this.limit, (this.page + 1) * this.limit)];
+    this.replies = this.allReplies.slice(0, ++this.page * this.limit);
     this.reachEnd = this.replies.length === this.allReplies.length;
     setTimeout(action(() => {
       this.loading = false;
@@ -110,24 +110,20 @@ class Detail {
       if (reply_id) body.reply_id = reply_id;
       const {data} = await axios.post(`/topic/${topic_id}/replies`, body);
       runInAction(() => {
-        try {
-          this.allReplies.push(new Reply({
-            id: data.reply_id,
-            author: {
-              loginname: session.loginname,
-              avatar_url: session.avatar_url
-            },
-            content,
-            ups: [],
-            create_at: new Date(),
-            reply_id: reply_id ? reply_id : null,
-            is_uped: false
-          }));
-          if (this.replies.slice().length === this.allReplies.slice().length - 1) {
-            this.replies = [...this.allReplies];
-          }
-        } catch (err) {
-          console.log(err);
+        this.allReplies.push(new Reply({
+          id: data.reply_id,
+          author: {
+            loginname: session.loginname,
+            avatar_url: session.avatar_url
+          },
+          content,
+          ups: [],
+          create_at: new Date(),
+          reply_id: reply_id ? reply_id : null,
+          is_uped: false
+        }));
+        if (this.replies.slice().length === this.allReplies.slice().length - 1) {
+          this.replies = [...this.allReplies];
         }
       });
       Toast.success(successInfo, 1);

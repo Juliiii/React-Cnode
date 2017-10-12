@@ -5,8 +5,9 @@ useStrict(true);
 
 class Global {
   @observable tab = 'home'
-  @observable from = '/'
   @observable to = '/'
+  @observable from = '/'
+  @observable changed = false;
 
   constructor ({from, to, tab}) {
     this.from = from ? JSON.parse(from) : '/';
@@ -20,6 +21,12 @@ class Global {
     this.from = this.to;
     this.to = newPath;
     db.save(['from', 'to'], { to: this.to, from: this.from });
+    this.changed = false;
+  }
+
+  @action.bound
+  updateVal (key, val) {
+    this[key] = val;
   }
 
   @action.bound
