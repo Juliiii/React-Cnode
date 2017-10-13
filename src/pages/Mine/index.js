@@ -19,7 +19,7 @@ import { inject, observer } from 'mobx-react';
 @observer
 class Mine extends React.Component {
 
-  componentDidMount () {
+  componentWillMount () {
     if (!this.props.accesstoken) {
       this.props.push('/login');
       Toast.info('请先登录', 1);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { SimpleNavbar } from '../../components/NavBar';
 
 class Message extends React.Component {
   componentWillMount () {
@@ -7,7 +8,9 @@ class Message extends React.Component {
 
   render () {
     return (
-      <div />
+      <div>
+        <SimpleNavbar title="消息" />
+      </div>
     );
   }
 }

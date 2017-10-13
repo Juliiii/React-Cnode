@@ -44,7 +44,7 @@ class Global {
     switch (this.tab) {
       case 'home': routing.push('/'); break;
       case 'publish': routing.push('/publish'); break;
-      case 'message': routing.push('/'); break;
+      case 'message': routing.push('/message'); break;
       case 'mine': routing.push('/mine'); break;
       default: return;
     }

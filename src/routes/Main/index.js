@@ -1,7 +1,7 @@
-import Login from '../Login';
 import Mine from '../Mine';
 import Publish from '../Publish';
 import Success from '../Publish/success';
+import Message from '../Message';
 
 export default {
   path: '/',
@@ -18,9 +18,9 @@ export default {
     });
   },
   childRoutes: [
-    Login,
     Mine,
     Publish,
-    Success    
+    Success,
+    Message
   ]
 }
