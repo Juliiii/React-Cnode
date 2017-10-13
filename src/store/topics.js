@@ -7,10 +7,10 @@ useStrict(true);
 
 class Topics {
   @observable type;
-  @observable page;
   @observable data;
-  @observable reachEnd;
   @observable firstcome = true;
+  reachEnd;
+  page;
   limit = 20;
 
   constructor(obj) {
@@ -20,14 +20,14 @@ class Topics {
   @action.bound
   init ({type, page, data}) {
     this.type = type ? JSON.parse(type) : 'all';
-    this.page = page ? JSON.parse(page) : -1;
+    this.page = page ? JSON.parse(page) : 0;
     this.data = data ? JSON.parse(data) : [];
     this.reachEnd = false;
   }
   // change the types of topics
   @action.bound
   async changeType (type) {
-    this.init({type: JSON.stringify(type), page: -1});
+    this.init({type: JSON.stringify(type), page: 0});
     await this.loadData();
   }
   // refresh
@@ -37,13 +37,13 @@ class Topics {
     try {
       status.setRefreshing(true);
       const type = obj && obj.type ? obj.type : this.type;
-      const { data } = await axios.get(`/topics?tab=${type}&page=0&limit=${this.limit}`);
+      const { data } = await axios.get(`/topics?tab=${type}&page=1&limit=${this.limit}`);
       runInAction(() => {
         this.data = data.data;
       });
       db.save(['type', 'page', 'data'], {
         type,
-        page: 0,
+        page: 1,
         data: data.data.slice()
       });
     } finally {

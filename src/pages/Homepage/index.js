@@ -32,6 +32,7 @@ class Homepage extends React.Component {
           !this.props.changed && 
           this.props.from !== this.props.to) {
         this.props.getInfo({loginname: this.props.to.split('/')[2]});
+        window.scrollTo(0, 0);
       }
     })
   }

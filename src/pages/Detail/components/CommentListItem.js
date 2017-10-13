@@ -1,7 +1,7 @@
 import React from 'react';
-import Avatar from '../Avatar';
+import Avatar from '../../../components/Avatar';
 import { Flex, Icon } from 'antd-mobile';
-import { formatime } from '../../utils';
+import { formatime } from '../../../utils';
 import { observer } from 'mobx-react';
 
 const ListItem = ({item : {author, content, create_at, is_uped, ups, id}, onComment, onUps}) => {
@@ -24,7 +24,11 @@ const ListItem = ({item : {author, content, create_at, is_uped, ups, id}, onComm
       <div dangerouslySetInnerHTML={{__html: content}} style={{padding: '0.25rem 0', fontSize: '.3rem' }} />
       <Flex>
         <Flex align="center">
-          {is_uped ? <Icon type={require('../../icons/praise_fill.svg')} /> : <Icon type={require('../../icons/praise.svg')} />}
+          {
+            is_uped 
+            ? <Icon type={require('../../../icons/praise_fill.svg')} /> 
+            : <Icon type={require('../../../icons/praise.svg')} />
+          }
           <span style={{
               color: '#888',
               fontSize: '0.25rem'
@@ -34,7 +38,7 @@ const ListItem = ({item : {author, content, create_at, is_uped, ups, id}, onComm
           </span>
         </Flex>
         <Flex align="center" style={{marginLeft: '0.1rem'}}>
-          <Icon type={require('../../icons/message.svg')} />
+          <Icon type={require('../../../icons/message.svg')} />
           <span style={{
               color: '#888',
               fontSize: '0.25rem'

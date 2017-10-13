@@ -124,8 +124,9 @@ class List extends React.Component {
           ref={lv => this.ref = lv}
           dataSource={dataSource}
           initialListSize={data.length}
+          pageSize={10}
           useBodyScroll
-          renderRow={(rowData) => <ListItem item={rowData} {...this.props} />}
+          renderRow={(rowData, sIndex, rIndex) => <ListItem item={rowData} {...this.props} index={rIndex} length={data.length} />}
           renderFooter={() => loading ? <Footer loading={loading} /> : null}
         />
       );
@@ -134,14 +135,14 @@ class List extends React.Component {
         <ListView
           ref={lv => this.ref = lv}
           dataSource={dataSource}
-          initialListSize={10}
           pageSize={10}
+          initialListSize={100}
           stickySectionHeadersEnabled={false}
           onEndReachedThreshold={80}
           scrollEventThrottle={500}
           renderBodyComponent={() => <MyBody />}
           onEndReached={disableLoadMore ? null : this.loadMore}
-          renderRow={(rowData) => <ListItem item={rowData} {...this.props} />}
+          renderRow={(rowData, sIndex, rIndex) => <ListItem item={rowData} index={rIndex} length={data.length} {...this.props} />}
           renderFooter={() => loading ? <Footer loading={loading} /> : null}
           refreshControl={
             !disableRefresh ? <RefreshControl refreshing={refreshing} onRefresh={this.refresh} /> : null

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Flex, Card } from 'antd-mobile';
 import List from '../../../components/List';
-import ListItem from '../../../components/CommentListItem';
+import ListItem from './CommentListItem';
 import { inject, observer } from 'mobx-react';
 
 const Comments = (props) => {

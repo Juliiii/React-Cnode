@@ -4,14 +4,22 @@ import { colors } from '../../constants';
 import { inject, observer } from 'mobx-react';
 
 
-@inject(({global}) => ({
+@inject(({global, messages}) => ({
   tab: global.tab,
-  changeTab: global.changeTab
+  changeTab: global.changeTab,
+  getMessageCount: messages.getMessageCount,
+  messageCount: messages.messageCount,
+  getMessages: messages.getMessages
 }))
 @observer
 class Main extends React.Component {
+  componentWillMount () {
+    this.props.getMessageCount();
+    this.props.getMessages();
+  }
+
   render () {
-    const { changeTab, tab, children } = this.props;
+    const { changeTab, tab, children, messageCount } = this.props;
     return (
       <div>
         <TabBar
@@ -23,7 +31,6 @@ class Main extends React.Component {
           <TabBar.Item
             icon={<Icon type={require('../../icons/homepage.svg')} size="md" />}
             selectedIcon={<Icon type={require('../../icons/homepage_fill.svg')} size="md" />}
-            title="主页"
             key="主页"
             selected={tab === 'home'}
             onPress={() => {
@@ -33,7 +40,6 @@ class Main extends React.Component {
           <TabBar.Item
             icon={<Icon type={require('../../icons/brush.svg')} size="md" />}
             selectedIcon={<Icon type={require('../../icons/brush_fill.svg')} size="md" />}
-            title="发帖"
             key="发帖"
             selected={tab === 'publish'}
             onPress={() => {
@@ -41,9 +47,18 @@ class Main extends React.Component {
             }}
           />
           <TabBar.Item
+            icon={<Icon type={require('../../icons/remind.svg')} size="md" />}
+            selectedIcon={<Icon type={require('../../icons/remind_fill.svg')} size="md" />}
+            key="消息"
+            badge={messageCount}
+            selected={tab === 'message'}
+            onPress={() => {
+              changeTab('message');
+            }}
+          />
+          <TabBar.Item
             icon={<Icon type={require('../../icons/people.svg')} size="md" />}
             selectedIcon={<Icon type={require('../../icons/people_fill.svg')} size="md" />}
-            title="我的"
             key="我的"
             selected={tab === 'mine'}
             onPress={() => {

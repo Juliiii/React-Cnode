@@ -47,7 +47,7 @@ class User {
     this[`${prefix}_reachEnd`] = this[prefix].length === this.info[prefix].length;
     setTimeout(action(() => {
       this[`${prefix}_loading`] = false;
-    }), 1000);
+    }), 500);
   }
 
   @action.bound

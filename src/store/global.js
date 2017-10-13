@@ -3,6 +3,8 @@ import routing from './routing';
 import db from '../utils/db';
 useStrict(true);
 
+const LinkToWhiteList = ['/', '/message', '/publish', '/mine'];
+
 class Global {
   @observable tab = 'home'
   @observable to = '/'
@@ -13,7 +15,9 @@ class Global {
     this.from = from ? JSON.parse(from) : '/';
     this.to = to ? JSON.parse(to) : '/';
     this.tab = tab ? JSON.parse(tab) : 'home';
-    this.LinkTo();
+    if (LinkToWhiteList.some(pathname => pathname === routing.location.pathname)) {
+      this.LinkTo();
+    }
   }
 
   @action.bound
@@ -38,9 +42,11 @@ class Global {
 
   LinkTo () {
     switch (this.tab) {
+      case 'home': routing.push('/'); break;
       case 'publish': routing.push('/publish'); break;
+      case 'message': routing.push('/'); break;
       case 'mine': routing.push('/mine'); break;
-      default: routing.push('/');
+      default: return;
     }
   }
 }

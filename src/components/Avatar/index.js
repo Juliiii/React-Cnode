@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 export default ({src = 'https://avatars3.githubusercontent.com/u/8694508?v=4&s=72', size = '140', isCircle = true, loginname}) => {
   return (
     <Link to={`/user/${loginname}`}>
-      <img 
+      <img
         src={src}
         style={{
           height: `${size / 100}rem`,

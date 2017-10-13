@@ -48,7 +48,7 @@ const footerExtra = ({last_reply_at}) => (
 
 
 
-const ListItem = ({item}) => {
+const ListItem = ({item, index, length}) => {
   return (
     <div>
       <Link to={`/detail/${item.id}`}>
@@ -76,7 +76,7 @@ const ListItem = ({item}) => {
           <Card.Footer content={footer(item)} extra={footerExtra(item)} />
         </Card>
       </Link>
-      <WhiteSpace size="md" />
+      {Number(index) === length - 1 ? null : <WhiteSpace size="md" />}
     </div>
   );
 };
