@@ -22,7 +22,8 @@ export default class Stateless extends Component {
             ListItem={ListItem} 
             disableRefresh 
             loading={_loading} 
-            getData={loadMore} 
+            getData={loadMore}
+            height={document.documentElement ? document.documentElement.clientHeight - 87 : document.body.clientHeight - 87}
           />
         </div>
       </div>

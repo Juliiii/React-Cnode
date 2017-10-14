@@ -72,6 +72,7 @@ class Publish {
         accesstoken: session.accesstoken
       };
       await axios.post('/topics', payload);
+      this.clear();
       routing.push('/success');
     } catch (err) {
       Toast.fail('发布失败，稍后再试', 1);

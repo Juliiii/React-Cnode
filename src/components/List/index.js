@@ -25,7 +25,8 @@ class List extends React.Component {
     ListItem: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
     onScroll: PropTypes.func,
-    firstCome: PropTypes.bool
+    firstCome: PropTypes.bool,
+    height: PropTypes.number
   }
 
   static defaultProps = {
@@ -36,6 +37,7 @@ class List extends React.Component {
     refreshing: false,
     useBodyScroll: false,
     firstCome: false,
+    height: document.documentElement ? document.documentElement.clientHeight - 87 - 99 : document.body.clientHeight - 87 - 99,
     refresh () {},
     getData () {},
     saveScrollTop () {},
@@ -116,7 +118,7 @@ class List extends React.Component {
   }
 
   render () {
-    const { loading, refreshing, disableRefresh, disableLoadMore, useBodyScroll, ListItem, data } = this.props;
+    const { loading, refreshing, disableRefresh, disableLoadMore, useBodyScroll, ListItem, data, height } = this.props;
     const { dataSource } = this.state;
     if (useBodyScroll) {
       return (
@@ -148,7 +150,7 @@ class List extends React.Component {
             !disableRefresh ? <RefreshControl refreshing={refreshing} onRefresh={this.refresh} /> : null
           }
           style={{
-            height: `${(document.documentElement.clientHeight || document.body.clientHeight) - 87 - 99}px`
+            height: `${height}px`
           }}
         />
       );
