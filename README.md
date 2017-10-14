@@ -32,7 +32,7 @@ react-cnode/
    │    |
    |    |—— db.js               * localstorage操作
    |    |
-   |    |—— index.js            * 别的工具函数
+   |    |__ index.js            * 别的工具函数
    │
    │ 
    │——constants/                * 一些常量(其实没怎么用)
