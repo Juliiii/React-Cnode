@@ -59,6 +59,20 @@ pre {
 .am-navbar {
   box-shadow: 0 1px 6px rgba(0,0,0,.2);
 }
+
+.am-card {
+  border: none !important;
+}
+
 .am-navbar-dark {
   background-color: #3a40f5 !important;
+}
+
+.am-list-body {
+  background-color: inherit !important;
+}
+
+.am-icon-md {
+  height: 0.56rem !important;
+  width: 0.56rem !important;
 }

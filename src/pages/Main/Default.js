@@ -2,8 +2,7 @@ import React from 'react'
 import List from '../../components/List';
 import ListItem from '../../components/ListItem';
 import { Tabs } from 'antd-mobile';
-import { connect } from 'react-redux';
-import { topics } from '../../store/actions';
+import { observer, inject } from 'mobx-react';
 const TabPane = Tabs.TabPane;
 const tabs = {
   '全部': 'all',
@@ -12,36 +11,29 @@ const tabs = {
   '问答': 'ask',
   '招聘': 'job'
 };
-
+@inject(({topics, status}) => ({
+  loading: status.loading,
+  refreshing: status.refreshing,
+  reachEnd: topics.reachEnd,
+  data: topics.data,
+  type: topics.type,
+  firstcome: topics.firstcome,
+  changeType: topics.changeType,
+  getData: topics.loadData,
+  refresh: topics.refresh,
+  setFirstCome: topics.setFirstCome
+}))
+@observer
 class MyTabs extends React.Component {
-
-  constructor (props) {
-    super(props);
-    this.state = {
-      firstCome: true
-    }
-    document.body.style.overflowY = 'hidden';
+  componentWillUnmount () {
+    this.props.setFirstCome(true);
   }
 
-
-  componentDidMount () {
-    const { data, getData } = this.props;
-    if (data.length === 0) {
-      getData();
-    }
-  }
-
-  componentWillReceiveProps (newProps) {
-    if (newProps.tab !== this.props.tab) {
-      this.props.getData();
-    }
-  }
-
-  changeTab = (value) => {
-    if (this.state.firstCome) this.setState({firstCome: false});
-    const { loading, refresh, changeTab } = this.props;
-    if (loading || refresh) return;
-    changeTab(value);
+  changeType = (value) => {
+    if (this.props.firstCome) this.props.setFirstCome(false);
+    const { loading, refreshing, changeType } = this.props;
+    if (loading || refreshing) return;
+    changeType(value);
   }
 
   saveScrollTop = (value) => {
@@ -49,22 +41,22 @@ class MyTabs extends React.Component {
   }
 
   render () {
-    const { tab } = this.props;
+    const { type } = this.props;
     return (
       <div>
         <Tabs 
-          activeKey={tab}
-          defaultActiveKey={tab}
+          activeKey={type}
+          defaultActiveKey={type}
           swipeable={false}
           className="mainpageTab"
           animated
           destroyInactiveTabPane
-          onChange={this.changeTab}
+          onChange={this.changeType}
         >
           {
             Object.entries(tabs).map((item, index) => 
               (<TabPane tab={item[0]} key={item[1]} style={{paddingBottom: '99px'}}>
-                  <List {...{...this.props, saveScrollTop: this.saveScrollTop, ...this.state, ListItem}} />
+                  <List {...{...this.props, saveScrollTop: this.saveScrollTop, ListItem}} />
                </TabPane>))
           }
         </Tabs>
@@ -73,28 +65,4 @@ class MyTabs extends React.Component {
   }
 };
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    tab: state.topics.tab,
-    data: state.topics.data,
-    loading: state.status.loading,
-    refresh: state.status.refresh,
-    reachEnd: state.status.reachEnd
-  };
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    changeTab: (tab) => {
-      dispatch(topics.changeTab(tab));
-    },
-    getData: () => {
-      dispatch(topics.getTopics());
-    },
-    onRefresh: () => {
-      dispatch(topics.refresh());
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(MyTabs);
+export default MyTabs;

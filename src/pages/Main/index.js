@@ -1,12 +1,24 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
 import { Icon, TabBar } from 'antd-mobile';
 import { colors } from '../../constants';
+import { inject, observer } from 'mobx-react';
 
+
+@inject(({global, messages}) => ({
+  tab: global.tab,
+  changeTab: global.changeTab,
+  getMessageCount: messages.getMessageCount,
+  messageCount: messages.messageCount,
+  getMessages: messages.getMessages
+}))
+@observer
 class Main extends React.Component {
+  componentWillMount () {
+    this.props.getMessageCount();
+  }
+
   render () {
-    const { changeUrl, tab, children } = this.props;
+    const { changeTab, tab, children, messageCount } = this.props;
     return (
       <div>
         <TabBar
@@ -18,31 +30,38 @@ class Main extends React.Component {
           <TabBar.Item
             icon={<Icon type={require('../../icons/homepage.svg')} size="md" />}
             selectedIcon={<Icon type={require('../../icons/homepage_fill.svg')} size="md" />}
-            title="主页"
             key="主页"
             selected={tab === 'home'}
             onPress={() => {
-              changeUrl('/');
+              changeTab('home');
             }}
           />
           <TabBar.Item
             icon={<Icon type={require('../../icons/brush.svg')} size="md" />}
             selectedIcon={<Icon type={require('../../icons/brush_fill.svg')} size="md" />}
-            title="发帖"
             key="发帖"
             selected={tab === 'publish'}
             onPress={() => {
-              changeUrl('/publish');
+              changeTab('publish');
+            }}
+          />
+          <TabBar.Item
+            icon={<Icon type={require('../../icons/remind.svg')} size="md" />}
+            selectedIcon={<Icon type={require('../../icons/remind_fill.svg')} size="md" />}
+            key="消息"
+            badge={messageCount}
+            selected={tab === 'message'}
+            onPress={() => {
+              changeTab('message');
             }}
           />
           <TabBar.Item
             icon={<Icon type={require('../../icons/people.svg')} size="md" />}
             selectedIcon={<Icon type={require('../../icons/people_fill.svg')} size="md" />}
-            title="我的"
             key="我的"
             selected={tab === 'mine'}
             onPress={() => {
-              changeUrl('/mine');
+              changeTab('mine');
             }}
           />
         </TabBar>
@@ -52,19 +71,4 @@ class Main extends React.Component {
   }
 };
 
-
-const mapStateToProps = (state, ownProps) => {
-  return {
-    tab: state.global.tab
-  };
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    changeUrl: (url) => {
-      dispatch(push(url));
-    }
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default Main;

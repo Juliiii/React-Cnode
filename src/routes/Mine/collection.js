@@ -1,5 +1,5 @@
 export default {
-  path: 'collection',
+  path: '/mine/collection',
   getComponent (location, callback) {
     import('../../pages/Mine/Collection').then(module => callback(null, module.default));
   }

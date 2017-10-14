@@ -1,24 +1,10 @@
 import React from 'react';
-import { InputItem, TextareaItem, Tabs, Button, Picker, List } from 'antd-mobile';
-import { topics } from '../../store/actions';
-import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
 import { SimpleNavbar } from '../../components/NavBar';
+import { InputItem, TextareaItem, Tabs, Button, Picker, List, Toast } from 'antd-mobile';
+import { inject, observer } from 'mobx-react';
 
-import marked from 'marked';
 
 const TabPane = Tabs.TabPane;
-
-marked.setOptions({
-  renderer: new marked.Renderer(),
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
-  sanitize: false,
-  smartLists: true,
-  smartypants: false
-});
 
 const data = [
   {label: '问答', value: 'ask'},
@@ -27,77 +13,43 @@ const data = [
   {label: '测试', value: 'dev'}
 ];
 
+@inject(({publish, routing, session, status}) => ({
+  publish,
+  push: routing.push,
+  accesstoken: session.accesstoken,
+  submitting: status.submitting
+}))
+@observer
 class Publish extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      title: '',
-      content: '',
-      markdown: '',
-      tab: [],
-      error: {
-        title: false,
-        tab: true,
-        content: false
-      }
-    };
-  }
 
-  componentWillMount() {
+  componentWillMount () {
     if (!this.props.accesstoken) {
-      browserHistory.replace('/login');
+      Toast.info('请先登录', 1);
+      this.props.push('/login');
     }
   }
 
-
-
   handleContentChange = (value) => {
-    this.setState({ 
-      content: value,
-      markdown: marked(value),
-      error: {
-        ...this.state.error,
-        content: !value
-      } 
-    });
+    this.props.publish.handleChange('content', value);
   }
 
-  handleTitleChange = (title) => {
-    this.setState({
-      title,
-      error: {
-        ...this.state.error,
-        title: !title || title.length < 10
-      }
-    });
+  handleTitleChange = (value) => {
+    this.props.publish.handleChange('title', value);
   }
 
   handleTabChange = (tab) => {
-    this.setState({
-      tab,
-      error: {
-        ...this.state.error,
-        tab: false
-      }
-    });
+    this.props.publish.handleChange('tab', tab);
   }
 
 
   publish = () => {
-    const { title, content, tab } = this.state;
-    const payload = {
-      title,
-      content,
-      tab: tab[0]
-    };
-    this.props.publish(payload);
+    this.props.publish.publish();
   }
 
 
   render () {
-    const { title, tab, error, markdown } = this.state;
+    const { title, tab, error, markdown, canSubmit } = this.props.publish;
     const { submitting } = this.props;
-
     return (
       <div>
         <SimpleNavbar title="发布" />
@@ -135,31 +87,18 @@ class Publish extends React.Component {
                 padding: '0.23rem 0 0.21rem 0.3rem',
                 backgroundColor: 'white',
                 boxSizing: 'border-box',
+                wordWrap: 'break-word',
+                wordBreak: 'break-all',
                 height: '4.52rem'
               }}
               dangerouslySetInnerHTML={{__html: markdown}} 
             />
           </TabPane>
         </Tabs>
-        <Button type="primary" disabled={error.content || error.title || error.tab || submitting} onClick={this.publish}>{ submitting ? '发布中...' : '发帖'}</Button>
+        <Button type="primary" disabled={!canSubmit || submitting} onClick={this.publish}>{ submitting ? '发布中...' : '发帖'}</Button>
       </div>
     );
   }
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    publish: (payload) => {
-      dispatch(topics.publish(payload));
-    }
-  };
-}
-
-const mapStateToProps = (state, ownProps) => {
-  return {
-    submitting: state.status.submitting,
-    accesstoken: state.user.accesstoken
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Publish);
+export default Publish;

@@ -2,24 +2,34 @@ import React from 'react'
 import BusinessCard from '../../components/BusinessCard';
 import Loading from '../../components/Loading';
 import { SimpleNavbar } from '../../components/NavBar';
-import { List, Icon, Badge, Toast } from 'antd-mobile';
-import { connect } from 'react-redux';
-import { user, global } from '../../store/actions';
-import { push } from 'react-router-redux';
+import { List, Icon, Toast } from 'antd-mobile';
+import { inject, observer } from 'mobx-react';
 
+@inject(({user, session, messages, routing, status}) => ({
+  accesstoken: session.accesstoken,
+  push: routing.push,
+  logout () {
+    session.logout();
+    Toast.success('登出成功', 1);
+    routing.push('/');
+  },
+  getInfo: user.getInfo,
+  loading: status.loading
+}))
+@observer
 class Mine extends React.Component {
 
-  componentDidMount () {
+  componentWillMount () {
     if (!this.props.accesstoken) {
-      this.props.changeUrl('/login');
+      this.props.push('/login');
+      Toast.info('请先登录', 1);
     } else {
-      this.props.getInfo();
-      this.props.getMessageCount();
+      this.props.getInfo({});
     }
   }
 
   render () {
-    const { info, logout, loading, messageCount, changeUrl } = this.props;
+    const { logout, loading, push } = this.props;
     if (loading) return ( <Loading /> );
     return (
       <div
@@ -28,31 +38,26 @@ class Mine extends React.Component {
         }}
       >
         <SimpleNavbar title="我" />
-        <BusinessCard info={info} />
+        <BusinessCard />
         <List style={{marginTop: '.2rem'}}>
-          <List.Item 
+          <List.Item
+            onClick={() => push('/mine/collection')} 
             thumb={<Icon type={require('../../icons/like_fill.svg')} size="md" />} 
-            onClick={() => changeUrl('/mine/collection')}
           >我的收藏
           </List.Item>
           <List.Item 
+            onClick={() => push('/mine/topic')} 
             thumb={<Icon type={require('../../icons/document_fill.svg')} size="md" />} 
-            onClick={() => changeUrl('/mine/topic')}
           >最近话题
           </List.Item>
           <List.Item 
+            onClick={() => push('/mine/reply')} 
             thumb={<Icon type={require('../../icons/interactive_fill.svg')} size="md" />} 
-            onClick={() => changeUrl('/mine/reply')}
           >最近回复
           </List.Item>
           <List.Item 
-            thumb={<Icon type={require('../../icons/remind_fill.svg')} size="md" />}
-            extra={<Badge text={messageCount} overflowCount={99} />}
-          >未读消息
-          </List.Item>
-          <List.Item 
-            thumb={<Icon type={require('../../icons/logout.svg')} size="md" />}
             onClick={logout}
+            thumb={<Icon type={require('../../icons/logout.svg')} size="md" />}
           >登出
           </List.Item>
         </List>
@@ -61,34 +66,4 @@ class Mine extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    info: state.user.info,
-    accesstoken: state.user.accesstoken,
-    loading: state.status.loading,
-    messageCount: state.user.messageCount
-  };
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    getInfo: () => {
-      dispatch(user.getuserInfo());
-    },
-    getMessageCount: () => {
-      dispatch(user.getMessageCount());
-    },
-    logout: () => {
-      dispatch(global.setTab('home'));
-      dispatch(user.logout());
-      Toast.info('登出成功', 1);
-      dispatch(push('/'))
-    },
-    changeUrl: (url) => {
-      dispatch(push(url));
-    }
-  };
-}
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(Mine)
+export default Mine;

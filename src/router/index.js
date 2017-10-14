@@ -1,37 +1,24 @@
 import React from 'react';
-import { Router, browserHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux'
+import { Router } from 'react-router';
 import routes from '../routes/Root';
+import { history } from '../store/routing';
+import global from '../store/global';
 
-import { connect } from 'react-redux';
-import store from '../store';
-import { global } from '../store/actions';
+const hiddenList = ['/', '/message']; 
 
-const onUpdate = ({changeTab}) => {
-  const {pathname} = window.location;
-  switch (pathname) {
-    case '/': changeTab('home'); break;
-    case '/mine': changeTab('mine'); break;
-    case '/publish': changeTab('publish'); break;
-    default: break;
+history.listen(location => {
+  global.updateRouteTable(location.pathname);
+  if (hiddenList.some(pathname => pathname === location.pathname)) {
+    document.body.style.overflowY = 'hidden';
+  } else {
+    document.body.style.overflowY = 'auto';
   }
-}
-
-
-const history = syncHistoryWithStore(browserHistory, store);
+})
 
 const Root = (props) => {
   return (
-    <Router history={history} onUpdate={() => onUpdate(props)} routes={routes} />
+    <Router history={history} routes={routes} />
   );
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    changeTab: (value) => {
-      dispatch(global.setTab(value));
-    }
-  };
-}
-
-export default connect(null, mapDispatchToProps)(Root);
+export default Root;
