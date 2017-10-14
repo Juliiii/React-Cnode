@@ -25,12 +25,6 @@ const tabs = {
 }))
 @observer
 class MyTabs extends React.Component {
-
-  constructor (props) {
-    super(props);
-    document.body.style.overflowY = 'hidden';
-  }
-
   componentWillUnmount () {
     this.props.setFirstCome(true);
   }

@@ -14,7 +14,7 @@ class User {
   @observable recent_topics_loading = false;
   @observable recent_replies_reachEnd = false;
   @observable recent_topics_reachEnd = false;
-  limit = 10
+  limit = 10;
   recent_replies_page = 0;
   recent_topics_page = 0;
 

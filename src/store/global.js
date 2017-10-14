@@ -6,9 +6,9 @@ useStrict(true);
 const LinkToWhiteList = ['/', '/message', '/publish', '/mine'];
 
 class Global {
-  @observable tab = 'home'
-  @observable to = '/'
-  @observable from = '/'
+  @observable tab = 'home';
+  @observable to = '/';
+  @observable from = '/';
   @observable changed = false;
 
   constructor ({from, to, tab}) {

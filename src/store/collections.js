@@ -12,8 +12,8 @@ class Collections {
   @observable loading = false;
   reachEnd = false;
   allCollections = [];
-  limit = 10
-  page = 0
+  limit = 10;
+  page = 0;
 
 
   @action.bound

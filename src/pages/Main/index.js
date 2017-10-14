@@ -15,7 +15,6 @@ import { inject, observer } from 'mobx-react';
 class Main extends React.Component {
   componentWillMount () {
     this.props.getMessageCount();
-    // this.props.getMessages();
   }
 
   render () {

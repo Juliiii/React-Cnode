@@ -148,7 +148,7 @@ class List extends React.Component {
             !disableRefresh ? <RefreshControl refreshing={refreshing} onRefresh={this.refresh} /> : null
           }
           style={{
-            height: `${(document.documentElement.clientHeight || document.body.clientHeight) - 87}px`
+            height: `${(document.documentElement.clientHeight || document.body.clientHeight) - 87 - 99}px`
           }}
         />
       );

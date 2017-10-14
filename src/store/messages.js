@@ -6,9 +6,13 @@ import status from './status';
 useStrict(true);
 
 class Messages {
-  @observable unreadmessages = [];
-  @observable readmessages = [];
+  @observable messages = [];
   @observable messageCount = 0;
+  @observable loading = false;
+  allmessages = [];
+  page = 1;
+  reachEnd = false;
+  limit = 10;
 
   @action.bound
   async getMessageCount () {
@@ -25,10 +29,9 @@ class Messages {
     try {
       status.setLoading(true);
       const { data } = await axios.get(`/messages?accesstoken=${session.accesstoken}`);
-      console.log(data);
       runInAction(() => {
-        this.unreadmessages = data.data.hasnot_read_messages;
-        this.readmessages = data.data.has_read_messages;
+        this.allmessages = [...data.data.hasnot_read_messages, ...data.data.has_read_messages];
+        this.messages = this.allmessages.slice(0, this.limit);
       });
     } finally {
       status.setLoading(false);
@@ -40,6 +43,20 @@ class Messages {
     await axios.post('/message/mark_all', {
       accesstoken: session.accesstoken
     });
+    runInAction(() => {
+      this.messageCount = 0;
+    });
+  }
+
+  @action.bound
+  loadMore () {
+    if (this.reachEnd || this.loading) return;
+    this.loading = true;
+    this.messages = this.allmessages.slice(0, ++this.page * this.limit);
+    this.reachEnd = this.allmessages.length === this.messages.length;
+    setTimeout(action(() => {
+      this.loading = false;
+    }), 500);
   }
 }
 
