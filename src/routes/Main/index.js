@@ -1,6 +1,5 @@
 import Mine from '../Mine';
 import Publish from '../Publish';
-import Success from '../Publish/success';
 import Message from '../Message';
 
 export default {
@@ -20,7 +19,6 @@ export default {
   childRoutes: [
     Mine,
     Publish,
-    Success,
     Message
   ]
 }

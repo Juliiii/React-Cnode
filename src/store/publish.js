@@ -1,4 +1,4 @@
-import { observable, action, useStrict, computed } from 'mobx';
+import { observable, action, useStrict, computed, runInAction } from 'mobx';
 import marked from 'marked';
 import status from './status';
 import session from './session';
@@ -34,13 +34,14 @@ marked.setOptions({
 
 class Publish {
   @observable content = '';
-  @observable title = ''
-  @observable tab = ['ask']
+  @observable title = '';
+  @observable tab = ['ask'];
   @observable error = {
     title: null,
     tab: false,
     content: null
-  }
+  };
+  @observable finish = false;
 
   @computed get markdown () {
     return marked(this.content);
@@ -62,6 +63,11 @@ class Publish {
   }
 
   @action.bound
+  resetFinish () {
+    this.finish = false;
+  }
+
+  @action.bound
   async publish () {
     try {
       status.setSubmitting(true);
@@ -73,6 +79,9 @@ class Publish {
       };
       await axios.post('/topics', payload);
       this.clear();
+      runInAction(() => {
+        this.finish = true;
+      });
       routing.push('/success');
     } catch (err) {
       Toast.fail('发布失败，稍后再试', 1);

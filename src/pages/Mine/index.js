@@ -20,12 +20,13 @@ import { inject, observer } from 'mobx-react';
 class Mine extends React.Component {
 
   componentWillMount () {
-    if (!this.props.accesstoken) {
-      this.props.push('/login');
-      Toast.info('请先登录', 1);
-    } else {
-      this.props.getInfo({});
-    }
+    // if (!this.props.accesstoken) {
+    //   this.props.push('/login');
+    //   Toast.info('请先登录', 1);
+    // } else {
+    //   this.props.getInfo({});
+    // }
+    this.props.getInfo({});
   }
 
   render () {

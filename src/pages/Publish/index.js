@@ -1,6 +1,7 @@
 import React from 'react';
 import { SimpleNavbar } from '../../components/NavBar';
-import { InputItem, TextareaItem, Tabs, Button, Picker, List, Toast } from 'antd-mobile';
+import Success from './Success';
+import { InputItem, TextareaItem, Tabs, Button, Picker, List } from 'antd-mobile';
 import { inject, observer } from 'mobx-react';
 
 
@@ -13,20 +14,15 @@ const data = [
   {label: '测试', value: 'dev'}
 ];
 
-@inject(({publish, routing, session, status}) => ({
+@inject(({publish, status}) => ({
   publish,
-  push: routing.push,
-  accesstoken: session.accesstoken,
   submitting: status.submitting
 }))
 @observer
 class Publish extends React.Component {
 
-  componentWillMount () {
-    if (!this.props.accesstoken) {
-      Toast.info('请先登录', 1);
-      this.props.push('/login');
-    }
+  componentWillUnmount () {
+    this.props.publish.resetFinish();
   }
 
   handleContentChange = (value) => {
@@ -48,8 +44,9 @@ class Publish extends React.Component {
 
 
   render () {
-    const { title, tab, error, markdown, canSubmit } = this.props.publish;
+    const { title, tab, error, markdown, canSubmit, finish } = this.props.publish;
     const { submitting } = this.props;
+    if (finish) return <Success />;
     return (
       <div>
         <SimpleNavbar title="发布" />
