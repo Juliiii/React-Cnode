@@ -6,7 +6,7 @@
 react + react-router + axios + mobx + mobx-react + antd-mobile
 
 ###  demo
-##### ps: 暂时没有提高live demo，见谅
+[live demo](http://119.29.12.21:3000)（兼容性，已经尽量去兼容了，如果有问题见谅）<br/>
 ![images](https://user-images.githubusercontent.com/23744602/31574427-40b147f2-b102-11e7-8731-253ab286dc37.gif)
 
 
@@ -49,6 +49,10 @@ react-cnode/
 - ~~消息~~
 
 - ~~用mobx重构~~
+
+- ~~live demo~~
+
+- 升级 react-router 到4
 
 ### 如何启动
 Step 1
