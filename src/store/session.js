@@ -19,7 +19,7 @@ class Session {
   }
   
   @action.bound
-  init ({accesstoken, loginname, id}) {
+  init ({accesstoken, loginname, id} = {}) {
     this.accesstoken = accesstoken ? JSON.parse(accesstoken) : '';
     this.loginname = loginname ? JSON.parse(loginname) : '';
     this.id = id ? JSON.stringify(id) : '';
@@ -59,7 +59,7 @@ class Session {
 
   @action.bound
   clear () {
-    this.init({});
+    this.init();
   }
 
   @action.bound

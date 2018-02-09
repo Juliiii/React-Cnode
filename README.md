@@ -54,6 +54,8 @@ react-cnode/
 
 - 升级 react-router 到4
 
+- 升级 antd-mobile 到 2.x
+
 ### 如何启动
 Step 1
 ```

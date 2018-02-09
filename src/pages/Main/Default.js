@@ -5,12 +5,12 @@ import { Tabs } from 'antd-mobile';
 import { observer, inject } from 'mobx-react';
 const TabPane = Tabs.TabPane;
 const tabs = {
-  '全部': 'all',
-  '精华': 'good',
-  '分享': 'share',
-  '问答': 'ask',
-  '招聘': 'job'
-};
+    all: '全部',
+    good: '精华',
+    share: '分享',
+    ask: '问答',
+    job: '招聘'
+}
 @inject(({topics, status}) => ({
   loading: status.loading,
   refreshing: status.refreshing,
@@ -55,7 +55,7 @@ class MyTabs extends React.Component {
         >
           {
             Object.entries(tabs).map((item, index) => 
-              (<TabPane tab={item[0]} key={item[1]}>
+              (<TabPane tab={item[1]} key={item[0]}>
                   <List {...{...this.props, saveScrollTop: this.saveScrollTop, ListItem}} />
                </TabPane>))
           }

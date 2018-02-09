@@ -29,14 +29,17 @@ class Login extends React.Component {
 
   render () {
     // canSubmit and submitting is for prevent users clicking again before finishing request
-    // login is the method the submit the form to sever
+    // login is the method for submit the form to server
     // changeInput is the method to change the observable
     const { canSubmit, submitting, login, changeInput } = this.props;
     return (
       <Card direction="column" style={{height: '100%', width: '100%'}}>
         <Flex direction="column" style={{padding: '0.5rem 0'}}>
           <span>登录</span>
-          <InputItem style={{width: '95%', padding: '0.5rem 0 0 0'}} placeholder="请输入access_token" onChange={changeInput} />
+          <InputItem style={{width: '95%', padding: '0.5rem 0 0 0'}}
+                     placeholder="请输入access_token"
+                     onChange={changeInput}
+          />
           <Button 
             type="primary" 
             style={{width: '95%', marginTop: '0.5rem'}} 
@@ -45,7 +48,11 @@ class Login extends React.Component {
           >
             { !submitting ? '确定' : '提交中...'}
           </Button>
-         <Icon type={require('../../icons/close.svg')} style={{marginTop: '0.5rem'}} disabled={submitting} onClick={this.goBack} />
+         <Icon type={require('../../icons/close.svg')}
+               style={{marginTop: '0.5rem'}}
+               disabled={submitting}
+               onClick={this.goBack}
+         />
         </Flex>
       </Card>
     );
