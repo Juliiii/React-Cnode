@@ -34,7 +34,7 @@ react-cnode/
    |    |
    |    |__ index.js            * 别的工具函数
    │
-   │ 
+   │
    │——constants/                * 一些常量(其实没怎么用)
    │
    │
@@ -55,6 +55,8 @@ react-cnode/
 - 升级 react-router 到4
 
 - 升级 antd-mobile 到 2.x
+
+- 开发环境添加mobx devtool
 
 ### 如何启动
 Step 1
