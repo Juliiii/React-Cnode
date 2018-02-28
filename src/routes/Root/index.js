@@ -5,6 +5,7 @@ import Reply from '../Mine/reply';
 import Topic from '../Mine/topic';
 import Collection from '../Mine/collection';
 import Login from '../Login';
+import PublishSuccess from '../Publish/success'
 
 export default [
   Main,
@@ -13,5 +14,6 @@ export default [
   Collection,
   Topic,
   Detail,
-  Login
+  Login,
+  PublishSuccess
 ];

@@ -1,6 +1,5 @@
 import React from 'react';
 import { SimpleNavbar } from '../../components/NavBar';
-import Success from './Success';
 import { InputItem, TextareaItem, Tabs, Button, Picker, List } from 'antd-mobile';
 import { inject, observer } from 'mobx-react';
 
@@ -44,9 +43,8 @@ class Publish extends React.Component {
 
 
   render () {
-    const { title, tab, error, markdown, canSubmit, finish } = this.props.publish;
+    const { title, tab, error, markdown, canSubmit } = this.props.publish;
     const { submitting } = this.props;
-    if (finish) return <Success />;
     return (
       <div>
         <SimpleNavbar title="发布" />

@@ -35,7 +35,8 @@ marked.setOptions({
 class Publish {
   @observable content = '';
   @observable title = '';
-  @observable tab = ['ask'];
+  //默认发到客户端测试版块
+  @observable tab = ['dev'];
   @observable error = {
     title: null,
     tab: false,
@@ -82,7 +83,7 @@ class Publish {
       runInAction(() => {
         this.finish = true;
       });
-      routing.push('/success');
+      routing.push('/publish/success');
     } catch (err) {
       Toast.fail('发布失败，稍后再试', 1);
     } finally {

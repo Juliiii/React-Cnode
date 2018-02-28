@@ -48,7 +48,7 @@ const footerExtra = ({last_reply_at}) => (
 
 
 
-const ListItem = ({item, index, length}) => {
+const HomeListItem = ({item, index, length}) => {
   return (
     <div>
       <Link to={`/detail/${item.id}`}>
@@ -81,4 +81,4 @@ const ListItem = ({item, index, length}) => {
   );
 };
 
-export default ListItem;
+export default HomeListItem;

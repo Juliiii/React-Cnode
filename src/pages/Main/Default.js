@@ -54,9 +54,12 @@ class MyTabs extends React.Component {
           onChange={this.changeType}
         >
           {
-            Object.entries(tabs).map((item, index) => 
+            Object.entries(tabs).map((item) =>
               (<TabPane tab={item[1]} key={item[0]}>
-                  <List {...{...this.props, saveScrollTop: this.saveScrollTop, ListItem}} />
+                  <List {...this.props}
+                        saveScrollTop={this.saveScrollTop}
+                        ListItem={ListItem}
+                  />
                </TabPane>))
           }
         </Tabs>
