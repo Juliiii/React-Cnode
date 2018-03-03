@@ -1,7 +1,6 @@
 import React from 'react';
 import BusinessCard from '../../components/BusinessCard';
 import { BackNavBar } from '../../components/NavBar';
-import Loading from '../../components/Loading';
 import RecentReplies from './components/RecentReplies';
 import RecentTopics from './components/RecentTopics';
 import { Tabs } from 'antd-mobile';
@@ -42,8 +41,6 @@ class Homepage extends React.Component {
   }
 
   render () {
-    const { loading } = this.props;
-    if (loading) return <Loading />
     return (
       <div>
         <BackNavBar title="个人主页" />

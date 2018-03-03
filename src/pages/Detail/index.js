@@ -1,6 +1,5 @@
 import React from 'react'
 import { Popup, Toast } from 'antd-mobile';
-import Loading from '../../components/Loading';
 import { BackNavBar } from '../../components/NavBar';
 import BackTop from './components/BackTop';
 import Comment from './components/Comment';
@@ -88,23 +87,19 @@ class Detail extends React.Component {
   }
 
   render () {
-    const { loading } = this.props;
-    if (loading) {
-      return ( <Loading /> );
-    } else {
-      return (
-        <div style={{height: '100%'}}>
-          <BackNavBar title="主题详情" />
-          <div style={{paddingTop: '.9rem'}}>
-            <Owner />
-            <Content />
-            <Comments onComment={this.onComment} onUps={this.onUps} onScroll={this.onScroll} />
-            <BackTop />
-            <Comment onComment={this.onComment} />
-          </div>
+
+    return (
+      <div style={{height: '100%'}}>
+        <BackNavBar title="主题详情" />
+        <div style={{paddingTop: '.9rem'}}>
+          <Owner />
+          <Content />
+          <Comments onComment={this.onComment} onUps={this.onUps} onScroll={this.onScroll} />
+          <BackTop />
+          <Comment onComment={this.onComment} />
         </div>
-      );
-    }
+      </div>
+    );
   }
 }
 

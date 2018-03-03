@@ -5,6 +5,8 @@ import db from '../utils/db';
 
 useStrict(true);
 
+const dbFields = ['type', 'page', 'data']
+
 class Topics {
   @observable type;
   @observable data;
@@ -41,7 +43,7 @@ class Topics {
       runInAction(() => {
         this.data = data.data;
       });
-      db.save(['type', 'page', 'data'], {
+      db.save(dbFields, {
         type,
         page: 1,
         data: data.data.slice()
@@ -61,7 +63,7 @@ class Topics {
         this.data = [...this.data, ...data.data];
         this.page++;
         this.reachEnd = data.data.length === 0;
-        db.save(['type', 'page', 'data'], {
+        db.save(dbFields, {
           type: this.type,
           page: this.page,
           data: this.data.slice()
@@ -78,4 +80,4 @@ class Topics {
   }
 }
 
-export default new Topics(db.get(['type', 'data', 'page']));
+export default new Topics(db.get(dbFields));

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router } from 'react-router';
-import routes from '../routes/Root';
+import routes from '../routes/Root/app';
 import routing, { history } from '../store/routing';
 import global from '../store/global';
 import session from '../store/session';

@@ -6,7 +6,7 @@ export default {
   path: '/',
   indexRoute:{
     getComponent (location, callback) {
-      import('../../pages/Main/Default').then(module => {
+      import('../../pages/Main/myTabs').then(module => {
         callback(null, module.default)
       });
     }
