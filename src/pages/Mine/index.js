@@ -1,6 +1,5 @@
 import React from 'react'
 import BusinessCard from '../../components/BusinessCard';
-import Loading from '../../components/Loading';
 import { SimpleNavbar } from '../../components/NavBar';
 import { List, Icon, Toast } from 'antd-mobile';
 import { inject, observer } from 'mobx-react';
@@ -30,8 +29,7 @@ class Mine extends React.Component {
   }
 
   render () {
-    const { logout, loading, push } = this.props;
-    if (loading) return ( <Loading /> );
+    const { logout, push } = this.props;
     return (
       <div
         style={{

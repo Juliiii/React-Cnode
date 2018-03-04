@@ -6,13 +6,26 @@ import status from './status';
 useStrict(true);
 
 class Messages {
-  @observable messages = [];
-  @observable messageCount = 0;
-  @observable loading = false;
-  allmessages = [];
-  page = 1;
-  reachEnd = false;
-  limit = 10;
+  @observable messages;
+  @observable messageCount;
+  @observable loading;
+
+  constructor() {
+    this.init()
+  }
+
+
+  @action.bound
+  init() {
+    this.messages = [];
+    this.messageCount = 0;
+    this.loading = false;
+
+    this.allmessages = []
+    this.page = 1;
+    this.reachEnd = false;
+    this.limit = 10;
+  }
 
   @action.bound
   async getMessageCount () {
@@ -26,6 +39,9 @@ class Messages {
   @action.bound
   async getMessages () {
     if (!session.accesstoken || status.loading) return;
+
+    this.init()
+
     try {
       status.setLoading(true);
       const { data } = await axios.get(`/messages?accesstoken=${session.accesstoken}`);

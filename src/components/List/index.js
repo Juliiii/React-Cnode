@@ -1,14 +1,9 @@
 import React from 'react'
 import { ListView, RefreshControl } from 'antd-mobile';
-import Loading from '../Loading';
 import PropTypes from 'prop-types';
 
 const MyBody = (props) => (
   <div>{props.children}</div>
-);
-
-const Footer = () => (
-  <Loading text="加载中..." />
 );
 
 class List extends React.Component {
@@ -118,7 +113,7 @@ class List extends React.Component {
   }
 
   render () {
-    const { loading, refreshing, disableRefresh, disableLoadMore, useBodyScroll, ListItem, data, height } = this.props;
+    const { refreshing, disableRefresh, disableLoadMore, useBodyScroll, ListItem, data, height } = this.props;
     const { dataSource } = this.state;
     if (useBodyScroll) {
       return (
@@ -129,7 +124,7 @@ class List extends React.Component {
           pageSize={10}
           useBodyScroll
           renderRow={(rowData, sIndex, rIndex) => <ListItem item={rowData} {...this.props} index={rIndex} length={data.length} />}
-          renderFooter={() => loading ? <Footer loading={loading} /> : null}
+          renderFooter={() => null}
         />
       );
     } else {
@@ -145,7 +140,7 @@ class List extends React.Component {
           renderBodyComponent={() => <MyBody />}
           onEndReached={disableLoadMore ? null : this.loadMore}
           renderRow={(rowData, sIndex, rIndex) => <ListItem item={rowData} index={rIndex} length={data.length} {...this.props} />}
-          renderFooter={() => loading ? <Footer loading={loading} /> : null}
+          renderFooter={() => null}
           refreshControl={
             !disableRefresh ? <RefreshControl refreshing={refreshing} onRefresh={this.refresh} /> : null
           }

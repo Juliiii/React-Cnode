@@ -17,9 +17,9 @@ class Session {
   constructor (obj) {
     this.init(obj);
   }
-  
+
   @action.bound
-  init ({accesstoken, loginname, id}) {
+  init ({accesstoken, loginname, id} = {}) {
     this.accesstoken = accesstoken ? JSON.parse(accesstoken) : '';
     this.loginname = loginname ? JSON.parse(loginname) : '';
     this.id = id ? JSON.stringify(id) : '';
@@ -34,7 +34,7 @@ class Session {
     this.accesstoken = value;
   }
 
-  @action.bound 
+  @action.bound
   async login () {
     try {
       status.setSubmitting(true);
@@ -53,13 +53,13 @@ class Session {
       Toast.fail('登录失败', 1);
     } finally {
       console.log(status);
-      status.setSubmitting(false);  
+      status.setSubmitting(false);
     }
   }
 
   @action.bound
   clear () {
-    this.init({});
+    this.init();
   }
 
   @action.bound

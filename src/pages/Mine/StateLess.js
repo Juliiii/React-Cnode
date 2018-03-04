@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import List from '../../components/List';
 import { BackNavBar } from '../../components/NavBar';
-import Loading from '../../components/Loading';
 import ListItem from '../../components/ListItem';
 
 
@@ -11,8 +10,7 @@ export default class Stateless extends Component {
   }
 
   render () {
-    const { loading, title, _loading, loadMore, data } = this.props;
-    if (loading) return <Loading />
+    const { title, _loading, loadMore, data } = this.props;
     return (
       <div>
         <BackNavBar title={title} />

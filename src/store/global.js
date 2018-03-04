@@ -1,6 +1,8 @@
 import { observable, action, useStrict } from 'mobx';
 import routing from './routing';
 import db from '../utils/db';
+import {RouteTabMap} from '../router/index'
+
 useStrict(true);
 
 const LinkToWhiteList = ['/', '/message', '/publish', '/mine'];
@@ -33,6 +35,7 @@ class Global {
     this[key] = val;
   }
 
+  //tab切换 + 路由切换
   @action.bound
   changeTab (tab) {
     this.tab = tab;
@@ -41,12 +44,12 @@ class Global {
   }
 
   LinkTo () {
-    switch (this.tab) {
-      case 'home': routing.push('/'); break;
-      case 'publish': routing.push('/publish'); break;
-      case 'message': routing.push('/message'); break;
-      case 'mine': routing.push('/mine'); break;
-      default: return;
+    for(let key in RouteTabMap) {
+      let value = RouteTabMap[key]
+      if(value === this.tab) {
+        routing.push(key)
+        break
+      }
     }
   }
 }

@@ -57,12 +57,17 @@ class Detail {
     }
   }
 
+  /**
+   * 获取详情数据后，将所有回复放入this.allReplies，从中取出this.limit条数据放入this.replies
+   * @param allReplies
+   */
   @action.bound
   setReplies (allReplies) {
     for (const r of allReplies) {
       this.allReplies.push(new Reply(r));
     }
-    this.replies = this.allReplies.slice(++this.page * this.limit, this.limit);
+
+    this.replies = this.allReplies.slice(0, this.limit);
   }
   
   @action.bound

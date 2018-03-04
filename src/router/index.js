@@ -1,10 +1,19 @@
 import React from 'react';
 import { Router } from 'react-router';
-import routes from '../routes/Root';
+import routes from '../routes/Root/app';
 import routing, { history } from '../store/routing';
 import global from '../store/global';
 import session from '../store/session';
 import { Toast } from 'antd-mobile';
+
+
+//路径与对应的底部tab的映射表
+export const RouteTabMap = {
+  '/': 'home',
+  '/publish': 'publish',
+  '/message': 'message',
+  '/mine': 'mine'
+}
 
 history.listen(location => {
   const currentPathname = location.pathname;
@@ -32,6 +41,13 @@ history.listen(location => {
       routing.goBack();
     }
   });
+
+  //路由切换时确保底部当前tab与路由一致
+  let correspondTab = RouteTabMap[currentPathname]
+  if(correspondTab && global.tab !== correspondTab) {
+    global.updateVal('tab', correspondTab)
+  }
+
 })
 
 const Root = (props) => {
