@@ -32,7 +32,7 @@ react-cnode/
    │    |
    |    |—— db.js               * localstorage操作
    |    |
-   |    |__ index.js            * 别的工具函数
+   |    |__ index.js            * 别的工具函数
    │
    │
    │——constants/                * 一些常量(其实没怎么用)
@@ -51,6 +51,8 @@ react-cnode/
 - ~~用mobx重构~~
 
 - ~~live demo~~
+
+- 升级 react-router 到4
 
 ### 如何启动
 Step 1
