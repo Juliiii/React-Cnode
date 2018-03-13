@@ -57,13 +57,13 @@ class List extends React.Component {
   }
 
   componentDidMount = () => {
-    if (this.props.firstCome) {
-      const scrollTop = localStorage.getItem('scrollTop');
-      if (scrollTop) {
-        this.ref.refs.listview.scrollTo(0, Number(scrollTop));
-        this.ref.refs.listview.scrollProperties.offset = Number(scrollTop);
-      }
-    }
+    // if (this.props.firstCome) {
+    //   const scrollTop = localStorage.getItem('scrollTop');
+    //   if (scrollTop) {
+    //     this.ref.refs.listview.scrollTo(0, Number(scrollTop));
+    //     this.ref.refs.listview.scrollProperties.offset = Number(scrollTop);
+    //   }
+    // }
 
     if (this.props.useBodyScroll) {
       window.addEventListener('scroll', this._onScroll);

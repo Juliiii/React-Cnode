@@ -29,6 +29,10 @@ class MyTabs extends React.Component {
     this.props.setFirstCome(true);
   }
 
+  componentDidMount () {
+    this.props.getData();
+  }
+
   changeType = (value) => {
     if (this.props.firstCome) this.props.setFirstCome(false);
     const { loading, refreshing, changeType } = this.props;

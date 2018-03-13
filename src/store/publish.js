@@ -2,7 +2,6 @@ import { observable, action, useStrict, computed, runInAction } from 'mobx';
 import marked from 'marked';
 import status from './status';
 import session from './session';
-import routing from './routing';
 import axios from '../axios';
 import { Toast } from 'antd-mobile';
 
@@ -82,7 +81,6 @@ class Publish {
       runInAction(() => {
         this.finish = true;
       });
-      routing.push('/success');
     } catch (err) {
       Toast.fail('发布失败，稍后再试', 1);
     } finally {
@@ -90,6 +88,10 @@ class Publish {
     }
   }
 
+  @action.bound
+  setFinish (val) {
+    this.finish = val;
+  }
 
   @action.bound
   clear () {

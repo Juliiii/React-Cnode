@@ -23,6 +23,7 @@ history.listen(location => {
   shouldAuth.forEach(reg => {
     if (reg.test(currentPathname) && !session.accesstoken) {
       Toast.info('请先登录', 1);
+      global.changeTab('home');
       routing.replace('/login');
     }
   });

@@ -11,7 +11,7 @@ class Topics {
   @observable firstcome = true;
   reachEnd;
   page;
-  limit = 20;
+  limit = 5;
 
   constructor(obj) {
     this.init(obj)
@@ -61,11 +61,11 @@ class Topics {
         this.data = [...this.data, ...data.data];
         this.page++;
         this.reachEnd = data.data.length === 0;
-        db.save(['type', 'page', 'data'], {
-          type: this.type,
-          page: this.page,
-          data: this.data.slice()
-        });
+        // db.save(['type', 'page', 'data'], {
+        //   type: this.type,
+        //   page: this.page,
+        //   data: this.data.slice()
+        // });
       });
     } finally {
       status.setLoading(false);
@@ -78,4 +78,4 @@ class Topics {
   }
 }
 
-export default new Topics(db.get(['type', 'data', 'page']));
+export default new Topics({});

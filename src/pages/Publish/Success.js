@@ -3,9 +3,9 @@ import { Result, Icon, Button } from 'antd-mobile';
 import { inject, observer } from 'mobx-react';
 
 
-const Success = ({routing}) => {
+const Success = ({publish}) => {
   function toPublish () {
-    routing.replace('/publish');
+    publish.setFinish(false);
   }
   return (
     <div style={{
@@ -25,4 +25,4 @@ const Success = ({routing}) => {
   );
 }
 
-export default inject('routing')(observer(Success));
+export default inject('publish')(observer(Success));
