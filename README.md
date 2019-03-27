@@ -2,6 +2,10 @@
 
 > react web app, api 由 **cnode社区** 提供，欢迎大家star和fork
 
+### 说明与建议
++  本项目是很久前突发奇想写的，现在由于工作和学习别的知识后，就基本不维护了。
++ 个人发现不少同学是抱着练手的目的，所以个人建议: 可以直接去 cnode社区 (https://cnodejs.org), 阅读他们提供的api, 并根据自己的需求来捣鼓些项目。
+
 ###  技术栈
 react + react-router + axios + mobx + mobx-react + antd-mobile
 
