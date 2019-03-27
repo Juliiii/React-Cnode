@@ -1,4 +1,4 @@
-## React-Cnode
+## React-Cnode(本人已停止维护)
 
 > react web app, api 由 **cnode社区** 提供，欢迎大家star和fork
 
