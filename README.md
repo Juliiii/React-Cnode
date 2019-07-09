@@ -10,7 +10,7 @@
 react + react-router + axios + mobx + mobx-react + antd-mobile
 
 ###  demo
-[live demo](http://119.29.12.21:8080)（兼容性，已经尽量去兼容了，如果有问题见谅）<br/>
+[live demo](http://119.29.12.21:8080)（兼容性，已经尽量去兼容了，如果有问题见谅, ps：本人学生身份已无，代码部署的机器已不继续续费，demo暂时废弃）<br/>
 ![images](https://user-images.githubusercontent.com/23744602/31574427-40b147f2-b102-11e7-8731-253ab286dc37.gif)
 
 
