@@ -5,7 +5,7 @@
   "dependencies": {
     "antd-mobile": "^1.6.3",
     "autoprefixer": "7.1.2",
-    "axios": "^0.16.2",
+    "axios": "^0.21.1",
     "babel-core": "6.25.0",
     "babel-eslint": "7.2.3",
     "babel-jest": "20.0.3",
